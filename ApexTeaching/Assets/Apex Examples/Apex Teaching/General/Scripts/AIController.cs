@@ -43,10 +43,16 @@
             _units = new List<UnitBase>(30);
 
             // color nest
-            var renderers = this._nestGO.GetComponents<Renderer>();
+            var renderers = _nestGO.GetComponents<Renderer>();
             for (int i = 0; i < renderers.Length; i++)
             {
-                renderers[i].material.color = this._color;
+                renderers[i].material.color = _color;
+            }
+
+            renderers = _nestGO.GetComponentsInChildren<Renderer>();
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].material.color = _color;
             }
 
             // setup nest reference
