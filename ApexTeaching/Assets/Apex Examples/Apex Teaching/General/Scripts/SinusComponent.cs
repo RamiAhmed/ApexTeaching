@@ -9,24 +9,29 @@
         public Vector3 direction;
 
         private UnitBase _unit;
+        private float _lastStop;
+        private Vector3 _startPos;
 
         public void OnEnable()
         {
             _unit = this.transform.GetComponentInParent<UnitBase>();
+            _startPos = this.transform.localPosition;
         }
 
         private void Update()
         {
+            var time = Time.time;
             if (_unit != null && !_unit.isMoving)
             {
-                this.transform.localPosition = Vector3.zero;
+                _lastStop = time;
+                this.transform.localPosition = _startPos;
                 return;
             }
 
-            var time = Time.time;
-            var x = Mathf.Sin(direction.x * time + start.x) * magnitude.x;
-            var y = Mathf.Sin(direction.y * time + start.y) * magnitude.y;
-            var z = Mathf.Sin(direction.z * time + start.z) * magnitude.z;
+            var t = time - _lastStop;
+            var x = Mathf.Sin(direction.x * t + start.x) * magnitude.x;
+            var y = Mathf.Sin(direction.y * t + start.y) * magnitude.y;
+            var z = Mathf.Sin(direction.z * t + start.z) * magnitude.z;
             this.transform.localPosition += new Vector3(x, y, z);
         }
     }
