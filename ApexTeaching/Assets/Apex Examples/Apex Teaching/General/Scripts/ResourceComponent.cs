@@ -13,6 +13,7 @@
         private void OnEnable()
         {
             this.currentResources = Random.Range(this.minResources, this.maxResources);
+            this.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, Random.Range(0, 360), this.transform.eulerAngles.z);
         }
 
         public void Harvest(HarvesterUnit unit)

@@ -46,13 +46,19 @@
             var renderers = _nestGO.GetComponents<Renderer>();
             for (int i = 0; i < renderers.Length; i++)
             {
-                renderers[i].material.color = _color;
+                if (renderers[i].GetComponent<ParticleSystem>() == null)
+                {
+                    renderers[i].material.color = _color;
+                }
             }
 
             renderers = _nestGO.GetComponentsInChildren<Renderer>();
             for (int i = 0; i < renderers.Length; i++)
             {
-                renderers[i].material.color = _color;
+                if (renderers[i].GetComponent<ParticleSystem>() == null)
+                {
+                    renderers[i].material.color = _color;
+                }
             }
 
             // setup nest reference
