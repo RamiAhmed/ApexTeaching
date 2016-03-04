@@ -39,56 +39,122 @@ namespace Apex.AI.Teaching
         protected List<GameObject> _observations;
         private NavMeshAgent _navMeshAgent;
 
+        /// <summary>
+        /// Gets the type of unit.
+        /// </summary>
+        /// <value>
+        /// The type of unit.
+        /// </value>
         public abstract UnitType type { get; }
 
+        /// <summary>
+        /// Gets the unique identifier used by the UnitPool - DO NOT MODIFY.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
         public int id
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets the maximum health.
+        /// </summary>
+        /// <value>
+        /// The maximum health.
+        /// </value>
         public float maxHealth
         {
             get { return _maxHealth; }
         }
 
+        /// <summary>
+        /// Gets the current health.
+        /// </summary>
+        /// <value>
+        /// The current health.
+        /// </value>
         public float currentHealth
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this unit is dead.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this unit is dead; otherwise, <c>false</c>.
+        /// </value>
         public bool isDead
         {
             get { return this.currentHealth <= 0f; }
         }
 
+        /// <summary>
+        /// Gets the attack radius - the radius within which it can damage other units or nests.
+        /// </summary>
+        /// <value>
+        /// The attack radius.
+        /// </value>
         public float attackRadius
         {
             get { return _attackRadius; }
         }
 
+        /// <summary>
+        /// Gets the scan radius - the radius within which it can see other units, resources or nests.
+        /// </summary>
+        /// <value>
+        /// The scan radius.
+        /// </value>
         public float scanRadius
         {
             get { return _scanRadius; }
         }
 
+        /// <summary>
+        /// Gets a reference to the nest that spawned this unit - DO NOT MODIFY.
+        /// </summary>
+        /// <value>
+        /// The nest.
+        /// </value>
         public NestStructure nest
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets a list of all the observations in memory for this unit.
+        /// </summary>
+        /// <value>
+        /// The observations.
+        /// </value>
         public List<GameObject> observations
         {
             get { return _observations; }
         }
 
+        /// <summary>
+        /// Gets a reference to the nav mesh agent used for navigation.
+        /// </summary>
+        /// <value>
+        /// The nav mesh agent.
+        /// </value>
         public NavMeshAgent navMeshAgent
         {
             get { return _navMeshAgent; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this unit is moving.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this unit is moving; otherwise, <c>false</c>.
+        /// </value>
         public bool isMoving
         {
             get { return _navMeshAgent.desiredVelocity.sqrMagnitude > 1f; }
@@ -119,6 +185,10 @@ namespace Apex.AI.Teaching
             return Random.Range(_minDamage, _maxDamage);
         }
 
+        /// <summary>
+        /// Adds or updates an observation.
+        /// </summary>
+        /// <param name="colliders">The colliders observed.</param>
         public void AddOrUpdateObservations(Collider[] colliders)
         {
             for (int i = 0; i < colliders.Length; i++)
@@ -139,16 +209,29 @@ namespace Apex.AI.Teaching
             _observations.Add(gameObject);
         }
 
+        /// <summary>
+        /// Determines whether the specified other unit is allied.
+        /// </summary>
+        /// <param name="otherUnit">The other unit.</param>
+        /// <returns><c>true</c> if the other unit is allied; otherwise, <c>false</c>.</returns>
         public bool IsAllied(UnitBase otherUnit)
         {
             return ReferenceEquals(this.nest, otherUnit.nest);
         }
 
+        /// <summary>
+        /// Determines whether the specified nest is allied.
+        /// </summary>
+        /// <param name="nest">The nest.</param>
+        /// <returns><c>true</c> if the other nest is allied; otherwise, <c>false</c>.</returns>
         public bool IsAllied(NestStructure nest)
         {
             return ReferenceEquals(this.nest, nest);
         }
 
+        /// <summary>
+        /// Makes this unit generate a random destination that it subsequently moves to
+        /// </summary>
         public void RandomWander()
         {
             var randomPos = this.transform.position + Random.onUnitSphere.normalized * _randomWanderRadius;
@@ -161,16 +244,27 @@ namespace Apex.AI.Teaching
             }
         }
 
+        /// <summary>
+        /// Moves to a specified destination.
+        /// </summary>
+        /// <param name="destination">The destination.</param>
         public void MoveTo(Vector3 destination)
         {
             _navMeshAgent.SetDestination(destination);
         }
 
+        /// <summary>
+        /// Stops all movement.
+        /// </summary>
         public void StopMoving()
         {
             _navMeshAgent.Stop();
         }
 
+        /// <summary>
+        /// Receive the specified amount of damage.
+        /// </summary>
+        /// <param name="dmg">The DMG.</param>
         public void ReceiveDamage(float dmg)
         {
             this.currentHealth -= dmg;
@@ -194,6 +288,9 @@ namespace Apex.AI.Teaching
             effect.transform.SetParent(this.transform);
         }
 
+        /// <summary>
+        /// Makes this unit attack any enemies within range.
+        /// </summary>
         public void Attack()
         {
             var time = Time.time;

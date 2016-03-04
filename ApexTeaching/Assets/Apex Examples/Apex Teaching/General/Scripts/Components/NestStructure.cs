@@ -39,38 +39,80 @@
         private Dictionary<UnitType, UnitPool> _entityPools;
         private float _lastBuild;
 
+        /// <summary>
+        /// Gets a reference to the AI controller - DO NOT MODIFY.
+        /// </summary>
+        /// <value>
+        /// The controller.
+        /// </value>
         public AIController controller
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets the maximum health.
+        /// </summary>
+        /// <value>
+        /// The maximum health.
+        /// </value>
         public float maxHealth
         {
             get { return _maxHealth; }
         }
 
+        /// <summary>
+        /// Gets the current health.
+        /// </summary>
+        /// <value>
+        /// The current health.
+        /// </value>
         public float currentHealth
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this nest is dead.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this nest is dead; otherwise, <c>false</c>.
+        /// </value>
         public bool isDead
         {
             get { return this.currentHealth <= 0f; }
         }
 
+        /// <summary>
+        /// Gets the harvester count - the currently active amount of harvester units.
+        /// </summary>
+        /// <value>
+        /// The harvester count.
+        /// </value>
         public int harvesterCount
         {
             get { return _entityPools[UnitType.Harvester].count; }
         }
 
+        /// <summary>
+        /// Gets the warrior count - the currently active amount of warrior units.
+        /// </summary>
+        /// <value>
+        /// The warrior count.
+        /// </value>
         public int warriorCount
         {
             get { return _entityPools[UnitType.Warrior].count; }
         }
 
+        /// <summary>
+        /// Gets the blaster count - the currently active amount of blaster units.
+        /// </summary>
+        /// <value>
+        /// The blaster count.
+        /// </value>
         public int blasterCount
         {
             get { return _entityPools[UnitType.Blaster].count; }
@@ -134,7 +176,11 @@
             }
         }
 
-        public void BuildUnit(UnitType type)
+        /// <summary>
+        /// Builds a unit of the specified type. Automatically consumes resources, and can only execute as often as permitted by the build cooldown (0.5 seconds).
+        /// </summary>
+        /// <param name="type">The type of unit to spawn.</param>
+        public void SpawnUnit(UnitType type)
         {
             if (type == UnitType.None)
             {
@@ -183,6 +229,10 @@
             this.controller.units.Add(unit);
         }
 
+        /// <summary>
+        /// Returns the unit back to the unit pool, effectively deactivates it and prepares it for recycling.
+        /// </summary>
+        /// <param name="unit">The unit.</param>
         public void ReturnUnit(UnitBase unit)
         {
             if (unit.type == UnitType.None)
@@ -195,6 +245,10 @@
             _entityPools[unit.type].Return(unit);
         }
 
+        /// <summary>
+        /// Receive the specified amount of damage.
+        /// </summary>
+        /// <param name="dmg">The damage.</param>
         public void ReceiveDamage(float dmg)
         {
             this.currentHealth -= dmg;

@@ -22,22 +22,46 @@
             get { return UnitType.Harvester; }
         }
 
+        /// <summary>
+        /// Gets the return harvest radius - the radius within which this unit may return harvested resources to the nest.
+        /// </summary>
+        /// <value>
+        /// The return harvest radius.
+        /// </value>
         public float returnHarvestRadius
         {
             get { return _returnHarvestRadius; }
         }
 
+        /// <summary>
+        /// Gets the flee radius - if it observes another unit within this range, it will attempt to flee.
+        /// </summary>
+        /// <value>
+        /// The flee radius.
+        /// </value>
         public float fleeRadius
         {
             get { return _fleeRadius; }
         }
 
+        /// <summary>
+        /// Gets the current amount of carried resources - DO NOT MODIFY.
+        /// </summary>
+        /// <value>
+        /// The current carried resources.
+        /// </value>
         public int currentCarriedResources
         {
             get { return _currentCarriedResources; }
             set { _currentCarriedResources = Mathf.Min(value, _maxCarriableResources); }
         }
 
+        /// <summary>
+        /// Gets the maximum carriable resources.
+        /// </summary>
+        /// <value>
+        /// The maximum carriable resources.
+        /// </value>
         public int maxCarriableResources
         {
             get { return _maxCarriableResources; }
@@ -67,6 +91,11 @@
             }
         }
 
+        /// <summary>
+        /// Harvests the specified resource.
+        /// </summary>
+        /// <param name="resource">The resource.</param>
+        /// <exception cref="ArgumentNullException">resource</exception>
         public void Harvest(ResourceComponent resource)
         {
             if (resource == null)

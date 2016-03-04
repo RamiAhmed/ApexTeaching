@@ -5,7 +5,7 @@
     public sealed class BlasterUnit : UnitBase
     {
         [SerializeField, Tooltip("Blaster units automatically explode if another unit or building is within this range")]
-        private float _explodeRadius = 2f;
+        private float _explodeRadius = 1f;
 
         [SerializeField]
         private ParticleSystem _explodeEffect;
@@ -13,6 +13,17 @@
         public override UnitType type
         {
             get { return UnitType.Blaster; }
+        }
+
+        /// <summary>
+        /// Gets the explode radius - if any observed unit or nest is within this range, the unit automatically explodes.
+        /// </summary>
+        /// <value>
+        /// The explode radius.
+        /// </value>
+        public float explodeRadius
+        {
+            get { return _explodeRadius; }
         }
 
         private void Update()

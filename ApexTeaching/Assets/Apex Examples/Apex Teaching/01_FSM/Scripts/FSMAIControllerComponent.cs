@@ -38,17 +38,17 @@
             var nest = _entity.nest;
             if (harvesters < this.desiredHarvesterCount)
             {
-                nest.BuildUnit(UnitType.Harvester);
+                nest.SpawnUnit(UnitType.Harvester);
                 return;
             }
 
             if (fighters <= exploders)
             {
-                nest.BuildUnit(UnitType.Warrior);
+                nest.SpawnUnit(UnitType.Warrior);
             }
             else
             {
-                nest.BuildUnit(UnitType.Blaster);
+                nest.SpawnUnit(UnitType.Blaster);
             }
         }
     }
