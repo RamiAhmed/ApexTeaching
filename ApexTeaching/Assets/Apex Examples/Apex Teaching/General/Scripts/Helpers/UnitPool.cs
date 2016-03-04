@@ -12,6 +12,7 @@
         private Queue<UnitBase> _pool;
         private GameObject _prefab;
         private GameObject _host;
+        private int _count;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UnitPool"/> class.
@@ -34,7 +35,7 @@
 
         public int count
         {
-            get { return _pool.Count; }
+            get { return _count; }
         }
 
         /// <summary>
@@ -61,6 +62,7 @@
             t.position = position;
             t.rotation = rotation;
 
+            _count++;
             unit.id = _nextId++;
             unit.gameObject.SetActive(true);
             return unit;
@@ -72,6 +74,7 @@
         /// <param name="item">The entity.</param>
         public void Return(UnitBase item)
         {
+            _count--;
             item.gameObject.SetActive(false);
             _pool.Enqueue(item);
         }

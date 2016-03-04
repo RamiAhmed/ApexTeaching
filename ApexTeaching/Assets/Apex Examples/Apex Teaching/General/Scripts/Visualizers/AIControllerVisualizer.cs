@@ -4,7 +4,12 @@
 
     public sealed class AIControllerVisualizer : MonoBehaviour
     {
-        public bool leftAlign;
+        private const float width = 150f;
+        private const float height = 80f;
+        private const float padding = 5f;
+
+        [SerializeField]
+        private bool _leftAlign;
 
         private AIController _aiController;
 
@@ -20,16 +25,23 @@
                 return;
             }
 
-            var text = string.Concat("Resources: ", _aiController.currentResources.ToString(), "\nUnits: ", _aiController.units.Count);
+            var nest = _aiController.nest;
+            var unitCount = _aiController.units.Count;
+            var text = string.Concat(
+                "Resources: ", _aiController.currentResources.ToString(),
+                "\nNest HP: ", nest.currentHealth.ToString("F0"), " / ", nest.maxHealth.ToString("F0"),
+                "\nHarvesters: ", nest.harvesterCount, " / ", unitCount,
+                "\nWarriors: ", nest.warriorCount, " / ", unitCount,
+                "\nBlasters: ", nest.blasterCount, " / ", unitCount);
 
             Rect rect;
-            if (this.leftAlign)
+            if (_leftAlign)
             {
-                rect = new Rect(5f, 5f, 100f, 60f);
+                rect = new Rect(padding, padding, width, height);
             }
             else
             {
-                rect = new Rect(Screen.width - 110f, 5f, 100f, 60f);
+                rect = new Rect(Screen.width - width - (padding * 2f), padding, width, height);
             }
 
             GUI.color = _aiController.color;

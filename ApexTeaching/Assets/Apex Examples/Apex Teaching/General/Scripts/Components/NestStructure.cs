@@ -10,7 +10,7 @@
         private float _maxHealth = 1000f;
 
         [SerializeField]
-        private float _spawnDistance = 5f;
+        private float _spawnDistance = 10f;
 
         [SerializeField]
         private float _buildCooldown = 0.5f;
@@ -31,10 +31,10 @@
         private GameObject _harvesterPrefab;
 
         [SerializeField]
-        private GameObject _exploderPrefab;
+        private GameObject _blasterPrefab;
 
         [SerializeField]
-        private GameObject _fighterPrefab;
+        private GameObject _warriorPrefab;
 
         private Dictionary<UnitType, UnitPool> _entityPools;
         private float _lastBuild;
@@ -61,13 +61,28 @@
             get { return this.currentHealth <= 0f; }
         }
 
+        public int harvesterCount
+        {
+            get { return _entityPools[UnitType.Harvester].count; }
+        }
+
+        public int warriorCount
+        {
+            get { return _entityPools[UnitType.Warrior].count; }
+        }
+
+        public int blasterCount
+        {
+            get { return _entityPools[UnitType.Blaster].count; }
+        }
+
         private void Awake()
         {
             _entityPools = new Dictionary<UnitType, UnitPool>(new UnitTypeComparer())
             {
                 { UnitType.Harvester, new UnitPool(_harvesterPrefab, this.gameObject, _initialInstanceCount) },
-                { UnitType.Blaster, new UnitPool(_exploderPrefab, this.gameObject, _initialInstanceCount) },
-                { UnitType.Warrior, new UnitPool(_fighterPrefab, this.gameObject, _initialInstanceCount) }
+                { UnitType.Blaster, new UnitPool(_blasterPrefab, this.gameObject, _initialInstanceCount) },
+                { UnitType.Warrior, new UnitPool(_warriorPrefab, this.gameObject, _initialInstanceCount) }
             };
         }
 
@@ -83,36 +98,39 @@
             var count = units.Count;
             for (int i = 0; i < count; i++)
             {
+                // all the nest's units die when the nest dies
+                units[i].ReceiveDamage(units[i].maxHealth + 1f);
                 ReturnUnit(units[i]);
             }
         }
 
         private IEnumerator BuildInitialUnits()
         {
-            yield return new WaitForSeconds(1f);
-
             if (_startHarvesters > 0)
             {
-                for (int i = 0; i < _startHarvesters; i++)
-                {
-                    InternalBuildUnit(UnitType.Harvester);
-                }
+                yield return new WaitForSeconds(1f);
+                StartCoroutine(BuildUnitsGradually(_startHarvesters, UnitType.Harvester));
             }
 
             if (_startWarriors > 0)
             {
-                for (int i = 0; i < _startWarriors; i++)
-                {
-                    InternalBuildUnit(UnitType.Warrior);
-                }
+                yield return new WaitForSeconds(1f);
+                StartCoroutine(BuildUnitsGradually(_startWarriors, UnitType.Warrior));
             }
 
             if (_startBlasters > 0)
             {
-                for (int i = 0; i < _startBlasters; i++)
-                {
-                    InternalBuildUnit(UnitType.Blaster);
-                }
+                yield return new WaitForSeconds(1f);
+                StartCoroutine(BuildUnitsGradually(_startBlasters, UnitType.Blaster));
+            }
+        }
+
+        private IEnumerator BuildUnitsGradually(int count, UnitType type)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                InternalBuildUnit(type);
+                yield return new WaitForSeconds(_buildCooldown);
             }
         }
 
@@ -156,7 +174,10 @@
             var renderers = unit.GetComponentsInChildren<Renderer>();
             for (int i = 0; i < renderers.Length; i++)
             {
-                renderers[i].material.color = color;
+                if (renderers[i].GetComponent<ParticleSystem>() == null)
+                {
+                    renderers[i].material.color = color;
+                }
             }
 
             this.controller.units.Add(unit);

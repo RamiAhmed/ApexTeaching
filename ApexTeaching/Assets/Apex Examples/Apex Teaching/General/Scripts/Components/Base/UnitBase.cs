@@ -2,12 +2,16 @@
 
 namespace Apex.AI.Teaching
 {
+    using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
 
     [RequireComponent(typeof(Collider))]
     public abstract class UnitBase : MonoBehaviour, ICanDie
     {
+        [SerializeField]
+        private ParticleSystem _deathEffect;
+
         [SerializeField]
         protected float _maxHealth = 100f;
 
@@ -88,19 +92,19 @@ namespace Apex.AI.Teaching
             get { return _navMeshAgent.desiredVelocity.sqrMagnitude > 1f; }
         }
 
-        protected virtual void Awake()
+        private void Awake()
         {
             _navMeshAgent = this.GetComponent<NavMeshAgent>();
             _navMeshAgent.avoidancePriority += Random.Range(-23, 24);
         }
 
-        protected virtual void OnEnable()
+        private void OnEnable()
         {
             _observations = new List<GameObject>(5);
             this.currentHealth = _maxHealth;
         }
 
-        protected virtual void OnDisable()
+        private void OnDisable()
         {
             if (this.nest != null)
             {
@@ -108,7 +112,7 @@ namespace Apex.AI.Teaching
             }
         }
 
-        private float GetDamage()
+        protected float GetDamage()
         {
             return Random.Range(_minDamage, _maxDamage);
         }
@@ -175,8 +179,22 @@ namespace Apex.AI.Teaching
             this.currentHealth -= dmg;
             if (this.currentHealth <= 0f)
             {
+                PlayEffect(_deathEffect);
                 this.gameObject.SetActive(false);
             }
+        }
+
+        protected void PlayEffect(ParticleSystem effect)
+        {
+            effect.transform.SetParent(null);
+            effect.Play();
+            CoroutineHelper.instance.StartCoroutine(CleanUpEffect(effect));
+        }
+
+        private IEnumerator CleanUpEffect(ParticleSystem effect)
+        {
+            yield return new WaitForSeconds(effect.duration);
+            effect.transform.SetParent(this.transform);
         }
 
         public void Attack()
