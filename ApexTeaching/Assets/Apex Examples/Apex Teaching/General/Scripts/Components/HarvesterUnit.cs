@@ -51,7 +51,7 @@
             {
                 var hit = hits[i];
 
-                var unit = hit.GetComponent(typeof(UnitBase)) as UnitBase;
+                var unit = hit.GetComponent<UnitBase>();
                 if (unit != null)
                 {
                     unit.ReceiveDamage(dmg);

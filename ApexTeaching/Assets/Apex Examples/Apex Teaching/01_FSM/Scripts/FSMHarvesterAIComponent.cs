@@ -117,7 +117,7 @@
             {
                 var obs = observations[i];
 
-                var otherUnit = obs.GetComponent(typeof(UnitBase)) as UnitBase;
+                var otherUnit = obs.GetComponent<UnitBase>();
                 if (otherUnit != null)
                 {
                     if (_entity.IsAllied(otherUnit))

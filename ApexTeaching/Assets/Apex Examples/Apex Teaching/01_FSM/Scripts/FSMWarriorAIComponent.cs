@@ -2,26 +2,26 @@
 {
     using UnityEngine;
 
-    public sealed class FSMFighterAIComponent : AIComponentBase<FighterUnit>
+    public sealed class FSMWarriorAIComponent : AIComponentBase<WarriorUnit>
     {
-        private enum FighterState
+        private enum WarriorState
         {
             Idle,
             Attacking
         }
 
         [SerializeField]
-        private FighterState _currentState = FighterState.Idle;
+        private WarriorState _currentState = WarriorState.Idle;
 
         private ICanDie _attackTarget;
 
         protected override void ExecuteAI()
         {
-            if (_currentState == FighterState.Idle)
+            if (_currentState == WarriorState.Idle)
             {
                 HandleIdle();
             }
-            else if (_currentState == FighterState.Attacking)
+            else if (_currentState == WarriorState.Attacking)
             {
                 HandleAttacking();
             }
@@ -32,7 +32,7 @@
             if (_attackTarget == null || _attackTarget.isDead)
             {
                 _attackTarget = null;
-                _currentState = FighterState.Idle;
+                _currentState = WarriorState.Idle;
                 return;
             }
 
@@ -61,7 +61,7 @@
             {
                 var obs = observations[i];
 
-                var otherUnit = obs.GetComponent(typeof(UnitBase)) as UnitBase;
+                var otherUnit = obs.GetComponent<UnitBase>();
                 if (otherUnit != null)
                 {
                     if (_entity.IsAllied(otherUnit))
@@ -71,7 +71,7 @@
                     }
 
                     _attackTarget = otherUnit;
-                    _currentState = FighterState.Attacking;
+                    _currentState = WarriorState.Attacking;
                     return;
                 }
 
@@ -85,7 +85,7 @@
                     }
 
                     _attackTarget = nest;
-                    _currentState = FighterState.Attacking;
+                    _currentState = WarriorState.Attacking;
                     return;
                 }
             }

@@ -15,12 +15,12 @@
                     return harvesterUnitCost;
                 }
 
-                case UnitType.Fighter:
+                case UnitType.Warrior:
                 {
                     return fighterUnitCost;
                 }
 
-                case UnitType.Exploder:
+                case UnitType.Blaster:
                 {
                     return exploderUnitcost;
                 }

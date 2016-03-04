@@ -11,7 +11,7 @@
 
         private void OnEnable()
         {
-            _unit = (UnitBase)this.GetComponent(typeof(UnitBase));
+            _unit = this.GetComponent<UnitBase>();
         }
 
         private void OnDrawGizmosSelected()

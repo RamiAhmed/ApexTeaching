@@ -21,7 +21,7 @@
                         continue;
                     }
 
-                    var unit = (UnitBase)obs.GetComponent(typeof(UnitBase));
+                    var unit = obs.GetComponent<UnitBase>();
                     if (unit != null && unit.isDead)
                     {
                         observations.RemoveAt(i);

@@ -19,6 +19,12 @@
         private int _startHarvesters = 3;
 
         [SerializeField]
+        private int _startWarriors = 2;
+
+        [SerializeField]
+        private int _startBlasters = 1;
+
+        [SerializeField]
         private int _initialInstanceCount = 30;
 
         [SerializeField]
@@ -59,16 +65,16 @@
         {
             _entityPools = new Dictionary<UnitType, UnitPool>(new UnitTypeComparer())
             {
-                { UnitType.Harvester, new UnitPool(this._harvesterPrefab, this.gameObject, this._initialInstanceCount) },
-                { UnitType.Exploder, new UnitPool(this._exploderPrefab, this.gameObject, this._initialInstanceCount) },
-                { UnitType.Fighter, new UnitPool(this._fighterPrefab, this.gameObject, this._initialInstanceCount) }
+                { UnitType.Harvester, new UnitPool(_harvesterPrefab, this.gameObject, _initialInstanceCount) },
+                { UnitType.Blaster, new UnitPool(_exploderPrefab, this.gameObject, _initialInstanceCount) },
+                { UnitType.Warrior, new UnitPool(_fighterPrefab, this.gameObject, _initialInstanceCount) }
             };
         }
 
         private void OnEnable()
         {
             this.currentHealth = _maxHealth;
-            StartCoroutine(BuildInitialHarvesters());
+            StartCoroutine(BuildInitialUnits());
         }
 
         private void OnDisable()
@@ -81,15 +87,31 @@
             }
         }
 
-        private IEnumerator BuildInitialHarvesters()
+        private IEnumerator BuildInitialUnits()
         {
             yield return new WaitForSeconds(1f);
 
-            if (this._startHarvesters > 0)
+            if (_startHarvesters > 0)
             {
-                for (int i = 0; i < this._startHarvesters; i++)
+                for (int i = 0; i < _startHarvesters; i++)
                 {
                     InternalBuildUnit(UnitType.Harvester);
+                }
+            }
+
+            if (_startWarriors > 0)
+            {
+                for (int i = 0; i < _startWarriors; i++)
+                {
+                    InternalBuildUnit(UnitType.Warrior);
+                }
+            }
+
+            if (_startBlasters > 0)
+            {
+                for (int i = 0; i < _startBlasters; i++)
+                {
+                    InternalBuildUnit(UnitType.Blaster);
                 }
             }
         }
@@ -131,13 +153,7 @@
 
             // color unit
             var color = this.controller.color;
-            var renderers = unit.GetComponents<Renderer>();
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                renderers[i].material.color = color;
-            }
-
-            renderers = unit.GetComponentsInChildren<Renderer>();
+            var renderers = unit.GetComponentsInChildren<Renderer>();
             for (int i = 0; i < renderers.Length; i++)
             {
                 renderers[i].material.color = color;

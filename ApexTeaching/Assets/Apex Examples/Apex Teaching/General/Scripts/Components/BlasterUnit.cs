@@ -2,34 +2,35 @@
 {
     using UnityEngine;
 
-    public sealed class FighterUnit : UnitBase
+    public sealed class BlasterUnit : UnitBase
     {
         public override UnitType type
         {
-            get { return UnitType.Fighter; }
+            get { return UnitType.Blaster; }
         }
 
         protected override void InternalAttack(float dmg)
         {
-            // fighters hit only one unit or nest
+            // exploders hit all units and possible nest - within range
             var hits = Physics.OverlapSphere(this.transform.position, _attackRadius, Layers.units | Layers.structures);
             for (int i = 0; i < hits.Length; i++)
             {
                 var hit = hits[i];
-                var unit = hit.GetComponent(typeof(UnitBase)) as UnitBase;
+                var unit = hit.GetComponent<UnitBase>();
                 if (unit != null)
                 {
                     unit.ReceiveDamage(dmg);
-                    return;
                 }
 
                 var nest = hit.GetComponent<NestStructure>();
                 if (nest != null)
                 {
                     nest.ReceiveDamage(dmg);
-                    return;
                 }
             }
+
+            // exploders kill themselves
+            ReceiveDamage(this.currentHealth + 1f);
         }
     }
 }

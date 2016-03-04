@@ -25,11 +25,11 @@
                 {
                     harvesters++;
                 }
-                else if (unit.type == UnitType.Fighter)
+                else if (unit.type == UnitType.Warrior)
                 {
                     fighters++;
                 }
-                else if (unit.type == UnitType.Exploder)
+                else if (unit.type == UnitType.Blaster)
                 {
                     exploders++;
                 }
@@ -44,11 +44,11 @@
 
             if (fighters <= exploders)
             {
-                nest.BuildUnit(UnitType.Fighter);
+                nest.BuildUnit(UnitType.Warrior);
             }
             else
             {
-                nest.BuildUnit(UnitType.Exploder);
+                nest.BuildUnit(UnitType.Blaster);
             }
         }
     }

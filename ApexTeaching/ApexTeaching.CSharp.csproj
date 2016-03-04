@@ -58,12 +58,6 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
@@ -76,27 +70,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Apex Examples\Apex Teaching\01_FSM\Scripts\FSMAIControllerComponent.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\01_FSM\Scripts\FSMExploderAIComponent.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\01_FSM\Scripts\FSMFighterAIComponent.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\01_FSM\Scripts\FSMBlasterAIComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\01_FSM\Scripts\FSMHarvesterAIComponent.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\AIComponentBase.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\AIController.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\AIScannerComponent.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\CameraController.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\ExploderUnit.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\FighterUnit.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\GameObjectDistanceSortComparer.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\HarvesterUnit.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\ICanDie.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Layers.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\NestStructure.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\ResourceComponent.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\SinusComponent.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\UnitBase.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\UnitCostManager.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\UnitPool.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\UnitType.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\UnitTypeComparer.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\01_FSM\Scripts\FSMWarriorAIComponent.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIController.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIScannerComponent.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\Base\AIComponentBase.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\Base\UnitBase.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\BlasterUnit.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\CameraController.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\HarvesterUnit.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\NestStructure.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\ResourceComponent.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\SinusComponent.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\WarriorUnit.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\GameObjectDistanceSortComparer.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\Layers.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\UnitCostManager.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\UnitPool.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\UnitTypeComparer.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Interface\ICanDie.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Interface\UnitType.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Visualizers\AIControllerVisualizer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Visualizers\DestinationVisualizer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Visualizers\ObservationsVisualizer.cs" />

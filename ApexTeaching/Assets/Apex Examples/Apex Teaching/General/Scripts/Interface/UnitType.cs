@@ -4,7 +4,7 @@
     {
         None = 0,
         Harvester,
-        Exploder,
-        Fighter
+        Blaster,
+        Warrior
     }
 }

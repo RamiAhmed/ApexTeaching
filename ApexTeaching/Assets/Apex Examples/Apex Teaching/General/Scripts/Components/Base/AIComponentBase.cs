@@ -12,7 +12,7 @@
 
         protected virtual void Awake()
         {
-            _entity = (T)this.GetComponent(typeof(T));
+            _entity = this.GetComponent<T>();
         }
 
         protected virtual void Update()

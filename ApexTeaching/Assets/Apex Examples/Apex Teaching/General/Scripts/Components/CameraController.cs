@@ -26,11 +26,10 @@
                 return;
             }
 
-            var sign = -Mathf.Sign(scroll);
-            var y = Mathf.Clamp(this.transform.position.y + (sign * scrollSpeed), this.constraintsY.x, this.constraintsY.y);
+            var y = Mathf.Clamp(this.transform.position.y + (-Mathf.Sign(scroll) * scrollSpeed), this.constraintsY.x, this.constraintsY.y);
             this.transform.position = new Vector3(this.transform.position.x, y, this.transform.position.z);
         }
-
+        
         private void MoveOnKeys()
         {
             if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))

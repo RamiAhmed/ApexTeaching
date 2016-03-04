@@ -43,16 +43,7 @@
             _units = new List<UnitBase>(30);
 
             // color nest
-            var renderers = _nestGO.GetComponents<Renderer>();
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                if (renderers[i].GetComponent<ParticleSystem>() == null)
-                {
-                    renderers[i].material.color = _color;
-                }
-            }
-
-            renderers = _nestGO.GetComponentsInChildren<Renderer>();
+            var renderers = _nestGO.GetComponentsInChildren<Renderer>();
             for (int i = 0; i < renderers.Length; i++)
             {
                 if (renderers[i].GetComponent<ParticleSystem>() == null)

@@ -150,7 +150,7 @@ namespace Apex.AI.Teaching
 
         public void RandomWander()
         {
-            var randomPos = this.transform.position + Random.onUnitSphere.normalized * this._randomWanderRadius;
+            var randomPos = this.transform.position + Random.onUnitSphere.normalized * _randomWanderRadius;
             randomPos.y = this.transform.position.y;
 
             NavMeshHit hit;

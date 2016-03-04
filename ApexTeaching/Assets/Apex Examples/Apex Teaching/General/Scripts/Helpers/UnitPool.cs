@@ -78,14 +78,14 @@
 
         private UnitBase CreateInstance()
         {
-            var go = (GameObject)GameObject.Instantiate(_prefab);
+            var go = GameObject.Instantiate(_prefab);
             if (_host != null)
             {
                 go.transform.SetParent(_host.transform);
             }
 
             go.SetActive(false);
-            return (UnitBase)go.GetComponent(typeof(UnitBase));
+            return go.GetComponent<UnitBase>();
         }
     }
 }

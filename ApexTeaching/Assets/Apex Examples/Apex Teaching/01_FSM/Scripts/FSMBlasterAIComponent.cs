@@ -2,26 +2,26 @@
 {
     using UnityEngine;
 
-    public sealed class FSMExploderAIComponent : AIComponentBase<ExploderUnit>
+    public sealed class FSMBlasterAIComponent : AIComponentBase<BlasterUnit>
     {
-        private enum ExploderState
+        private enum BlasterState
         {
             Idle,
             Exploding
         }
 
         [SerializeField]
-        private ExploderState _currentState = ExploderState.Idle;
+        private BlasterState _currentState = BlasterState.Idle;
 
         private ICanDie _attackTarget;
 
         protected override void ExecuteAI()
         {
-            if (_currentState == ExploderState.Idle)
+            if (_currentState == BlasterState.Idle)
             {
                 HandleIdle();
             }
-            else if (_currentState == ExploderState.Exploding)
+            else if (_currentState == BlasterState.Exploding)
             {
                 HandleExploding();
             }
@@ -42,26 +42,26 @@
                 {
                     if (_entity.IsAllied(nest))
                     {
-                        // don't attack own nest
+                        // try to avoid attacking own nest
                         continue;
                     }
 
                     _attackTarget = nest;
-                    _currentState = ExploderState.Exploding;
+                    _currentState = BlasterState.Exploding;
                     return;
                 }
 
-                var otherUnit = obs.GetComponent(typeof(UnitBase)) as UnitBase;
+                var otherUnit = obs.GetComponent<UnitBase>();
                 if (otherUnit != null)
                 {
                     if (_entity.IsAllied(otherUnit))
                     {
-                        // don't attack allied units
+                        // try to avoid attacking allied units
                         continue;
                     }
 
                     _attackTarget = otherUnit;
-                    _currentState = ExploderState.Exploding;
+                    _currentState = BlasterState.Exploding;
                     return;
                 }
             }
@@ -78,7 +78,7 @@
             if (_attackTarget == null || _attackTarget.isDead)
             {
                 _attackTarget = null;
-                _currentState = ExploderState.Idle;
+                _currentState = BlasterState.Idle;
                 return;
             }
 
