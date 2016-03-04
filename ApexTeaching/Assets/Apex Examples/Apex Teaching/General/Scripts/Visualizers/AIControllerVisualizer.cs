@@ -2,6 +2,7 @@
 {
     using UnityEngine;
 
+    [RequireComponent(typeof(AIController))]
     public sealed class AIControllerVisualizer : MonoBehaviour
     {
         private const float width = 150f;

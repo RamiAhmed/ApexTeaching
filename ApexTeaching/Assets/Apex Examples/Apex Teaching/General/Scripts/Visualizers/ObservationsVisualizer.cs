@@ -2,6 +2,7 @@
 {
     using UnityEngine;
 
+    [RequireComponent(typeof(UnitBase))]
     public sealed class ObservationsVisualizer : MonoBehaviour
     {
         public Color gizmosColor = Color.grey;

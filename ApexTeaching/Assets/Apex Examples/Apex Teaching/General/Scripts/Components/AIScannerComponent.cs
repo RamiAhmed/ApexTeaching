@@ -2,6 +2,7 @@
 {
     using UnityEngine;
 
+    [RequireComponent(typeof(UnitBase))]
     public sealed class AIScannerComponent : AIComponentBase<UnitBase>
     {
         protected override void ExecuteAI()

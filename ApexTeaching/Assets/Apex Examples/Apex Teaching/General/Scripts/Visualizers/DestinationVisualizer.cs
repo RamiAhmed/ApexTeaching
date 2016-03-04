@@ -2,6 +2,7 @@
 {
     using UnityEngine;
 
+    [RequireComponent(typeof(UnitBase))]
     public sealed class DestinationVisualizer : MonoBehaviour
     {
         public Color gizmosColor = Color.green;

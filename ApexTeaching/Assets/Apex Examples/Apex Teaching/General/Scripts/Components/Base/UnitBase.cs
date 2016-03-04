@@ -6,6 +6,8 @@ namespace Apex.AI.Teaching
     using System.Collections.Generic;
     using UnityEngine;
 
+    [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Collider))]
     public abstract class UnitBase : MonoBehaviour, ICanDie
     {
@@ -16,26 +18,26 @@ namespace Apex.AI.Teaching
         protected float _maxHealth = 100f;
 
         [SerializeField]
-        protected float _minDamage = 10f;
-
-        [SerializeField]
-        protected float _maxDamage = 20f;
-
-        [SerializeField]
         protected float _attackRadius = 2f;
 
         [SerializeField]
         protected float _attacksPerSecond = 1f;
 
         [SerializeField]
-        protected float _scanRadius = 15f;
+        private float _minDamage = 10f;
 
         [SerializeField]
-        protected float _randomWanderRadius = 10f;
+        private float _maxDamage = 20f;
 
-        protected NavMeshAgent _navMeshAgent;
+        [SerializeField]
+        private float _scanRadius = 15f;
+
+        [SerializeField]
+        private float _randomWanderRadius = 10f;
+
         protected float _lastAttack;
         protected List<GameObject> _observations;
+        private NavMeshAgent _navMeshAgent;
 
         public abstract UnitType type { get; }
 
@@ -121,11 +123,11 @@ namespace Apex.AI.Teaching
         {
             for (int i = 0; i < colliders.Length; i++)
             {
-                AddOrUpdateObservation(colliders[i].gameObject);
+                AddOrUpdateObservationInternal(colliders[i].gameObject);
             }
         }
 
-        public void AddOrUpdateObservation(GameObject gameObject)
+        private void AddOrUpdateObservationInternal(GameObject gameObject)
         {
             var idx = _observations.IndexOf(gameObject);
             if (idx >= 0)
@@ -135,11 +137,6 @@ namespace Apex.AI.Teaching
             }
 
             _observations.Add(gameObject);
-        }
-
-        public bool RemoveObservation(GameObject gameObject)
-        {
-            return _observations.Remove(gameObject);
         }
 
         public bool IsAllied(UnitBase otherUnit)
@@ -206,6 +203,7 @@ namespace Apex.AI.Teaching
             }
 
             _lastAttack = time;
+            StopMoving();
             InternalAttack(GetDamage());
         }
 
