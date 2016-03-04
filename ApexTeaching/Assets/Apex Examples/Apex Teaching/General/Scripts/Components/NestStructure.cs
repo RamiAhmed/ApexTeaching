@@ -36,7 +36,11 @@
         [SerializeField]
         private GameObject _warriorPrefab;
 
+        [SerializeField]
+        private int _currentResources;
+
         private Dictionary<UnitType, UnitPool> _entityPools;
+        private List<UnitBase> _units;
         private float _lastBuild;
 
         /// <summary>
@@ -118,6 +122,29 @@
             get { return _entityPools[UnitType.Blaster].count; }
         }
 
+        /// <summary>
+        /// Get the current amount of resources that this AI has - DO NOT MODIFY.
+        /// </summary>
+        /// <value>
+        /// The current resources.
+        /// </value>
+        public int currentResources
+        {
+            get { return _currentResources; }
+            set { _currentResources = value; }
+        }
+
+        /// <summary>
+        /// Gets a list of all currently active units owned by this AI Controller
+        /// </summary>
+        /// <value>
+        /// The units.
+        /// </value>
+        public List<UnitBase> units
+        {
+            get { return _units; }
+        }
+
         private void Awake()
         {
             _entityPools = new Dictionary<UnitType, UnitPool>(new UnitTypeComparer())
@@ -126,6 +153,8 @@
                 { UnitType.Blaster, new UnitPool(_blasterPrefab, this.gameObject, _initialInstanceCount) },
                 { UnitType.Warrior, new UnitPool(_warriorPrefab, this.gameObject, _initialInstanceCount) }
             };
+
+            _units = new List<UnitBase>(_initialInstanceCount);
         }
 
         private void OnEnable()
@@ -136,13 +165,12 @@
 
         private void OnDisable()
         {
-            var units = this.controller.units;
-            var count = units.Count;
+            var count = _units.Count;
             for (int i = 0; i < count; i++)
             {
                 // all the nest's units die when the nest dies
-                units[i].ReceiveDamage(units[i].maxHealth + 1f);
-                ReturnUnit(units[i]);
+                _units[i].ReceiveDamage(_units[i].maxHealth + 1f);
+                ReturnUnit(_units[i]);
             }
         }
 
@@ -189,7 +217,7 @@
             }
 
             var cost = UnitCostManager.GetCost(type);
-            if (cost > this.controller.currentResources)
+            if (cost > _currentResources)
             {
                 // AI cannot afford the unit
                 return;
@@ -203,7 +231,7 @@
             }
 
             _lastBuild = time;
-            this.controller.currentResources -= cost;
+            _currentResources -= cost;
             InternalBuildUnit(type);
         }
 
@@ -226,7 +254,7 @@
                 }
             }
 
-            this.controller.units.Add(unit);
+            _units.Add(unit);
         }
 
         /// <summary>
@@ -241,7 +269,7 @@
                 return;
             }
 
-            this.controller.units.Remove(unit);
+            _units.Remove(unit);
             _entityPools[unit.type].Return(unit);
         }
 

@@ -6,7 +6,8 @@
 
         protected override void ExecuteAI()
         {
-            var resources = _entity.currentResources;
+            var nest = _entity.nest;
+            var resources = nest.currentResources;
             if (resources <= 0)
             {
                 // AI has no resources, cannot do anything
@@ -17,10 +18,10 @@
             var fighters = 0;
             var exploders = 0;
 
-            var count = _entity.units.Count;
+            var count = nest.units.Count;
             for (int i = 0; i < count; i++)
             {
-                var unit = _entity.units[i];
+                var unit = nest.units[i];
                 if (unit.type == UnitType.Harvester)
                 {
                     harvesters++;
@@ -35,7 +36,6 @@
                 }
             }
 
-            var nest = _entity.nest;
             if (harvesters < this.desiredHarvesterCount)
             {
                 nest.SpawnUnit(UnitType.Harvester);

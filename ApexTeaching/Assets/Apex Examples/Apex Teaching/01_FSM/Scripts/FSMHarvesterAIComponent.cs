@@ -53,7 +53,7 @@
             }
 
             // nest inside range
-            _entity.nest.controller.currentResources += _entity.currentCarriedResources;
+            _entity.nest.currentResources += _entity.currentCarriedResources;
             _entity.currentCarriedResources = 0;
             _currentState = HarvesterState.Idle;
         }

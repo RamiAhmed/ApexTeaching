@@ -27,9 +27,9 @@
             }
 
             var nest = _aiController.nest;
-            var unitCount = _aiController.units.Count;
+            var unitCount = nest.units.Count;
             var text = string.Concat(
-                "Resources: ", _aiController.currentResources.ToString(),
+                "Resources: ", nest.currentResources.ToString(),
                 "\nNest HP: ", nest.currentHealth.ToString("F0"), " / ", nest.maxHealth.ToString("F0"),
                 "\nHarvesters: ", nest.harvesterCount, " / ", unitCount,
                 "\nWarriors: ", nest.warriorCount, " / ", unitCount,
