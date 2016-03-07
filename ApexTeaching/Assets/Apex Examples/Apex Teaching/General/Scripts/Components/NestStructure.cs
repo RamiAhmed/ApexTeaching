@@ -39,6 +39,9 @@
         [SerializeField]
         private int _currentResources;
 
+        [SerializeField]
+        private float _anglePerSpawn = 40f;
+
         private Dictionary<UnitType, UnitPool> _entityPools;
         private List<UnitBase> _units;
         private float _lastBuild;
@@ -145,7 +148,6 @@
             get { return _units; }
         }
 
-        private const float anglePerSpawn = 40f;
         private int _lastSpawnIndex;
 
         private void Awake()
@@ -208,7 +210,7 @@
         }
 
         /// <summary>
-        /// Builds a unit of the specified type. Automatically consumes resources, and can only execute as often as permitted by the build cooldown (0.5 seconds).
+        /// Builds a unit of the specified type. Automatically consumes resources if possible (fails otherwise), and can only execute as often as permitted by the build cooldown (0.5 seconds).
         /// </summary>
         /// <param name="type">The type of unit to spawn.</param>
         public void SpawnUnit(UnitType type)
@@ -259,8 +261,8 @@
 
         private Vector3 GetPointOnCircle()
         {
-            var max = 360f / anglePerSpawn;
-            var ang = (_lastSpawnIndex++ % max) * anglePerSpawn;
+            var max = 360f / _anglePerSpawn;
+            var ang = (_lastSpawnIndex++ % max) * _anglePerSpawn;
             return new Vector3(
                     this.transform.position.x + _spawnDistance * Mathf.Sin(ang * Mathf.Deg2Rad),
                     this.transform.position.y,
