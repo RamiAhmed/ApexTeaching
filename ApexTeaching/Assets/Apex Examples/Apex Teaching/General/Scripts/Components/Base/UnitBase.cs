@@ -199,6 +199,11 @@ namespace Apex.AI.Teaching
 
         private void AddOrUpdateObservationInternal(GameObject gameObject)
         {
+            if (ReferenceEquals(gameObject, this.gameObject))
+            {
+                return;
+            }
+
             var idx = _observations.IndexOf(gameObject);
             if (idx >= 0)
             {
