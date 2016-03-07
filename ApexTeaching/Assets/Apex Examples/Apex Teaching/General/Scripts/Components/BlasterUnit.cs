@@ -5,7 +5,7 @@
     public sealed class BlasterUnit : UnitBase
     {
         [SerializeField, Tooltip("Blaster units automatically explode if another unit or building is within this range")]
-        private float _explodeRadius = 1f;
+        private float _explodeRadius = 1.5f;
 
         [SerializeField]
         private ParticleSystem _explodeEffect;
