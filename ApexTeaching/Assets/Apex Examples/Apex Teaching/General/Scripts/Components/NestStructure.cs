@@ -145,6 +145,9 @@
             get { return _units; }
         }
 
+        private const float anglePerSpawn = 40f;
+        private int _lastSpawnIndex;
+
         private void Awake()
         {
             _entityPools = new Dictionary<UnitType, UnitPool>(new UnitTypeComparer())
@@ -237,10 +240,7 @@
 
         private void InternalBuildUnit(UnitType type)
         {
-            var pos = this.transform.position + (UnityEngine.Random.onUnitSphere.normalized * _spawnDistance);
-            pos.y = this.transform.position.y;
-
-            var unit = _entityPools[type].Get(pos, Quaternion.identity);
+            var unit = _entityPools[type].Get(GetPointOnCircle(), Quaternion.identity);
             unit.nest = this;
 
             // color unit
@@ -255,6 +255,16 @@
             }
 
             _units.Add(unit);
+        }
+
+        private Vector3 GetPointOnCircle()
+        {
+            var max = 360f / anglePerSpawn;
+            var ang = (_lastSpawnIndex++ % max) * anglePerSpawn;
+            return new Vector3(
+                    this.transform.position.x + _spawnDistance * Mathf.Sin(ang * Mathf.Deg2Rad),
+                    this.transform.position.y,
+                    this.transform.position.z + _spawnDistance * Mathf.Cos(ang * Mathf.Deg2Rad));
         }
 
         /// <summary>
