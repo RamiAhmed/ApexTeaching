@@ -82,7 +82,7 @@
                 return;
             }
 
-            if ((_attackTarget.transform.position - _entity.transform.position).sqrMagnitude > (_entity.attackRadius * _entity.attackRadius))
+            if ((_attackTarget.transform.position - _entity.transform.position).sqrMagnitude > (_entity.explodeRadius * _entity.explodeRadius))
             {
                 // attack target outside of range
                 if (!_entity.isMoving)

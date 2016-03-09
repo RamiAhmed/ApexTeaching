@@ -54,10 +54,16 @@
         private void Explode(float dmg)
         {
             // exploders hit all units and possible nest - within range
-            var hits = Physics.OverlapSphere(this.transform.position, _attackRadius, Layers.units | Layers.structures);
+            var hits = Physics.OverlapSphere(this.transform.position, _attackRadius, Layers.mortal);
             for (int i = 0; i < hits.Length; i++)
             {
                 var hit = hits[i];
+                if (ReferenceEquals(hit.gameObject, this.gameObject))
+                {
+                    // don't damage self
+                    continue;
+                }
+
                 var unit = hit.GetComponent<UnitBase>();
                 if (unit != null)
                 {

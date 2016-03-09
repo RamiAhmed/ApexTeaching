@@ -14,7 +14,7 @@
 
         public int Compare(GameObject x, GameObject y)
         {
-            return (x.transform.position - _position).sqrMagnitude.CompareTo((y.transform.position - _position).sqrMagnitude);
+            return (y.transform.position - _position).sqrMagnitude.CompareTo((x.transform.position - _position).sqrMagnitude);
         }
     }
 }

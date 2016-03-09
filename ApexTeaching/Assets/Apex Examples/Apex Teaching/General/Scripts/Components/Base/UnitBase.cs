@@ -11,6 +11,8 @@ namespace Apex.AI.Teaching
     [RequireComponent(typeof(Collider))]
     public abstract class UnitBase : MonoBehaviour, ICanDie
     {
+        private const float destinationBufferRadius = 2f;
+
         [SerializeField]
         private ParticleSystem _deathEffect;
 
@@ -34,6 +36,9 @@ namespace Apex.AI.Teaching
 
         [SerializeField]
         private float _randomWanderRadius = 10f;
+
+        [SerializeField]
+        private float _currentHealth;
 
         protected float _lastAttack;
         protected List<GameObject> _observations;
@@ -78,8 +83,7 @@ namespace Apex.AI.Teaching
         /// </value>
         public float currentHealth
         {
-            get;
-            private set;
+            get { return _currentHealth; }
         }
 
         /// <summary>
@@ -90,7 +94,7 @@ namespace Apex.AI.Teaching
         /// </value>
         public bool isDead
         {
-            get { return this.currentHealth <= 0f; }
+            get { return _currentHealth <= 0f || !this.gameObject.activeSelf; }
         }
 
         /// <summary>
@@ -169,7 +173,7 @@ namespace Apex.AI.Teaching
         private void OnEnable()
         {
             _observations = new List<GameObject>(5);
-            this.currentHealth = _maxHealth;
+            _currentHealth = _maxHealth;
         }
 
         private void OnDisable()
@@ -255,7 +259,12 @@ namespace Apex.AI.Teaching
         /// <param name="destination">The destination.</param>
         public void MoveTo(Vector3 destination)
         {
-            _navMeshAgent.SetDestination(destination);
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(destination, out hit, destinationBufferRadius, _navMeshAgent.areaMask))
+            {
+                _navMeshAgent.Resume();
+                _navMeshAgent.SetDestination(hit.position);
+            }
         }
 
         /// <summary>
@@ -272,8 +281,8 @@ namespace Apex.AI.Teaching
         /// <param name="dmg">The DMG.</param>
         public void ReceiveDamage(float dmg)
         {
-            this.currentHealth -= dmg;
-            if (this.currentHealth <= 0f)
+            _currentHealth -= dmg;
+            if (_currentHealth <= 0f)
             {
                 PlayEffect(_deathEffect);
                 this.gameObject.SetActive(false);
