@@ -6,7 +6,7 @@
     public sealed class AIControllerVisualizer : MonoBehaviour
     {
         private const float width = 150f;
-        private const float height = 80f;
+        private const float height = 100f;
         private const float padding = 5f;
 
         [SerializeField]
@@ -27,13 +27,13 @@
             }
 
             var nest = _aiController.nest;
-            var unitCount = nest.units.Count;
             var text = string.Concat(
                 "Resources: ", nest.currentResources.ToString(),
                 "\nNest HP: ", nest.currentHealth.ToString("F0"), " / ", nest.maxHealth.ToString("F0"),
-                "\nHarvesters: ", nest.harvesterCount, " / ", unitCount,
-                "\nWarriors: ", nest.warriorCount, " / ", unitCount,
-                "\nBlasters: ", nest.blasterCount, " / ", unitCount);
+                "\nTotal Units: ", nest.units.Count.ToString(),
+                "\nHarvesters: ", nest.harvesterCount,
+                "\nWarriors: ", nest.warriorCount,
+                "\nBlasters: ", nest.blasterCount);
 
             Rect rect;
             if (_leftAlign)

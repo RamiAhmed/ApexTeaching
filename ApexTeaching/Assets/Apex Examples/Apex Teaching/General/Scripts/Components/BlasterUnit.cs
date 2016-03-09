@@ -2,7 +2,7 @@
 {
     using UnityEngine;
 
-    public sealed class BlasterUnit : UnitBase
+    public class BlasterUnit : UnitBase
     {
         [SerializeField, Tooltip("Blaster units automatically explode if another unit or building is within this range")]
         private float _explodeRadius = 1.5f;

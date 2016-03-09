@@ -2,7 +2,7 @@
 {
     using UnityEngine;
 
-    public sealed class WarriorUnit : UnitBase
+    public class WarriorUnit : UnitBase
     {
         public override UnitType type
         {

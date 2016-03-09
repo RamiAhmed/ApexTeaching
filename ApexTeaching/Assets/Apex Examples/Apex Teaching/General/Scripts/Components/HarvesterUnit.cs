@@ -3,7 +3,7 @@
     using System;
     using UnityEngine;
 
-    public sealed class HarvesterUnit : UnitBase
+    public class HarvesterUnit : UnitBase
     {
         [SerializeField]
         private int _maxCarriableResources = 25;

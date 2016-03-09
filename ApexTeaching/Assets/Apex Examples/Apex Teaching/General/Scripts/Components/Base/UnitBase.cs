@@ -6,7 +6,6 @@ namespace Apex.AI.Teaching
     using System.Collections.Generic;
     using UnityEngine;
 
-    [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Collider))]
     public abstract class UnitBase : MonoBehaviour, ICanDie
@@ -159,15 +158,18 @@ namespace Apex.AI.Teaching
         /// <value>
         ///   <c>true</c> if this unit is moving; otherwise, <c>false</c>.
         /// </value>
-        public bool isMoving
+        public virtual bool isMoving
         {
-            get { return _navMeshAgent.desiredVelocity.sqrMagnitude > 1f; }
+            get { return _navMeshAgent != null ? _navMeshAgent.desiredVelocity.sqrMagnitude > 1f : false; }
         }
 
         private void Awake()
         {
             _navMeshAgent = this.GetComponent<NavMeshAgent>();
-            _navMeshAgent.avoidancePriority += Random.Range(-23, 24);
+            if (_navMeshAgent != null)
+            {
+                _navMeshAgent.avoidancePriority += Random.Range(-23, 24);
+            }
         }
 
         private void OnEnable()
@@ -241,7 +243,7 @@ namespace Apex.AI.Teaching
         /// <summary>
         /// Makes this unit generate a random destination that it subsequently moves to
         /// </summary>
-        public void RandomWander()
+        public virtual void RandomWander()
         {
             var randomPos = this.transform.position + Random.onUnitSphere.normalized * _randomWanderRadius;
             randomPos.y = this.transform.position.y;
@@ -257,7 +259,7 @@ namespace Apex.AI.Teaching
         /// Moves to a specified destination.
         /// </summary>
         /// <param name="destination">The destination.</param>
-        public void MoveTo(Vector3 destination)
+        public virtual void MoveTo(Vector3 destination)
         {
             NavMeshHit hit;
             if (NavMesh.SamplePosition(destination, out hit, destinationBufferRadius, _navMeshAgent.areaMask))
@@ -270,7 +272,7 @@ namespace Apex.AI.Teaching
         /// <summary>
         /// Stops all movement.
         /// </summary>
-        public void StopMoving()
+        public virtual void StopMoving()
         {
             _navMeshAgent.Stop();
         }
