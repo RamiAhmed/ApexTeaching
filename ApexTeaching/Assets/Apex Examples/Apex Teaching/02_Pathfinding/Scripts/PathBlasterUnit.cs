@@ -2,7 +2,7 @@
 {
     using UnityEngine;
 
-    public sealed class PathHarvesterUnit : HarvesterUnit
+    public sealed class PathBlasterUnit : BlasterUnit
     {
         private SteerForPath _steerForPath;
 

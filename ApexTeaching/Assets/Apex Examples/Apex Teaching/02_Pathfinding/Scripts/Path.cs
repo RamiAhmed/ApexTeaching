@@ -1,72 +1,40 @@
 ﻿namespace Apex.AI.Teaching
 {
-    using System;
     using System.Collections.Generic;
     using UnityEngine;
 
-    public class Path
+    public class Path : List<Vector3>
     {
-        private List<PathCell> _path = new List<PathCell>(10);
-
-        private List<PathCell> _visited;
-        private List<PathCell> _openCells;
-
-        private PathCell _destinationCell;
-        private PathCell _currentCell;
-
-
-
-        public List<PathCell> list
+        public Path(IEnumerable<Vector3> collection)
+            : base(collection)
         {
-            get { return _path; }
         }
 
-        public Path(PathGrid grid, Vector3 start, Vector3 destination)
+        public Path(int preallocation)
+            : base(preallocation)
         {
-            var startCell = grid.GetCell(start);
-            if (startCell == null)
-            {
-                throw new ArgumentNullException("start", this.ToString() + " could not find a cell at the start given: " + start);
-            }
-
-            var destinationCell = grid.GetCell(destination);
-            if (destinationCell == null)
-            {
-                throw new ArgumentNullException("destination", this.ToString() + " could not find a cell at the destination given: " + destination);
-            }
-
-            _visited = new List<PathCell>(grid.cellCount);
-            _openCells = new List<PathCell>(grid.cellCount);
-
-            _visited.Add(startCell);
-            _destinationCell = destinationCell;
-
-            FindPath();
         }
 
-        private void FindPath()
+        public Path()
+            : base()
         {
-            while (Application.isPlaying)
+        }
+
+        public Vector3 last
+        {
+            get { return this.Count > 0 ? this[this.Count - 1] : default(Vector3); }
+        }
+
+        public Vector3 Pop()
+        {
+            if (this.Count == 0)
             {
-                var neighbours = _currentCell.neighbours;
-                var count = neighbours.Count;
-                for (int i = 0; i < count; i++)
-                {
-                    var neighbour = neighbours[i];
-                    if (ReferenceEquals(neighbour, _destinationCell))
-                    {
-                        // Path found! 
-                        return;
-                    }
-
-                    if (_visited.Contains(neighbour))
-                    {
-                        continue;
-                    }
-
-                    var distance = (_currentCell.position - neighbour.position).magnitude;
-                }
+                return default(Vector3);
             }
+
+            var item = this[0];
+            this.RemoveAt(0);
+            return item;
         }
     }
 }

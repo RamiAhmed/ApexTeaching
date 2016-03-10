@@ -34,7 +34,7 @@ namespace Apex.AI.Teaching
         private float _scanRadius = 15f;
 
         [SerializeField]
-        private float _randomWanderRadius = 10f;
+        protected float _randomWanderRadius = 10f;
 
         [SerializeField]
         private float _currentHealth;

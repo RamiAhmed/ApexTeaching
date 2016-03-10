@@ -2,13 +2,16 @@
 {
     using UnityEngine;
 
-    public class PathGrid : MonoBehaviour
+    public sealed class PathGrid : MonoBehaviour
     {
+        public static PathGrid instance;
+
+        private readonly Pathfinder _pathfinder = new Pathfinder();
+
         public int cellSize = 2;
-
-        public Vector2 gridSize = Vector2.one * 20f;
-
+        public Vector2 gridSize = Vector2.one * 100f;
         public LayerMask obstaclesLayer;
+        public bool allowCornerCutting;
 
         private PathCell[,] _cells;
 
@@ -17,18 +20,16 @@
             get { return _cells; }
         }
 
-        public int cellCount
+        private void OnEnable()
         {
-            get { return _cells.Length; }
-        }
+            if (instance != null)
+            {
+                Debug.LogWarning(this.ToString() + " another PathGrid has already registered, destroying the old one");
+                Destroy(instance, 0.01f);
+            }
 
-        private void Awake()
-        {
-            Initialize();
-        }
+            instance = this;
 
-        private void Initialize()
-        {
             var startX = Mathf.CeilToInt(gridSize.x * -0.5f);
             var xSteps = Mathf.FloorToInt(gridSize.x / cellSize);
 
@@ -51,8 +52,10 @@
             for (int i = 0; i < colliders.Length; i++)
             {
                 var collider = colliders[i];
-                if (((1 << obstaclesLayer) & (1 << collider.gameObject.layer)) != 0)
+                var layer = 1 << collider.gameObject.layer;
+                if ((obstaclesLayer & layer) == 0)
                 {
+                    colliders[i] = null;
                     continue;
                 }
 
@@ -63,57 +66,148 @@
                 }
             }
 
+            for (int x = 0; x < xSteps; x++)
+            {
+                for (int z = 0; z < zSteps; z++)
+                {
+                    var cell = _cells[x, z];
+                    if (cell.blocked)
+                    {
+                        continue;
+                    }
+
+                    var cellBounds = cell.bounds;
+                    for (int i = 0; i < colliders.Length; i++)
+                    {
+                        var coll = colliders[i];
+                        if (coll == null)
+                        {
+                            continue;
+                        }
+
+                        if (cellBounds.Intersects(coll.bounds))
+                        {
+                            cell.blocked = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
             IdentifyCellNeighbours();
         }
 
         private void IdentifyCellNeighbours()
         {
-            var xSteps = Mathf.FloorToInt(gridSize.x / cellSize) - 1;
-            var zSteps = Mathf.FloorToInt(gridSize.y / cellSize) - 1;
-
-            foreach (var cell in _cells)
+            var xLength = _cells.GetLength(0);
+            var zLength = _cells.GetLength(1);
+            for (int x = 0; x < xLength; x++)
             {
-                var xi = cell.xIndex;
-                var zi = cell.zIndex;
-
-                if (xi > 0)
+                for (int z = 0; z < zLength; z++)
                 {
-                    cell.AddNeighbour(_cells[xi - 1, zi]);
-                }
+                    var cell = _cells[x, z];
+                    var xi = cell.xIndex;
+                    var zi = cell.zIndex;
 
-                if (xi < xSteps)
-                {
-                    cell.AddNeighbour(_cells[xi + 1, zi]);
-                }
+                    if (xi > 0)
+                    {
+                        cell.AddNeighbour(_cells[xi - 1, zi]);
+                    }
 
-                if (zi > 0)
-                {
-                    cell.AddNeighbour(_cells[xi, zi - 1]);
-                }
+                    if (xi < xLength - 1)
+                    {
+                        cell.AddNeighbour(_cells[xi + 1, zi]);
+                    }
 
-                if (zi < zSteps)
-                {
-                    cell.AddNeighbour(_cells[xi, zi + 1]);
+                    if (zi > 0)
+                    {
+                        cell.AddNeighbour(_cells[xi, zi - 1]);
+                    }
+
+                    if (zi < zLength - 1)
+                    {
+                        cell.AddNeighbour(_cells[xi, zi + 1]);
+                    }
+
+                    if (!allowCornerCutting)
+                    {
+                        continue;
+                    }
+
+                    if (xi > 0 && zi > 0)
+                    {
+                        cell.AddNeighbour(_cells[xi - 1, zi - 1]);
+                    }
+
+                    if (xi > 0 && zi < zLength - 1)
+                    {
+                        cell.AddNeighbour(_cells[x - 1, zi + 1]);
+                    }
+
+                    if (xi < xLength - 1 && zi > 0)
+                    {
+                        cell.AddNeighbour(_cells[x + 1, zi - 1]);
+                    }
+
+                    if (xi < xLength - 1 && zi < zLength - 1)
+                    {
+                        cell.AddNeighbour(_cells[x + 1, zi + 1]);
+                    }
                 }
             }
         }
 
         public PathCell GetCell(Vector3 position)
         {
-            foreach (var cell in _cells)
+            var xLength = _cells.GetLength(0);
+            var zLength = _cells.GetLength(1);
+            for (int x = 0; x < xLength; x++)
             {
-                if (cell.Contains(new Vector3(position.x, cell.position.y, position.z)))
+                for (int z = 0; z < zLength; z++)
                 {
-                    return cell;
+                    var cell = _cells[x, z];
+                    if (cell.Contains(new Vector3(position.x, cell.position.y, position.z)))
+                    {
+                        return cell;
+                    }
                 }
             }
 
             return null;
         }
 
-        public Path GetPath(Vector3 start, Vector3 destination)
+        public PathCell GetNearestWalkableCell(Vector3 position)
         {
-            return new Path(this, start, destination);
+            var shortest = float.MaxValue;
+            PathCell closest = null;
+
+            var xLength = _cells.GetLength(0);
+            var zLength = _cells.GetLength(1);
+            for (int x = 0; x < xLength; x++)
+            {
+                for (int z = 0; z < zLength; z++)
+                {
+                    var cell = _cells[x, z];
+                    if (cell.blocked)
+                    {
+                        continue;
+                    }
+
+                    var distance = (cell.position - position).sqrMagnitude;
+                    if (distance < shortest)
+                    {
+                        shortest = distance;
+                        closest = cell;
+                    }
+                }
+            }
+
+            return closest;
+        }
+
+        public Path FindPath(Vector3 start, Vector3 destination)
+        {
+            return _pathfinder.FindPath(this, start, destination);
         }
     }
 }

@@ -76,10 +76,15 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\01_FSM\Scripts\FSMHarvesterAIComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\01_FSM\Scripts\FSMWarriorAIComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\Path.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\PathBlasterUnit.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\PathCell.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\Pathfinder.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\PathGrid.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\PathGridVisualizer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\PathHarvesterUnit.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\PathNode.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\PathWarriorUnit.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\SteerForPath.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIController.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIScannerComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\Base\AIComponentBase.cs" />

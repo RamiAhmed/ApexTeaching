@@ -24,6 +24,11 @@
             get { return _neighbours; }
         }
 
+        public Bounds bounds
+        {
+            get { return _bounds; }
+        }
+
         public PathCell(Vector3 position, int cellSize, int xIndex, int zIndex)
         {
             this.position = position;
@@ -32,9 +37,8 @@
             this.zIndex = zIndex;
 
             _size = Vector3.one * cellSize;
-            _size.y = 0.1f;
-
             _bounds = new Bounds(position, _size);
+            _size.y = 0.1f;
         }
 
         public void AddNeighbour(PathCell neighbour)
