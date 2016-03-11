@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using UnityEngine;
 
-    public class Path : List<Vector3>
+    public sealed class Path : List<Vector3>
     {
         public Path(int preallocation)
             : base(preallocation)

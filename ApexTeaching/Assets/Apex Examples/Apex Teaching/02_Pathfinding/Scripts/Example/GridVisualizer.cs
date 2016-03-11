@@ -9,7 +9,7 @@
 
         private Grid _grid;
 
-        private void Awake()
+        private void OnEnable()
         {
             _grid = this.GetComponent<Grid>();
         }

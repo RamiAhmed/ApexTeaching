@@ -10,9 +10,9 @@
         public int zIndex;
         public bool blocked;
 
-        private List<Cell> _neighbours = new List<Cell>(4);
-        private Bounds _bounds;
-        private Vector3 _size;
+        private readonly List<Cell> _neighbours = new List<Cell>(4);
+        private readonly Bounds _bounds;
+        private readonly Vector3 _size;
 
         public Vector3 size
         {
@@ -52,11 +52,6 @@
             {
                 _neighbours.Add(neighbour);
             }
-        }
-
-        public bool Contains(Vector3 position)
-        {
-            return _bounds.Contains(position);
         }
     }
 }

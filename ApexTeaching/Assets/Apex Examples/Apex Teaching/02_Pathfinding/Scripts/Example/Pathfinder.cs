@@ -8,8 +8,8 @@
     {
         private const int maxIterations = 1000;
 
-        private List<PathNode> _visited = new List<PathNode>(40);
-        private List<PathNode> _openNodes = new List<PathNode>(40);
+        private readonly List<PathNode> _visited = new List<PathNode>(40);
+        private readonly List<PathNode> _openNodes = new List<PathNode>(40);
 
         private Cell _destinationCell;
         private PathNode _currentNode;

@@ -11,9 +11,8 @@
         public int cellSize = 2;
         public Vector2 gridSize = Vector2.one * 100f;
         public LayerMask obstaclesLayer;
-        public bool allowCornerCutting;
 
-        private Cell[,] _cells;
+        protected Cell[,] _cells;
 
         public Cell[,] cells
         {
@@ -24,7 +23,7 @@
         {
             if (instance != null)
             {
-                Debug.LogWarning(this.ToString() + " another PathGrid has already registered, destroying the old one");
+                Debug.LogWarning(this.ToString() + " another Grid has already registered, destroying the old one");
                 Destroy(instance, 0.01f);
             }
 
@@ -128,36 +127,11 @@
                     {
                         cell.AddNeighbour(_cells[xi, zi + 1]);
                     }
-
-                    if (!allowCornerCutting)
-                    {
-                        continue;
-                    }
-
-                    if (xi > 0 && zi > 0)
-                    {
-                        cell.AddNeighbour(_cells[xi - 1, zi - 1]);
-                    }
-
-                    if (xi > 0 && zi < zLength - 1)
-                    {
-                        cell.AddNeighbour(_cells[x - 1, zi + 1]);
-                    }
-
-                    if (xi < xLength - 1 && zi > 0)
-                    {
-                        cell.AddNeighbour(_cells[x + 1, zi - 1]);
-                    }
-
-                    if (xi < xLength - 1 && zi < zLength - 1)
-                    {
-                        cell.AddNeighbour(_cells[x + 1, zi + 1]);
-                    }
                 }
             }
         }
 
-        public Cell GetCell(Vector3 position)
+        public virtual Cell GetCell(Vector3 position)
         {
             var xLength = _cells.GetLength(0);
             var zLength = _cells.GetLength(1);
@@ -166,7 +140,7 @@
                 for (int z = 0; z < zLength; z++)
                 {
                     var cell = _cells[x, z];
-                    if (cell.Contains(new Vector3(position.x, cell.position.y, position.z)))
+                    if (cell.bounds.Contains(new Vector3(position.x, cell.position.y, position.z)))
                     {
                         return cell;
                     }
@@ -176,7 +150,7 @@
             return null;
         }
 
-        public Cell GetNearestWalkableCell(Vector3 position)
+        public virtual Cell GetNearestWalkableCell(Vector3 position)
         {
             var shortest = float.MaxValue;
             Cell closest = null;
