@@ -174,7 +174,11 @@
             for (int i = 0; i < count; i++)
             {
                 // all the nest's units die when the nest dies
-                _units[i].ReceiveDamage(_units[i].maxHealth + 1f);
+                if (_units[i].currentHealth > 0f)
+                {
+                    _units[i].ReceiveDamage(_units[i].maxHealth + 1f);
+                }
+
                 ReturnUnit(_units[i]);
             }
         }
