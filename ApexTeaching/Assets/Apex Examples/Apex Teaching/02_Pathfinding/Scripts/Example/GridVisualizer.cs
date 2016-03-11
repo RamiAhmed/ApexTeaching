@@ -2,7 +2,7 @@
 {
     using UnityEngine;
 
-    public class PathGridVisualizer : MonoBehaviour
+    public class GridVisualizer : MonoBehaviour
     {
         public bool drawAlways;
         public float colorAlpha = 0.3f;
