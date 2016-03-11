@@ -46,7 +46,7 @@
 
         public void SetDestination(Vector3 destination)
         {
-            var grid = PathGrid.instance;
+            var grid = Grid.instance;
             var currentCell = grid.GetCell(this.transform.position);
             if (currentCell == null || currentCell.blocked)
             {

@@ -2,7 +2,7 @@
 {
     using UnityEngine;
 
-    public class MyPathHarvesterUnit : HarvesterUnit
+    public sealed class MyPathHarvesterUnit : HarvesterUnit
     {
         public override bool isMoving
         {

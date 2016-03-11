@@ -8,14 +8,14 @@
     {
         private const int maxIterations = 1000;
 
-        private List<PathNode> _visited = new List<PathNode>(20);
-        private List<PathNode> _openNodes = new List<PathNode>(20);
+        private List<PathNode> _visited = new List<PathNode>(40);
+        private List<PathNode> _openNodes = new List<PathNode>(40);
 
-        private PathCell _destinationCell;
+        private Cell _destinationCell;
         private PathNode _currentNode;
         private Path _lastPath;
 
-        public Path FindPath(PathGrid grid, Vector3 start, Vector3 destination)
+        public Path FindPath(Grid grid, Vector3 start, Vector3 destination)
         {
             var startCell = grid.GetCell(start);
             if (startCell == null || startCell.blocked)
@@ -78,11 +78,6 @@
                     continue;
                 }
 
-                if (neighbour.blocked)
-                {
-                    continue;
-                }
-
                 var cost = GetCost(neighbour, _currentNode.cell);
                 var node = new PathNode(_currentNode, neighbour, cost);
                 _openNodes.Add(node);
@@ -110,7 +105,7 @@
 
         private void BuildPath()
         {
-            var path = new Path(10); // TODO: Better preallocation?
+            var path = new Path(_visited.Count);
             var current = new PathNode(_currentNode, _destinationCell, 0f);
             while (current != null)
             {
@@ -130,7 +125,7 @@
             _openNodes.Clear();
         }
 
-        private bool HasVisited(PathCell cell)
+        private bool HasVisited(Cell cell)
         {
             var count = _visited.Count;
             for (int i = 0; i < count; i++)
@@ -144,7 +139,7 @@
             return false;
         }
 
-        private float GetCost(PathCell fromCell, PathCell toCell)
+        private float GetCost(Cell fromCell, Cell toCell)
         {
             return (toCell.position - fromCell.position).magnitude + (_destinationCell.position - fromCell.position).magnitude;
         }

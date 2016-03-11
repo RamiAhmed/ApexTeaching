@@ -2,9 +2,9 @@
 {
     using UnityEngine;
 
-    public sealed class PathGrid : MonoBehaviour
+    public class Grid : MonoBehaviour
     {
-        public static PathGrid instance;
+        public static Grid instance;
 
         private readonly Pathfinder _pathfinder = new Pathfinder();
 
@@ -13,9 +13,9 @@
         public LayerMask obstaclesLayer;
         public bool allowCornerCutting;
 
-        private PathCell[,] _cells;
+        private Cell[,] _cells;
 
-        public PathCell[,] cells
+        public Cell[,] cells
         {
             get { return _cells; }
         }
@@ -36,7 +36,7 @@
             var startZ = Mathf.CeilToInt(gridSize.y * -0.5f);
             var zSteps = Mathf.FloorToInt(gridSize.y / cellSize);
 
-            _cells = new PathCell[xSteps, zSteps];
+            _cells = new Cell[xSteps, zSteps];
 
             for (int x = 0; x < xSteps; x++)
             {
@@ -44,7 +44,7 @@
                 {
                     var xPos = startX + (x * this.cellSize);
                     var zPos = startZ + (z * this.cellSize);
-                    _cells[x, z] = new PathCell(new Vector3(xPos, 0f, zPos), this.cellSize, x, z);
+                    _cells[x, z] = new Cell(new Vector3(xPos, 0f, zPos), this.cellSize, x, z);
                 }
             }
 
@@ -157,7 +157,7 @@
             }
         }
 
-        public PathCell GetCell(Vector3 position)
+        public Cell GetCell(Vector3 position)
         {
             var xLength = _cells.GetLength(0);
             var zLength = _cells.GetLength(1);
@@ -176,10 +176,10 @@
             return null;
         }
 
-        public PathCell GetNearestWalkableCell(Vector3 position)
+        public Cell GetNearestWalkableCell(Vector3 position)
         {
             var shortest = float.MaxValue;
-            PathCell closest = null;
+            Cell closest = null;
 
             var xLength = _cells.GetLength(0);
             var zLength = _cells.GetLength(1);
@@ -205,7 +205,7 @@
             return closest;
         }
 
-        public Path FindPath(Vector3 start, Vector3 destination)
+        public virtual Path FindPath(Vector3 start, Vector3 destination)
         {
             return _pathfinder.FindPath(this, start, destination);
         }

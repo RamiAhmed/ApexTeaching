@@ -53,7 +53,7 @@
                             Gizmos.DrawLine(path[i], path[i + 1]);
                         }
 
-                        Gizmos.DrawSphere(path.last, this.sphereSize);
+                        Gizmos.DrawSphere(path[count - 1], this.sphereSize);
                     }
                 }
             }

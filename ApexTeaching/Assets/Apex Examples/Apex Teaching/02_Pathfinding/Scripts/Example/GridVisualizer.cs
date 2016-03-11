@@ -7,11 +7,11 @@
         public bool drawAlways;
         public float colorAlpha = 0.3f;
 
-        private PathGrid _grid;
+        private Grid _grid;
 
         private void Awake()
         {
-            _grid = this.GetComponent<PathGrid>();
+            _grid = this.GetComponent<Grid>();
         }
 
         private void OnDrawGizmos()

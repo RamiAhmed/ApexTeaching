@@ -3,14 +3,14 @@
     using System.Collections.Generic;
     using UnityEngine;
 
-    public class PathCell
+    public class Cell
     {
         public Vector3 position;
         public int xIndex;
         public int zIndex;
         public bool blocked;
 
-        private List<PathCell> _neighbours = new List<PathCell>(4);
+        private List<Cell> _neighbours = new List<Cell>(4);
         private Bounds _bounds;
         private Vector3 _size;
 
@@ -19,7 +19,7 @@
             get { return _size; }
         }
 
-        public List<PathCell> neighbours
+        public List<Cell> neighbours
         {
             get { return _neighbours; }
         }
@@ -29,7 +29,7 @@
             get { return _bounds; }
         }
 
-        public PathCell(Vector3 position, int cellSize, int xIndex, int zIndex)
+        public Cell(Vector3 position, int cellSize, int xIndex, int zIndex)
         {
             this.position = position;
             this.blocked = false;
@@ -41,8 +41,13 @@
             _size.y = 0.1f;
         }
 
-        public void AddNeighbour(PathCell neighbour)
+        public void AddNeighbour(Cell neighbour)
         {
+            if (neighbour.blocked)
+            {
+                return;
+            }
+
             if (!_neighbours.Contains(neighbour))
             {
                 _neighbours.Add(neighbour);

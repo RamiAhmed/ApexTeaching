@@ -2,7 +2,7 @@
 {
     using UnityEngine;
 
-    public class MyPathBlasterUnit : BlasterUnit
+    public sealed class MyPathBlasterUnit : BlasterUnit
     {
         public override bool isMoving
         {

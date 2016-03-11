@@ -6,10 +6,10 @@
     {
         public PathNode parent;
         public Vector3 position;
-        public PathCell cell;
+        public Cell cell;
         public float cost;
 
-        public PathNode(PathNode parent, PathCell cell, float cost)
+        public PathNode(PathNode parent, Cell cell, float cost)
         {
             this.parent = parent;
             this.cell = cell;

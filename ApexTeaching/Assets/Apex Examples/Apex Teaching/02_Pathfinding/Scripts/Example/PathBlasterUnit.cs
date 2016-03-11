@@ -18,10 +18,10 @@
 
         public override void MoveTo(Vector3 destination)
         {
-            var cell = PathGrid.instance.GetCell(destination);
+            var cell = Grid.instance.GetCell(destination);
             if (cell == null || cell.blocked)
             {
-                cell = PathGrid.instance.GetNearestWalkableCell(destination);
+                cell = Grid.instance.GetNearestWalkableCell(destination);
             }
 
             _steerForPath.SetDestination(cell.position);
