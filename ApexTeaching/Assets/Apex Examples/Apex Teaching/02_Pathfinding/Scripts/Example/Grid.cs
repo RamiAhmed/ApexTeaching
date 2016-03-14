@@ -14,6 +14,12 @@
 
         protected Cell[,] _cells;
 
+        /// <summary>
+        /// Gets all cells in a multi-dimensional array.
+        /// </summary>
+        /// <value>
+        /// The cells.
+        /// </value>
         public Cell[,] cells
         {
             get { return _cells; }
@@ -21,6 +27,7 @@
 
         private void OnEnable()
         {
+            // The grid is a singleton - there will only ever be one of it
             if (instance != null)
             {
                 Debug.LogWarning(this.ToString() + " another Grid has already registered, destroying the old one");
@@ -29,14 +36,18 @@
 
             instance = this;
 
-            var startX = Mathf.CeilToInt(gridSize.x * -0.5f);
+            // Calculate the desired size of the grid in 'steps' rather than units/meters
             var xSteps = Mathf.FloorToInt(gridSize.x / cellSize);
-
-            var startZ = Mathf.CeilToInt(gridSize.y * -0.5f);
             var zSteps = Mathf.FloorToInt(gridSize.y / cellSize);
 
+            // Calculate the starting X and Z coordinates for the grid (half of its size in order to center it)
+            var startX = Mathf.CeilToInt(gridSize.x * -0.5f);
+            var startZ = Mathf.CeilToInt(gridSize.y * -0.5f);
+
+            // Allocate the necessary memory for the grid
             _cells = new Cell[xSteps, zSteps];
 
+            // Populate the cells array with cells at the correct positions
             for (int x = 0; x < xSteps; x++)
             {
                 for (int z = 0; z < zSteps; z++)
@@ -47,6 +58,7 @@
                 }
             }
 
+            // Find all colliders in the scene - they might be obstacles that should block cells
             var colliders = FindObjectsOfType<Collider>();
             for (int i = 0; i < colliders.Length; i++)
             {
@@ -54,6 +66,7 @@
                 var layer = 1 << collider.gameObject.layer;
                 if ((obstaclesLayer & layer) == 0)
                 {
+                    // if the collider is not in the 'obstaclesLayer' it is not an obstacle that cells should consider
                     colliders[i] = null;
                     continue;
                 }
@@ -61,10 +74,12 @@
                 var cell = GetCell(collider.transform.position);
                 if (cell != null && !cell.blocked)
                 {
+                    // If the collider's center position is within the cell's bounds object, the cell is definitely blocked
                     cell.blocked = true;
                 }
             }
 
+            // Iterate through all cells to check whether their bounds overlap with any of the identified obstacle collider's bounds
             for (int x = 0; x < xSteps; x++)
             {
                 for (int z = 0; z < zSteps; z++)
@@ -75,6 +90,7 @@
                         continue;
                     }
 
+                    // colliders' loop
                     var cellBounds = cell.bounds;
                     for (int i = 0; i < colliders.Length; i++)
                     {
@@ -86,6 +102,7 @@
 
                         if (cellBounds.Intersects(coll.bounds))
                         {
+                            // the cell's bounds intersects with the collider's bounds, thus the cell should be blocked
                             cell.blocked = true;
                             break;
                         }
@@ -93,6 +110,7 @@
                 }
             }
 
+            // After identifying blocked cells, each cell must know which walkable cell neighbours it can connect to
             IdentifyCellNeighbours();
         }
 
@@ -108,6 +126,7 @@
                     var xi = cell.xIndex;
                     var zi = cell.zIndex;
 
+                    // For each cell in the multi-dimensional array, add the cells in each non-diagonal direction (up, down, left and right) as neighbour
                     if (xi > 0)
                     {
                         cell.AddNeighbour(_cells[xi - 1, zi]);
@@ -131,6 +150,11 @@
             }
         }
 
+        /// <summary>
+        /// Gets a cell at the given coordinates by checking whether the given position is within the cell's bounds object.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <returns>A cell if one is found at the position, null otherwise.</returns>
         public virtual Cell GetCell(Vector3 position)
         {
             var xLength = _cells.GetLength(0);
@@ -150,6 +174,11 @@
             return null;
         }
 
+        /// <summary>
+        /// Gets the nearest walkable/unblocked cell to the given position.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <returns>The nearest unblocked cell to the given position</returns>
         public virtual Cell GetNearestWalkableCell(Vector3 position)
         {
             var shortest = float.MaxValue;
@@ -179,6 +208,12 @@
             return closest;
         }
 
+        /// <summary>
+        /// Finds a path from start to destination.
+        /// </summary>
+        /// <param name="start">The start.</param>
+        /// <param name="destination">The destination.</param>
+        /// <returns>A path if succesful, null otherwise.</returns>
         public virtual Path FindPath(Vector3 start, Vector3 destination)
         {
             return _pathfinder.FindPath(this, start, destination);

@@ -7,6 +7,7 @@
     {
         public Path FindPath(Grid grid, Vector3 start, Vector3 destination)
         {
+            // Implement path-finding algorithm
             throw new NotImplementedException();
         }
     }
