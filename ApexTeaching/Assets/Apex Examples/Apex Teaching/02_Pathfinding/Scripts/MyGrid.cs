@@ -4,7 +4,14 @@
 
     public sealed class MyGrid : Grid
     {
+        // Uncomment next line to use MyPathfinder
         //private readonly MyPathfinder _pathfinder = new MyPathfinder();
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            // (Optionally) Implement own initialization - remember to comment/remove base.OnEnable()
+        }
 
         public override Path FindPath(Vector3 start, Vector3 destination)
         {

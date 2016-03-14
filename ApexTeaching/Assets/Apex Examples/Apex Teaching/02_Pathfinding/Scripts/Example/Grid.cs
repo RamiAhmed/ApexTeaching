@@ -25,7 +25,7 @@
             get { return _cells; }
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             // The grid is a singleton - there will only ever be one of it
             if (instance != null)

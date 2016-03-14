@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using UnityEngine;
 
-    public class Cell
+    public sealed class Cell
     {
         public Vector3 position;
         public int xIndex;
@@ -72,12 +72,7 @@
         /// <param name="neighbour">The neighbour.</param>
         public void AddNeighbour(Cell neighbour)
         {
-            if (neighbour.blocked)
-            {
-                return;
-            }
-
-            if (!_neighbours.Contains(neighbour))
+            if (!neighbour.blocked && !_neighbours.Contains(neighbour))
             {
                 _neighbours.Add(neighbour);
             }
