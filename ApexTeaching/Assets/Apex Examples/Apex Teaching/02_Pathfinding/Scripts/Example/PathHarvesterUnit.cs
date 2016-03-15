@@ -36,7 +36,10 @@
 
         public override void StopMoving()
         {
-            _steerForPath.path.Clear();
+            if (_steerForPath.path != null)
+            {
+                _steerForPath.path.Clear();
+            }
         }
     }
 }
