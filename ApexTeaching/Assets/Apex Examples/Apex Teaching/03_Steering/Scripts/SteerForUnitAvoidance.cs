@@ -11,6 +11,9 @@
         private UnitBase _unit;
         private SteeringScanner _scanner;
         private float _fovReverseAngleCos;
+        private float _fovHeadOnAngleCos;
+
+        private Vector3 _lastAvoidVector;
 
         /// <summary>
         /// Gets the priority.
@@ -28,10 +31,13 @@
             _unit = this.GetComponent<UnitBase>();
             _scanner = this.GetComponent<SteeringScanner>();
             _fovReverseAngleCos = Mathf.Cos(((360f - this.fieldOfView) / 2f) * Mathf.Deg2Rad);
+            _fovHeadOnAngleCos = Mathf.Cos(140f * Mathf.Deg2Rad);
         }
 
         public Vector3? GetSteering(SteeringInput input)
         {
+            _lastAvoidVector = Vector3.zero;
+
             var otherUnits = _scanner.units;
             var count = otherUnits.Count;
             if (count == 0)
@@ -78,10 +84,10 @@
                 var avoidVector = avoidNormalized * vectorLength;
 
                 var dotAngle = Vector3.Dot(avoidNormalized, velocityNorm);
-                if (dotAngle <= Mathf.Cos(175f * Mathf.Deg2Rad))
+                if (dotAngle <= _fovHeadOnAngleCos)
                 {
                     // the collision is considered "head-on", thus we compute a perpendicular avoid vector instead
-                    avoidDir = new Vector3(avoidVector.z, avoidVector.y, -avoidVector.x);
+                    avoidVector = new Vector3(avoidVector.z, avoidVector.y, -avoidVector.x);
                 }
 
                 if (avoidVector.sqrMagnitude < 0.1f)
@@ -90,6 +96,8 @@
                 }
 
                 //avoidVector *= (_unit.velocity.magnitude / collisionDistance);
+                avoidVector = Vector3.ClampMagnitude(avoidVector, input.speed);
+                _lastAvoidVector = avoidVector;
                 return avoidVector;
             }
 
@@ -160,10 +168,24 @@
 
             // scale the avoid vector depending on the distance to collision, shorter distances need larger magnitudes and vice versa
             collisionDistance = Mathf.Max(1f, (selfCollisionPos - position).magnitude);
-
-            //var avoidVector = (selfCollisionPos - otherCollisionPos);
             return (selfCollisionPos - otherCollisionPos);
-            //return (avoidVector.normalized * (combinedRadii * 0.5f)) * (velocity.magnitude / collisionDistance);
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!this.enabled || !Application.isPlaying || _unit == null)
+            {
+                return;
+            }
+
+            if (_lastAvoidVector.sqrMagnitude == 0f)
+            {
+                return;
+            }
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(this.transform.position, this.transform.position + _lastAvoidVector);
+            Gizmos.DrawSphere(this.transform.position + _lastAvoidVector, 0.25f);
         }
     }
 }
