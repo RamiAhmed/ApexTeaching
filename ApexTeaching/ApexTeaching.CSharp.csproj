@@ -90,6 +90,14 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\MyPathHarvesterUnit.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\MyPathWarriorUnit.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\MyPathfinder.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\ISteeringComponent.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\PatrolComponent.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\SteerableUnit.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\SteerForBlockAvoidance.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\SteerForUnitAvoidance.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\SteerForUnitSeparation.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\SteeringInput.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\SteeringScanner.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIController.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIScannerComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\Base\AIComponentBase.cs" />
@@ -105,6 +113,7 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Enum\UnitType.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\GameObjectDistanceSortComparer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\Layers.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\UnitBaseDistanceSortComparer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\UnitCostManager.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\UnitPool.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\UnitTypeComparer.cs" />
@@ -112,6 +121,7 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Visualizers\AIControllerVisualizer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Visualizers\DestinationVisualizer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Visualizers\ObservationsVisualizer.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Visualizers\SteeringVisualizer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

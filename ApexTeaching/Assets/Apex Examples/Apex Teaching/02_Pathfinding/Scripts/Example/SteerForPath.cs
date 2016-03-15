@@ -2,11 +2,12 @@
 {
     using UnityEngine;
 
-    public sealed class SteerForPath : MonoBehaviour
+    public sealed class SteerForPath : MonoBehaviour, ISteeringComponent
     {
         public float angularSpeed = 5f;
         public float speed = 6f;
         public float arrivalDistance = 1f;
+        public int priority = 1;
 
         private Vector3 _currentDestination;
 
@@ -22,37 +23,15 @@
             private set;
         }
 
-        private void FixedUpdate()
+        /// <summary>
+        /// Gets the priority.
+        /// </summary>
+        /// <value>
+        /// The priority.
+        /// </value>
+        int ISteeringComponent.priority
         {
-            if (this.path == null)
-            {
-                // no valid path, nothing to do
-                return;
-            }
-
-            if (this.path.Count == 0)
-            {
-                // no path nodes in the path, so null it
-                this.path = null;
-                return;
-            }
-
-            // Get the distance to the next path node, if the distance is lower than the arrival distance, we can move on to the next point by popping on the path
-            var currentDirection = (_currentDestination - this.transform.position);
-            var currentDistance = currentDirection.magnitude;
-            if (currentDistance < this.arrivalDistance)
-            {
-                _currentDestination = this.path.Pop();
-                return;
-            }
-
-            // Velocity is a vector in the direction from the current location to the next destination, with a length of speed capped to the current distance
-            var velocity = (currentDirection / currentDistance) * Mathf.Min(this.speed, currentDistance);
-            this.transform.position += velocity * Time.fixedDeltaTime;
-
-            // Simply generate a quaternion for facing in the direction that the unit is moving, using the Y-axis as 'Up' - and smoothly rotate to the new rotation
-            var rotation = Quaternion.LookRotation(velocity, Vector3.up);
-            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, Time.fixedDeltaTime * this.angularSpeed);
+            get { return priority; }
         }
 
         /// <summary>
@@ -76,6 +55,35 @@
                 // if the path is valid, let's start moving to the first path node
                 _currentDestination = this.path.Pop();
             }
+        }
+
+        public Vector3? GetSteering(SteeringInput input)
+        {
+            if (this.path == null)
+            {
+                // no valid path, nothing to do
+                return null;
+            }
+
+            if (this.path.Count == 0)
+            {
+                // no path nodes in the path, so null it
+                this.path = null;
+                return null;
+            }
+
+            // Get the distance to the next path node, if the distance is lower than the arrival distance, we can move on to the next point by popping on the path
+            var currentDirection = (_currentDestination - this.transform.position);
+            var currentDistance = currentDirection.magnitude;
+            if (currentDistance < this.arrivalDistance)
+            {
+                _currentDestination = this.path.Pop();
+                return null;
+            }
+
+            // Velocity is a vector in the direction from the current location to the next destination, with a length of speed capped to the current distance
+            var velocity = (currentDirection / currentDistance) * Mathf.Min(this.speed, currentDistance);
+            return velocity;
         }
     }
 }

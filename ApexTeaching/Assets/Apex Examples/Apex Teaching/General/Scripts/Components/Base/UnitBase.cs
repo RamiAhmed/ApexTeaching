@@ -39,6 +39,9 @@ namespace Apex.AI.Teaching
         [SerializeField]
         private float _currentHealth;
 
+        [SerializeField]
+        private float _unitRadius = 0.6f;
+
         protected float _lastAttack;
         protected List<GameObject> _observations;
         private NavMeshAgent _navMeshAgent;
@@ -161,6 +164,29 @@ namespace Apex.AI.Teaching
         public virtual bool isMoving
         {
             get { return _navMeshAgent != null ? _navMeshAgent.desiredVelocity.sqrMagnitude > 1f : false; }
+        }
+
+        /// <summary>
+        /// Gets the unit radius.
+        /// </summary>
+        /// <value>
+        /// The unit radius.
+        /// </value>
+        public float unitRadius
+        {
+            get { return _unitRadius; }
+        }
+
+        /// <summary>
+        /// Gets or sets the velocity.
+        /// </summary>
+        /// <value>
+        /// The velocity.
+        /// </value>
+        public Vector3 velocity
+        {
+            get;
+            set;
         }
 
         private void Awake()

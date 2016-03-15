@@ -3,18 +3,18 @@
     using System.Collections.Generic;
     using UnityEngine;
 
-    public struct GameObjectDistanceSortComparer : IComparer<GameObject>
+    public class UnitBaseDistanceSortComparer : IComparer<UnitBase>
     {
         private Vector3 _position;
         private int _sortDir;
 
-        public GameObjectDistanceSortComparer(Vector3 position, bool ascending = true)
+        public UnitBaseDistanceSortComparer(Vector3 position, bool ascending = true)
         {
             _position = position;
             _sortDir = ascending ? 1 : -1;
         }
 
-        public int Compare(GameObject a, GameObject b)
+        public int Compare(UnitBase a, UnitBase b)
         {
             if (a == null)
             {
