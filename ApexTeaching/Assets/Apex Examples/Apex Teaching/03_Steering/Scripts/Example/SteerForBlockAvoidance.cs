@@ -2,6 +2,8 @@
 {
     using UnityEngine;
 
+    [RequireComponent(typeof(UnitBase))]
+    [RequireComponent(typeof(SteerableUnit))]
     public sealed class SteerForBlockAvoidance : MonoBehaviour, ISteeringComponent
     {
         [SerializeField]
@@ -9,6 +11,12 @@
 
         private UnitBase _unit;
 
+        /// <summary>
+        /// Gets the priority of this particular steering component. The priority controls whether this steering component is executed. Higher priority steering components get executed first, and the first one with a value is used.
+        /// </summary>
+        /// <value>
+        /// The priority.
+        /// </value>
         public int priority
         {
             get { return _priority; }
@@ -16,6 +24,7 @@
 
         private void OnEnable()
         {
+            // Get a reference to the unit
             _unit = this.GetComponent<UnitBase>();
         }
 
@@ -23,6 +32,7 @@
         {
             if (!this.enabled || !this.gameObject.activeSelf)
             {
+                // If this component or this game object is disabled, don't do steering
                 return null;
             }
 
@@ -35,6 +45,7 @@
                 return null;
             }
 
+            // Iterate through all neighbour cells compared to our current cell
             var avoidVector = Vector3.zero;
             var xLength = grid.cells.GetLength(0);
             var zLength = grid.cells.GetLength(1);
@@ -46,6 +57,7 @@
                 {
                     if (x == 0 && z == 0)
                     {
+                        // ignore the 'cell at the center', since it is the same as the current cell
                         continue;
                     }
 
@@ -54,12 +66,14 @@
 
                     if (ix < 0 || iz < 0 || ix >= xLength || iz >= zLength)
                     {
+                        // skip cells that are technically outside of the grid
                         continue;
                     }
 
                     var cell = grid.cells[ix, iz];
                     if (cell.blocked)
                     {
+                        // sum up all vectors from blocked cells
                         avoidVector += (position - cell.position);
                     }
                 }
@@ -67,10 +81,13 @@
 
             if (avoidVector.sqrMagnitude == 0f)
             {
+                // no avoid vectors accumulated
                 return null;
             }
 
-            return avoidVector.normalized * input.speed;
+            // compute a position to 'avoid to' using the avoid vector's direction
+            var dir = (this.transform.position + avoidVector.normalized) - this.transform.position;
+            return dir.normalized * input.speed;
         }
     }
 }

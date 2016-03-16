@@ -2,6 +2,8 @@
 {
     using UnityEngine;
 
+    [RequireComponent(typeof(UnitBase))]
+    [RequireComponent(typeof(SteerableUnit))]
     public sealed class SteerForPath : MonoBehaviour, ISteeringComponent
     {
         public float angularSpeed = 5f;
@@ -68,6 +70,7 @@
         {
             if (!this.enabled || !this.gameObject.activeSelf)
             {
+                // If this component or this game object is disabled, don't do steering
                 return null;
             }
 
@@ -93,7 +96,7 @@
                 return null;
             }
 
-            // Velocity is a vector in the direction from the current location to the next destination, with a length of speed capped to the current distance if we are at the last path node
+            // Velocity is a vector in the direction from the current location to the next destination, with a length of speed capped to the current distance if we are at the last path node - for slowdown
             var speed = this.path.Count == 1 ? Mathf.Clamp(this.speed, currentDistance, 1f) : this.speed;
             var velocity = (currentDirection / currentDistance) * speed;
             return velocity;

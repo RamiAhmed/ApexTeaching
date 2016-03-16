@@ -3,6 +3,7 @@
     using System;
     using UnityEngine;
 
+    [RequireComponent(typeof(UnitBase))]
     public sealed class PatrolComponent : MonoBehaviour
     {
         public Transform[] patrolPoints;
@@ -38,6 +39,7 @@
                 _currentIdx = 0;
             }
 
+            // Make the unit move to the next point in the patrolPoints array, and increment the indexer afterwards (post-incrementation)
             var point = this.patrolPoints[_currentIdx++];
             _unit.MoveTo(point.position);
         }

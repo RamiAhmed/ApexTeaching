@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.2f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -88,13 +90,15 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\MyPathHarvesterUnit.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\MyPathWarriorUnit.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\02_Pathfinding\Scripts\MyPathfinder.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\ISteeringComponent.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\PatrolComponent.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\SteerForBlockAvoidance.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\SteerForUnitSeparation.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\SteerableUnit.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\SteeringInput.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\SteeringScanner.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\Example\ISteeringComponent.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\Example\PatrolComponent.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\Example\SteerForBlockAvoidance.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\Example\SteerForUnitSeparation.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\Example\SteerableUnit.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\Example\SteeringInput.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\Example\SteeringScanner.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\MySteerForBlockAvoidance.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\MySteerForUnitSeparation.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIController.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIScannerComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\Base\AIComponentBase.cs" />

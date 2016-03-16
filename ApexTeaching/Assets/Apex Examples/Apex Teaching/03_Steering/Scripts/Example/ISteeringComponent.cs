@@ -2,6 +2,9 @@
 {
     using UnityEngine;
 
+    /// <summary>
+    /// Interface for all steering components
+    /// </summary>
     public interface ISteeringComponent
     {
         /// <summary>

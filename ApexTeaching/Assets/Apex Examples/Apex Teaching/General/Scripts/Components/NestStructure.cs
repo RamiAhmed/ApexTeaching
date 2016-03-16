@@ -260,6 +260,7 @@
                 }
             }
 
+            // Give unit a unique name
             unit.gameObject.name += string.Concat(" ", this.units.Count);
 
             _units.Add(unit);

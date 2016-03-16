@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using UnityEngine;
 
+    [RequireComponent(typeof(UnitBase))]
     public sealed class SteeringScanner : MonoBehaviour
     {
         /// <summary>
@@ -40,6 +41,7 @@
             _lastScan = time;
             this.units.Clear();
 
+            // Get all colliders in 'Units' layer within the scan radius
             _colliders = Physics.OverlapSphere(this.transform.position, this.scanRadius, Layers.units);
             if (_colliders.Length == 0)
             {
@@ -73,6 +75,7 @@
 
             if (this.units.Count == 0)
             {
+                // No units scanned
                 return;
             }
 
