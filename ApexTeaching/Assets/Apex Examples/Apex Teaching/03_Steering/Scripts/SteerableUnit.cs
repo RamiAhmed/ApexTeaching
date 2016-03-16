@@ -49,6 +49,7 @@
             }
 
             var velocity = _unit.velocity = Vector3.ClampMagnitude(steering, this.maxSpeed);
+            velocity.y = 0f;
             this.transform.position += velocity * Time.fixedDeltaTime;
 
             // Simply generate a quaternion for facing in the direction that the unit is moving, using the Y-axis as 'Up' - and smoothly rotate to the new rotation

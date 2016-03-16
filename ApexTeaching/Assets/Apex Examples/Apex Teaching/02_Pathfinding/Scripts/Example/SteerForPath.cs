@@ -7,7 +7,9 @@
         public float angularSpeed = 5f;
         public float speed = 6f;
         public float arrivalDistance = 1f;
-        public int priority = 1;
+
+        [SerializeField]
+        private int _priority = 1;
 
         private Vector3 _currentDestination;
 
@@ -29,9 +31,14 @@
         /// <value>
         /// The priority.
         /// </value>
-        int ISteeringComponent.priority
+        public int priority
         {
-            get { return priority; }
+            get { return _priority; }
+        }
+
+        // Just for being eable to disable component in Unity inspector
+        private void OnEnable()
+        {
         }
 
         /// <summary>
@@ -59,6 +66,11 @@
 
         public Vector3? GetSteering(SteeringInput input)
         {
+            if (!this.enabled || !this.gameObject.activeSelf)
+            {
+                return null;
+            }
+
             if (this.path == null)
             {
                 // no valid path, nothing to do
@@ -81,8 +93,9 @@
                 return null;
             }
 
-            // Velocity is a vector in the direction from the current location to the next destination, with a length of speed capped to the current distance
-            var velocity = (currentDirection / currentDistance) * Mathf.Min(this.speed, currentDistance);
+            // Velocity is a vector in the direction from the current location to the next destination, with a length of speed capped to the current distance if we are at the last path node
+            var speed = this.path.Count == 1 ? Mathf.Clamp(this.speed, currentDistance, 1f) : this.speed;
+            var velocity = (currentDirection / currentDistance) * speed;
             return velocity;
         }
     }

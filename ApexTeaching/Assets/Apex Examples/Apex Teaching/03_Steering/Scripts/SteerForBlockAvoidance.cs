@@ -21,6 +21,11 @@
 
         public Vector3? GetSteering(SteeringInput input)
         {
+            if (!this.enabled || !this.gameObject.activeSelf)
+            {
+                return null;
+            }
+
             var grid = Grid.instance;
             var position = _unit.transform.position;
             var currentCell = grid.GetCell(position);
@@ -55,7 +60,7 @@
                     var cell = grid.cells[ix, iz];
                     if (cell.blocked)
                     {
-                        avoidVector += (cell.position - position);
+                        avoidVector += (position - cell.position);
                     }
                 }
             }

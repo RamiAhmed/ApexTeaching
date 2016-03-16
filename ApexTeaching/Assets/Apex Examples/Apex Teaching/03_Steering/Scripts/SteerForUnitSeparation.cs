@@ -4,6 +4,9 @@
 
     public sealed class SteerForUnitSeparation : MonoBehaviour, ISteeringComponent
     {
+        /// <summary>
+        /// The separation distance - i.e. the desired distance between the extents of any two units
+        /// </summary>
         public float separationDistance = 0.5f;
 
         [SerializeField]
@@ -25,6 +28,11 @@
 
         public Vector3? GetSteering(SteeringInput input)
         {
+            if (!this.enabled || !this.gameObject.activeSelf)
+            {
+                return null;
+            }
+
             var otherUnits = _scanner.units;
             var count = otherUnits.Count;
             if (count == 0)
@@ -67,7 +75,8 @@
                 return null;
             }
 
-            return steeringVector * input.speed;
+            var dir = (this.transform.position + steeringVector) - this.transform.position;
+            return dir.normalized * input.speed;
         }
     }
 }
