@@ -85,10 +85,8 @@
             {
                 return null;
             }
-
-            // Finally compute a point to move towards, which facilitates separating from the identified other units
-            var dir = (this.transform.position + steeringVector) - this.transform.position;
-            return dir.normalized * input.speed;
+            
+            return steeringVector.normalized * input.speed;
         }
     }
 }

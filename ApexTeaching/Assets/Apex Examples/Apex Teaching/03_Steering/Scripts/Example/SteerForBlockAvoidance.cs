@@ -84,10 +84,8 @@
                 // no avoid vectors accumulated
                 return null;
             }
-
-            // compute a position to 'avoid to' using the avoid vector's direction
-            var dir = (this.transform.position + avoidVector.normalized) - this.transform.position;
-            return dir.normalized * input.speed;
+            
+            return avoidVector.normalized * input.speed;
         }
     }
 }
