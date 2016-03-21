@@ -1,0 +1,1281 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ApexSerialization</name>
+    </assembly>
+    <members>
+        <member name="T:Apex.Serialization.ApexSerializationAttribute">
+            <summary>
+            Attribute to mark members (properties and fields) on entities that should be serialized as part of an Apex serialization process.
+            </summary>
+            <seealso cref="T:System.Attribute"/>
+        </member>
+        <member name="P:Apex.Serialization.ApexSerializationAttribute.hideInEditor">
+            <summary>
+            Gets or sets a value indicating whether to hide this member in the editor.
+            </summary>
+            <value>
+              <c>true</c> to hide in editor; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Apex.Serialization.ApexSerializationAttribute.defaultValue">
+            <summary>
+            Gets or sets the default value. Members whose actual value matches the default value are not serialized (to save space).
+            </summary>
+            <value>
+            The default value.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.ApexSerializedTypeAttribute">
+            <summary>
+            Optional attribute to mark types that are serialized as part of an Apex serialization process.
+            Some types may not expose any serialized fields or properties (<see cref="T:Apex.Serialization.ApexSerializationAttribute"/>) in which case marking them with this will help identify them as serialized types.
+            </summary>
+        </member>
+        <member name="T:Apex.Serialization.Converters.DoubleConverter">
+            <summary>
+            Handles conversion of <see cref="T:System.Double"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IValueConverter"/>
+        </member>
+        <member name="T:Apex.Serialization.IValueConverter">
+            <summary>
+            Interface for types that handle conversion to and from string representation of one or more types. Implementing classes must also have a parameterless constructor.
+            </summary>
+        </member>
+        <member name="M:Apex.Serialization.IValueConverter.ToString(System.Object)">
+            <summary>
+            Converts a value to its string representation.
+            </summary>
+            <param name="value">The value to convert</param>
+            <returns>The string representation of the value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.IValueConverter.FromString(System.String,System.Type)">
+            <summary>
+            Converts a string to the type handled by this converter.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="targetType">Type to convert to.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="P:Apex.Serialization.IValueConverter.handledTypes">
+            <summary>
+            Gets the types this converter can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="M:Apex.Serialization.Converters.DoubleConverter.ToString(System.Object)">
+            <summary>
+            Converts a value to its string representation.
+            </summary>
+            <param name="value">The value to convert</param>
+            <returns>The string representation of the value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.Converters.DoubleConverter.FromString(System.String,System.Type)">
+            <summary>
+            Converts a string to the type handled by this converter.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="targetType">Type to convert to.</param>
+            <returns>
+            The converted value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Converters.DoubleConverter.handledTypes">
+            <summary>
+            Gets the types this converter can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Converters.BoolConverter">
+            <summary>
+            Handles conversion of <see cref="T:System.Boolean"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IValueConverter"/>
+        </member>
+        <member name="M:Apex.Serialization.Converters.BoolConverter.ToString(System.Object)">
+            <summary>
+            Converts a value to its string representation.
+            </summary>
+            <param name="value">The value to convert</param>
+            <returns>The string representation of the value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.Converters.BoolConverter.FromString(System.String,System.Type)">
+            <summary>
+            Converts a string to the type handled by this converter.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="targetType">Type to convert to.</param>
+            <returns>
+            The converted value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Converters.BoolConverter.handledTypes">
+            <summary>
+            Gets the types this converter can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Converters.FloatConverter">
+            <summary>
+            Handles conversion of <see cref="T:System.Single"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IValueConverter"/>
+        </member>
+        <member name="M:Apex.Serialization.Converters.FloatConverter.ToString(System.Object)">
+            <summary>
+            Converts a value to its string representation.
+            </summary>
+            <param name="value">The value to convert</param>
+            <returns>The string representation of the value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.Converters.FloatConverter.FromString(System.String,System.Type)">
+            <summary>
+            Converts a string to the type handled by this converter.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="targetType">Type to convert to.</param>
+            <returns>
+            The converted value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Converters.FloatConverter.handledTypes">
+            <summary>
+            Gets the types this converter can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Converters.EnumConverter">
+            <summary>
+            Handles conversion of <see cref="T:System.Enum"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IValueConverter"/>
+        </member>
+        <member name="F:Apex.Serialization.Converters.EnumConverter.instance">
+            <summary>
+            The singleton instance
+            </summary>
+        </member>
+        <member name="M:Apex.Serialization.Converters.EnumConverter.ToString(System.Object)">
+            <summary>
+            Converts a value to its string representation.
+            </summary>
+            <param name="value">The value to convert</param>
+            <returns>The string representation of the value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.Converters.EnumConverter.FromString(System.String,System.Type)">
+            <summary>
+            Converts a string to the type handled by this converter.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="targetType">Type to convert to.</param>
+            <returns>
+            The converted value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Converters.EnumConverter.handledTypes">
+            <summary>
+            Gets the types this converter can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Converters.DateTimeConverter">
+            <summary>
+            Handles conversion of <see cref="T:System.DateTime"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IValueConverter"/>
+        </member>
+        <member name="M:Apex.Serialization.Converters.DateTimeConverter.ToString(System.Object)">
+            <summary>
+            Converts a value to its string representation.
+            </summary>
+            <param name="value">The value to convert</param>
+            <returns>The string representation of the value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.Converters.DateTimeConverter.FromString(System.String,System.Type)">
+            <summary>
+            Converts a string to the type handled by this converter.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="targetType">Type to convert to.</param>
+            <returns>
+            The converted value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Converters.DateTimeConverter.handledTypes">
+            <summary>
+            Gets the types this converter can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.IInitializeAfterDeserialization">
+            <summary>
+            Interface to implement on entities that need to initialize after deserialization.
+            </summary>
+        </member>
+        <member name="M:Apex.Serialization.IInitializeAfterDeserialization.Initialize(System.Object)">
+            <summary>
+            Will be called by the engine after deserialization is complete, allowing the implementing entity to initialize itself.
+            </summary>
+            <param name="rootObject">The root object of the deserialization process.</param>
+        </member>
+        <member name="T:Apex.Serialization.IPrepareForSerialization">
+            <summary>
+            Interface to implement on entities that need to prepare before serialization.
+            </summary>
+        </member>
+        <member name="M:Apex.Serialization.IPrepareForSerialization.Prepare">
+            <summary>
+             Will be called by the engine just before the entity is serialized.
+            </summary>
+        </member>
+        <member name="T:Apex.Serialization.ISerializer">
+            <summary>
+            Interface for types responsible for serialization.
+            </summary>
+        </member>
+        <member name="M:Apex.Serialization.ISerializer.Serialize(Apex.Serialization.StageItem,System.Boolean)">
+            <summary>
+            Serializes the specified staged object (or object graph).
+            </summary>
+            <param name="item">The staged representation of the object to serialize.</param>
+            <param name="pretty">Whether to serialize the data in a pretty (reader friendly) format.</param>
+            <returns>The serialized representation of the object.</returns>
+        </member>
+        <member name="M:Apex.Serialization.ISerializer.Deserialize(System.String)">
+            <summary>
+            Deserializes the serialized representation of an object to staging.
+            </summary>
+            <param name="data">The data.</param>
+            <returns>The staged representation of the object.</returns>
+        </member>
+        <member name="T:Apex.Serialization.Json.JsonParser">
+            <summary>
+            A simple recursive json reader. It will not handle any type of syntax or semantic errors.
+            </summary>
+        </member>
+        <member name="T:Apex.Serialization.Json.JsonSerializer">
+            <summary>
+            The default serializer. Serializes to and from json.
+            </summary>
+            <seealso cref="T:Apex.Serialization.ISerializer"/>
+        </member>
+        <member name="M:Apex.Serialization.Json.JsonSerializer.Deserialize(System.String)">
+            <summary>
+            Deserializes the serialized representation of an object to staging.
+            </summary>
+            <param name="data">The data.</param>
+            <returns>
+            The staged representation of the object.
+            </returns>
+        </member>
+        <member name="M:Apex.Serialization.Json.JsonSerializer.Serialize(Apex.Serialization.StageItem,System.Boolean)">
+            <summary>
+            Serializes the specified staged object (or object graph).
+            </summary>
+            <param name="item">The staged representation of the object to serialize.</param>
+            <param name="pretty">Whether to serialize the data in a pretty (reader friendly) format.</param>
+            <returns>
+            The serialized representation of the object.
+            </returns>
+            <exception cref="T:System.ArgumentException">Only StageElements can serve as the root of a serialized graph.</exception>
+        </member>
+        <member name="T:Apex.Serialization.SerializationExtensions">
+            <summary>
+            Various extensions related to serialization
+            </summary>
+        </member>
+        <member name="M:Apex.Serialization.SerializationExtensions.ValueOrDefault``1(Apex.Serialization.StageItem,``0)">
+            <summary>
+            Gets the converted value of the <see cref="T:Apex.Serialization.StageItem"/> or a default if the element is null or has no value.
+            </summary>
+            <param name="item">The stage item.</param>
+            <param name="defaultValue">The default value.</param>
+            <returns>The value of the item, or <paramref name="defaultValue"/> if <paramref name="item"/> is <c>null</c> or has no value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationExtensions.ValueOrDefault``1(Apex.Serialization.StageElement,System.String,``0)">
+            <summary>
+            Gets the converted value of the specified item, or a default value if the element or the item is null or if it has no value.
+            </summary>
+            <param name="element">The element.</param>
+            <param name="itemName">Name of the item.</param>
+            <param name="defaultValue">The default value.</param>
+            <returns>The value of the item, or <paramref name="defaultValue"/> if <paramref name="element"/> or the item is <c>null</c> or has no value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationExtensions.Value``1(Apex.Serialization.StageElement,System.String)">
+            <summary>
+            Gets the converted value of the specified item.
+            </summary>
+            <param name="element">The element.</param>
+            <param name="itemName">Name of the value.</param>
+            <returns>The value of the item.</returns>
+            <exception cref="T:System.ArgumentException">If no value item by that name was found.</exception>
+        </member>
+        <member name="M:Apex.Serialization.SerializationExtensions.AttributeValueOrDefault``1(Apex.Serialization.StageElement,System.String,``0)">
+            <summary>
+            Gets the converted value of the specified attribute, or a default value if the element or the attribute is null or if it has no value.
+            </summary>
+            <param name="element">The element.</param>
+            <param name="attributeName">Name of the attribute.</param>
+            <param name="defaultValue">The default value.</param>
+            <returns>The value of the attribute, or <paramref name="defaultValue"/> if <paramref name="element"/> or the attribute is <c>null</c> or has no value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationExtensions.AttributeValue``1(Apex.Serialization.StageElement,System.String)">
+            <summary>
+            Gets the converted value of the specified attribute.
+            </summary>
+            <param name="element">The element.</param>
+            <param name="attributeName">Name of the attribute.</param>
+            <returns>The value of the attribute.</returns>
+            <exception cref="T:System.ArgumentException">If no attribute by that name was found.</exception>
+        </member>
+        <member name="M:Apex.Serialization.SerializationExtensions.AddValue(Apex.Serialization.StageContainer,System.String,System.Object,System.Boolean)">
+            <summary>
+            Adds an item with a value.
+            </summary>
+            <param name="parent">The parent element to add to.</param>
+            <param name="name">The name of the item to add.</param>
+            <param name="value">The value of the item to add.</param>
+            <param name="onlyIfNotNull">if set to <c>true</c> no item is added if the <paramref name="value"/> is <c>null</c>.</param>
+        </member>
+        <member name="M:Apex.Serialization.SerializationExtensions.AddTextValue(Apex.Serialization.StageContainer,System.String,System.String,System.Boolean)">
+            <summary>
+            Adds a text element.
+            </summary>
+            <param name="parent">The parent element to add to.</param>
+            <param name="name">The name of the item to add.</param>
+            <param name="value">The value of the item to add.</param>
+            <param name="onlyIfNotNullOrEmpty">if set to <c>true</c> no item is added if the <paramref name="value"/> is <c>null</c> or empty.</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Apex.Serialization.SerializationExtensions.SetValue(Apex.Serialization.StageElement,System.String,System.Object,System.Boolean)" -->
+        <!-- Badly formed XML comment ignored for member "M:Apex.Serialization.SerializationExtensions.SetTextValue(Apex.Serialization.StageElement,System.String,System.String,System.Boolean)" -->
+        <member name="M:Apex.Serialization.SerializationExtensions.AddAttribute(Apex.Serialization.StageElement,System.String,System.Object,System.Boolean)">
+            <summary>
+            Adds an attribute with a value.
+            </summary>
+            <param name="parent">The parent element to add to.</param>
+            <param name="name">The name of the attribute to add.</param>
+            <param name="value">The value of the attribute to add.</param>
+            <param name="onlyIfNotNull">if set to <c>true</c> no attribute is added if the <paramref name="value"/> is <c>null</c>.</param>
+        </member>
+        <member name="M:Apex.Serialization.SerializationExtensions.AddTextAttribute(Apex.Serialization.StageElement,System.String,System.String,System.Boolean)">
+            <summary>
+            Adds an attribute with a text value.
+            </summary>
+            <param name="parent">The parent element to add to.</param>
+            <param name="name">The name of the attribute to add.</param>
+            <param name="value">The value of the attribute to add.</param>
+            <param name="onlyIfNotNullOrEmpty">if set to <c>true</c> no attribute is added if the <paramref name="value"/> is <c>null</c> or empty.</param>
+        </member>
+        <member name="M:Apex.Serialization.SerializationExtensions.SetAttribute(Apex.Serialization.StageElement,System.String,System.Object)">
+            <summary>
+            Sets the value of an attribute. If it does not exist it is created.
+            If the value is <c>null</c> the attribute is removed.
+            If multiple identically named attributes exists only the first one is set.
+            </summary>
+            <param name="parent">The parent element.</param>
+            <param name="name">The name of the attribute.</param>
+            <param name="value">The value to set.</param>
+        </member>
+        <member name="M:Apex.Serialization.SerializationExtensions.SetTextAttribute(Apex.Serialization.StageElement,System.String,System.String,System.Boolean)">
+            <summary>
+            Sets the value of a text attribute. If it does not exist it is created.
+            If the value is <c>null</c> the attribute is removed.
+            If multiple identically named attributes exists only the first one is set.
+            </summary>
+            <param name="parent">The parent element.</param>
+            <param name="name">The name of the attribute.</param>
+            <param name="value">The value to set.</param>
+            <param name="removeIfEmpty">if set to <c>true</c> the attribute is removed if the <paramref name="value"/> is empty. The attribute is always removed if <paramref name="value"/> is <c>null</c></param>
+        </member>
+        <member name="T:Apex.Serialization.SerializationMaster">
+            <summary>
+            Responsible for all things to do with serialization of entities.
+            </summary>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.GetSerializedProperties(System.Type)">
+            <summary>
+            Gets the AI serialized properties of the type.
+            </summary>
+            <returns>The serialized properties</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.GetSerializedFields(System.Type)">
+            <summary>
+            Gets the AI serialized fields of the type.
+            </summary>
+            <returns>The serialized fields</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.ConverterExists(System.Type)">
+            <summary>
+            Checks if a <see cref="T:Apex.Serialization.IValueConverter"/> exists for the specified type
+            </summary>
+            <param name="forType">The type for which to check.</param>
+            <returns><c>true</c> if a converter exists; otherwise <c>false</c></returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.StagerExists(System.Type)">
+            <summary>
+            Checks if a <see cref="T:Apex.Serialization.IStager"/> exists for the specified type
+            </summary>
+            <param name="forType">The type for which to check.</param>
+            <returns><c>true</c> if a stager exists; otherwise <c>false</c></returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.ToStageAttribute(System.String,System.Object)">
+            <summary>
+            Stages a value as an attribute. Requires that a <see cref="T:Apex.Serialization.IValueConverter"/> exists for the value type.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="value">The value.</param>
+            <returns>A <see cref="T:Apex.Serialization.StageAttribute"/> representing the value, or <c>null</c> if <paramref name="value"/> is <c>null</c>.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.ToStageValue(System.String,System.Object)">
+            <summary>
+            Stages a value as a simple value. Requires that a <see cref="T:Apex.Serialization.IValueConverter"/> exists for the value type.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="value">The value.</param>
+            <returns>A <see cref="T:Apex.Serialization.StageValue"/> representing the value, or <see cref="T:Apex.Serialization.StageNull"/> if <paramref name="value"/> is <c>null</c>.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.ToString(System.Object)">
+            <summary>
+            Converts a value to its string representation. Requires that a <see cref="T:Apex.Serialization.IValueConverter"/> exists for the value type.
+            </summary>
+            <param name="value">The value to convert</param>
+            <returns>The string representation of the value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.FromString``1(System.String)">
+            <summary>
+            Converts a string to the specified type. Requires that a <see cref="T:Apex.Serialization.IValueConverter"/> exists for the value type.
+            </summary>
+            <typeparam name="T">The type to convert to.</typeparam>
+            <param name="value">The value.</param>
+            <returns>The converted value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.Serialize``1(``0,System.Boolean)">
+            <summary>
+            Serializes the specified item.
+            </summary>
+            <typeparam name="T">The item type</typeparam>
+            <param name="item">The item.</param>
+            <param name="pretty">if set to <c>true</c> the serializer will produce a reader friendly string.</param>
+            <returns>The serialized string representation of the item.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.Serialize(Apex.Serialization.StageElement,System.Boolean)">
+            <summary>
+            Serializes the specified stage item.
+            </summary>
+            <param name="item">The item.</param>
+            <param name="pretty">if set to <c>true</c> the serializer will produce a reader friendly string.</param>
+            <returns>The serialized string representation of the item.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.Deserialize``1(System.String)">
+            <summary>
+            Deserializes the specified data.
+            </summary>
+            <typeparam name="T">The type to construct from the data.</typeparam>
+            <param name="data">The serialized from of the item to construct.</param>
+            <returns>The item.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.Deserialize``1(System.String,System.Collections.Generic.ICollection{Apex.Serialization.IInitializeAfterDeserialization})">
+            <summary>
+            Deserializes the specified data.
+            </summary>
+            <typeparam name="T">The type to construct from the data.</typeparam>
+            <param name="data">The serialized from of the item to construct.</param>
+            <param name="requiresInit">A list that will be populated with references to all entities in the graph that require initialization.</param>
+            <returns>The item.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.Deserialize(System.String)">
+            <summary>
+            Deserializes the specified data to its staged form.
+            </summary>
+            <param name="data">The serialized from of the item.</param>
+            <returns>The staged form of the item.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.Stage(System.String,System.Object)">
+            <summary>
+            Stages a value. This is intended for use by <see cref="T:Apex.Serialization.IStager"/>s.
+            </summary>
+            <param name="name">The name of the value.</param>
+            <param name="value">The value.</param>
+            <returns>The staged form of the value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.UnstageAndInitialize``1(Apex.Serialization.StageItem)">
+            <summary>
+            Unstages and initialize the staged item.
+            </summary>
+            <typeparam name="T">The type of the item to construct from the staged form.</typeparam>
+            <param name="item">The staged item.</param>
+            <returns>The item.</returns>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.Unstage``1(Apex.Serialization.StageItem,System.Collections.Generic.ICollection{Apex.Serialization.IInitializeAfterDeserialization})">
+            <summary>
+            Unstages the specified staged item.
+            </summary>
+            <typeparam name="T">The type of the item to construct from the staged form.</typeparam>
+            <param name="item">The staged item.</param>
+            <param name="requiresInit">A list that will be populated with references to all entities in the graph that require initialization.</param>
+            <returns>The item.</returns>
+            <exception cref="T:System.InvalidOperationException">If called during a nested unstage operation.</exception>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.Unstage``1(Apex.Serialization.StageItem)">
+            <summary>
+            Unstages the specified staged item. This is intended for use by <see cref="T:Apex.Serialization.IStager"/>s.
+            </summary>
+            <param name="item">The staged item.</param>
+            <typeparam name="T">The type of the unstaged value.</typeparam>
+            <returns>The unstaged value</returns>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">
+            If no <see cref="T:Apex.Serialization.IStager"/> or <see cref="T:Apex.Serialization.IValueConverter"/> matching <paramref name="targetType"/> was found
+            or
+            If the element is not supported, e.g. a custom derivative of <see cref="T:Apex.Serialization.StageItem"/>.
+            </exception>
+        </member>
+        <member name="M:Apex.Serialization.SerializationMaster.Unstage(Apex.Serialization.StageItem,System.Type)">
+            <summary>
+            Unstages the specified staged item. This is intended for use by <see cref="T:Apex.Serialization.IStager"/>s.
+            </summary>
+            <param name="item">The staged item.</param>
+            <param name="targetType">Type of the item.</param>
+            <returns>The unstaged value</returns>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">
+            If no <see cref="T:Apex.Serialization.IStager"/> or <see cref="T:Apex.Serialization.IValueConverter"/> matching <paramref name="targetType"/> was found
+            or
+            If the element is not supported, e.g. a custom derivative of <see cref="T:Apex.Serialization.StageItem"/>.
+            </exception>
+        </member>
+        <member name="T:Apex.Serialization.SerializationOverrideAttribute">
+            <summary>
+            Attribute used to decorate <see cref="T:Apex.Serialization.ISerializer"/>s, <see cref="T:Apex.Serialization.IStager"/>s and <see cref="T:Apex.Serialization.IValueConverter"/>s,
+            to have them override the default implementations.
+            </summary>
+            <seealso cref="T:System.Attribute"/>
+        </member>
+        <member name="T:Apex.Serialization.StageNull">
+            <summary>
+            Staged representation of <c>null</c>
+            </summary>
+            <seealso cref="T:Apex.Serialization.StageItem"/>
+        </member>
+        <member name="T:Apex.Serialization.StageItem">
+            <summary>
+            Base class for all stage items.
+            </summary>
+        </member>
+        <member name="M:Apex.Serialization.StageItem.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.Serialization.StageItem"/> class.
+            </summary>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:Apex.Serialization.StageItem.Remove">
+            <summary>
+            Removes the element from its parent. If not parented nothing will happen.
+            </summary>
+        </member>
+        <member name="P:Apex.Serialization.StageItem.name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+            <value>
+            The name.
+            </value>
+        </member>
+        <member name="P:Apex.Serialization.StageItem.parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <value>
+            The parent.
+            </value>
+        </member>
+        <member name="M:Apex.Serialization.StageNull.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.Serialization.StageNull"/> class.
+            </summary>
+            <param name="name">The name.</param>
+        </member>
+        <member name="T:Apex.Serialization.StageAttribute">
+            <summary>
+            Staged representation of an attribute.
+            </summary>
+            <seealso cref="T:Apex.Serialization.StageValue"/>
+        </member>
+        <member name="T:Apex.Serialization.StageValue">
+            <summary>
+            Staged representation of a simple value.
+            </summary>
+            <seealso cref="T:Apex.Serialization.StageItem"/>
+        </member>
+        <member name="M:Apex.Serialization.StageValue.#ctor(System.String,System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.Serialization.StageValue"/> class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="value">The value.</param>
+            <param name="isText">Whether of not the value represents textual content.</param>
+        </member>
+        <member name="P:Apex.Serialization.StageValue.value">
+            <summary>
+            Gets or sets the value.
+            </summary>
+            <value>
+            The value.
+            </value>
+        </member>
+        <member name="P:Apex.Serialization.StageValue.isText">
+            <summary>
+            Gets a value indicating whether this instance is text.
+            </summary>
+            <value>
+              <c>true</c> if this instance is text; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.StageList">
+            <summary>
+            Staged representation of a list or array.
+            </summary>
+            <seealso cref="T:Apex.Serialization.StageContainer"/>
+        </member>
+        <member name="T:Apex.Serialization.StageContainer">
+            <summary>
+            Base class for staged items that represent an object graph.
+            </summary>
+            <seealso cref="T:Apex.Serialization.StageItem"/>
+        </member>
+        <member name="M:Apex.Serialization.StageContainer.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.Serialization.StageContainer"/> class.
+            </summary>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:Apex.Serialization.StageContainer.Add(Apex.Serialization.StageItem)">
+            <summary>
+            Adds the specified item.
+            </summary>
+            <param name="item">The item.</param>
+        </member>
+        <member name="M:Apex.Serialization.StageContainer.Items">
+            <summary>
+            Gets all child items.
+            </summary>
+            <returns>All child items.</returns>
+        </member>
+        <member name="M:Apex.Serialization.StageContainer.Elements">
+            <summary>
+            Gets all child <see cref="T:Apex.Serialization.StageElement"/>s.
+            </summary>
+            <returns>All child elements.</returns>
+        </member>
+        <member name="M:Apex.Serialization.StageContainer.Descendants">
+            <summary>
+            Gets all descendant items.
+            </summary>
+            <returns>All descendant items.</returns>
+        </member>
+        <member name="M:Apex.Serialization.StageContainer.Descendants``1">
+            <summary>
+            Gets all descendants of a particular type.
+            </summary>
+            <typeparam name="T">The type of descendant.</typeparam>
+            <returns>All descendants of the specified type.</returns>
+        </member>
+        <member name="M:Apex.Serialization.StageList.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.Serialization.StageList"/> class.
+            </summary>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:Apex.Serialization.StageList.#ctor(System.String,Apex.Serialization.StageItem[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.Serialization.StageList"/> class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="items">The items.</param>
+        </member>
+        <member name="M:Apex.Serialization.StageList.Add(Apex.Serialization.StageItem)">
+            <summary>
+            Adds the specified item.
+            </summary>
+            <param name="item">The item.</param>
+        </member>
+        <member name="T:Apex.Serialization.Stagers.BoundsStager">
+            <summary>
+            Handles staging of <see cref="T:UnityEngine.Bounds"/> structures.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IStager"/>
+        </member>
+        <member name="T:Apex.Serialization.IStager">
+            <summary>
+            Interface for types that handle staging of values. Implementing classes must also have a parameterless constructor.
+            </summary>
+        </member>
+        <member name="M:Apex.Serialization.IStager.StageValue(System.String,System.Object)">
+            <summary>
+            Stages the value.
+            </summary>
+            <param name="name">The name to give the resulting <see cref="T:Apex.Serialization.StageItem"/>.</param>
+            <param name="value">The value to stage</param>
+            <returns>The element containing the staged value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.IStager.UnstageValue(Apex.Serialization.StageItem,System.Type)">
+            <summary>
+            Unstages the value.
+            </summary>
+            <param name="item">The stage item to unstage.</param>
+            <param name="targetType">Type of the value.</param>
+            <returns>The unstaged value.</returns>
+        </member>
+        <member name="P:Apex.Serialization.IStager.handledTypes">
+            <summary>
+            Gets the types this stager can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.BoundsStager.StageValue(System.String,System.Object)">
+            <summary>
+            Stages the value.
+            </summary>
+            <param name="name">The name to give the resulting <see cref="T:Apex.Serialization.StageItem"/>.</param>
+            <param name="value">The value to stage</param>
+            <returns>
+            The element containing the staged value.
+            </returns>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.BoundsStager.UnstageValue(Apex.Serialization.StageItem,System.Type)">
+            <summary>
+            Unstages the value.
+            </summary>
+            <param name="item">The stage item to unstage.</param>
+            <param name="targetType">Type of the value.</param>
+            <returns>
+            The unstaged value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Stagers.BoundsStager.handledTypes">
+            <summary>
+            Gets the types this stager can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Stagers.DictionaryStager">
+            <summary>
+            Handles staging of <see cref="T:System.Collections.Generic.Dictionary`2"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IStager"/>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.DictionaryStager.StageValue(System.String,System.Object)">
+            <summary>
+            Stages the value.
+            </summary>
+            <param name="name">The name to give the resulting <see cref="T:Apex.Serialization.StageItem"/>.</param>
+            <param name="value">The value to stage</param>
+            <returns>
+            The element containing the staged value.
+            </returns>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.DictionaryStager.UnstageValue(Apex.Serialization.StageItem,System.Type)">
+            <summary>
+            Unstages the value.
+            </summary>
+            <param name="item">The stage item to unstage.</param>
+            <param name="targetType">Type of the value.</param>
+            <returns>
+            The unstaged value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Stagers.DictionaryStager.handledTypes">
+            <summary>
+            Gets the types this stager can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Stagers.ListStager">
+            <summary>
+            Handles staging of <see cref="T:System.Collections.Generic.List`1"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IStager"/>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.ListStager.StageValue(System.String,System.Object)">
+            <summary>
+            Stages the value.
+            </summary>
+            <param name="name">The name to give the resulting <see cref="T:Apex.Serialization.StageItem"/>.</param>
+            <param name="value">The value to stage</param>
+            <returns>
+            The element containing the staged value.
+            </returns>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.ListStager.UnstageValue(Apex.Serialization.StageItem,System.Type)">
+            <summary>
+            Unstages the value.
+            </summary>
+            <param name="item">The stage item to unstage.</param>
+            <param name="targetType">Type of the value.</param>
+            <returns>
+            The unstaged value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Stagers.ListStager.handledTypes">
+            <summary>
+            Gets the types this stager can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.StageElement">
+            <summary>
+            Staged representation of a class or struct.
+            </summary>
+            <seealso cref="T:Apex.Serialization.StageContainer"/>
+        </member>
+        <member name="M:Apex.Serialization.StageElement.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.Serialization.StageElement"/> class.
+            </summary>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:Apex.Serialization.StageElement.#ctor(System.String,Apex.Serialization.StageItem[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.Serialization.StageElement"/> class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="items">The child items.</param>
+        </member>
+        <member name="M:Apex.Serialization.StageElement.Attributes">
+            <summary>
+            Get all attributes of this element.
+            </summary>
+            <returns>All attributes</returns>
+        </member>
+        <member name="M:Apex.Serialization.StageElement.Items(System.String)">
+            <summary>
+            Gets all child items with the specified name.
+            </summary>
+            <returns>All child items with the specified name.</returns>
+        </member>
+        <member name="M:Apex.Serialization.StageElement.Elements(System.String)">
+            <summary>
+            Gets all child elements with the specified name.
+            </summary>
+            <returns>All child elements with the specified name.</returns>
+        </member>
+        <member name="M:Apex.Serialization.StageElement.Descendants(System.String)">
+            <summary>
+            Gets all descendant items with the specified name.
+            </summary>
+            <returns>All descendant items with the specified name.</returns>
+        </member>
+        <member name="M:Apex.Serialization.StageElement.Item(System.String)">
+            <summary>
+            Gets the first item with the specified name.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>The first item with the specified name.</returns>
+        </member>
+        <member name="M:Apex.Serialization.StageElement.Element(System.String)">
+            <summary>
+            Gets the first element with the specified name.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>The first element with the specified name.</returns>
+        </member>
+        <member name="M:Apex.Serialization.StageElement.List(System.String)">
+            <summary>
+            Gets the first list with the specified name.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>The first list with the specified name.</returns>
+        </member>
+        <member name="M:Apex.Serialization.StageElement.Attribute(System.String)">
+            <summary>
+            Gets the first attribute with the specified name.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>The first attribute with the specified name.</returns>
+        </member>
+        <member name="M:Apex.Serialization.StageElement.Add(Apex.Serialization.StageItem)">
+            <summary>
+            Adds the specified item.
+            </summary>
+            <param name="item">The item.</param>
+        </member>
+        <member name="T:Apex.Serialization.Stagers.AnimationCurveSerializer">
+            <summary>
+            Handles staging of <see cref="T:UnityEngine.AnimationCurve"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IStager"/>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.AnimationCurveSerializer.StageValue(System.String,System.Object)">
+            <summary>
+            Stages the value.
+            </summary>
+            <param name="name">The name to give the resulting <see cref="T:Apex.Serialization.StageItem"/>.</param>
+            <param name="value">The value to stage</param>
+            <returns>
+            The element containing the staged value.
+            </returns>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.AnimationCurveSerializer.UnstageValue(Apex.Serialization.StageItem,System.Type)">
+            <summary>
+            Unstages the value.
+            </summary>
+            <param name="item">The stage item to unstage.</param>
+            <param name="targetType">Type of the value.</param>
+            <returns>
+            The unstaged value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Stagers.AnimationCurveSerializer.handledTypes">
+            <summary>
+            Gets the types this stager can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Converters.CharConverter">
+            <summary>
+            Handles conversion of <see cref="T:System.Char"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IValueConverter"/>
+        </member>
+        <member name="M:Apex.Serialization.Converters.CharConverter.ToString(System.Object)">
+            <summary>
+            Converts a value to its string representation.
+            </summary>
+            <param name="value">The value to convert</param>
+            <returns>The string representation of the value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.Converters.CharConverter.FromString(System.String,System.Type)">
+            <summary>
+            Converts a string to the type handled by this converter.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="targetType">Type to convert to.</param>
+            <returns>
+            The converted value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Converters.CharConverter.handledTypes">
+            <summary>
+            Gets the types this converter can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Stagers.ColorSerializer">
+            <summary>
+            Handles staging of <see cref="T:UnityEngine.Color"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IStager"/>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.ColorSerializer.StageValue(System.String,System.Object)">
+            <summary>
+            Stages the value.
+            </summary>
+            <param name="name">The name to give the resulting <see cref="T:Apex.Serialization.StageItem"/>.</param>
+            <param name="value">The value to stage</param>
+            <returns>
+            The element containing the staged value.
+            </returns>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.ColorSerializer.UnstageValue(Apex.Serialization.StageItem,System.Type)">
+            <summary>
+            Unstages the value.
+            </summary>
+            <param name="item">The stage item to unstage.</param>
+            <param name="targetType">Type of the value.</param>
+            <returns>
+            The unstaged value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Stagers.ColorSerializer.handledTypes">
+            <summary>
+            Gets the types this stager can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Converters.GuidConverter">
+            <summary>
+            Handles conversion of <see cref="T:System.Guid"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IValueConverter"/>
+        </member>
+        <member name="M:Apex.Serialization.Converters.GuidConverter.ToString(System.Object)">
+            <summary>
+            Converts a value to its string representation.
+            </summary>
+            <param name="value">The value to convert</param>
+            <returns>The string representation of the value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.Converters.GuidConverter.FromString(System.String,System.Type)">
+            <summary>
+            Converts a string to the type handled by this converter.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="targetType">Type to convert to.</param>
+            <returns>
+            The converted value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Converters.GuidConverter.handledTypes">
+            <summary>
+            Gets the types this converter can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Converters.LayerMaskConverter">
+            <summary>
+            Handles conversion of <see cref="T:UnityEngine.LayerMask"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IValueConverter"/>
+        </member>
+        <member name="M:Apex.Serialization.Converters.LayerMaskConverter.ToString(System.Object)">
+            <summary>
+            Converts a value to its string representation.
+            </summary>
+            <param name="value">The value to convert</param>
+            <returns>The string representation of the value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.Converters.LayerMaskConverter.FromString(System.String,System.Type)">
+            <summary>
+            Converts a string to the type handled by this converter.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="targetType">Type to convert to.</param>
+            <returns>
+            The converted value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Converters.LayerMaskConverter.handledTypes">
+            <summary>
+            Gets the types this converter can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Converters.PrimitivesConverter">
+            <summary>
+            Handles conversion of primitive types, e.g. <see cref="T:System.Int32"/>, <see cref="T:System.Boolean"/> etc.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IValueConverter"/>
+        </member>
+        <member name="M:Apex.Serialization.Converters.PrimitivesConverter.ToString(System.Object)">
+            <summary>
+            Converts a value to its string representation.
+            </summary>
+            <param name="value">The value to convert</param>
+            <returns>The string representation of the value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.Converters.PrimitivesConverter.FromString(System.String,System.Type)">
+            <summary>
+            Converts a string to the type handled by this converter.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="targetType">Type to convert to.</param>
+            <returns>
+            The converted value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Converters.PrimitivesConverter.handledTypes">
+            <summary>
+            Gets the types this converter can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Stagers.RectSerializer">
+            <summary>
+            Handles staging of <see cref="T:UnityEngine.Rect"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IStager"/>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.RectSerializer.StageValue(System.String,System.Object)">
+            <summary>
+            Stages the value.
+            </summary>
+            <param name="name">The name to give the resulting <see cref="T:Apex.Serialization.StageItem"/>.</param>
+            <param name="value">The value to stage</param>
+            <returns>
+            The element containing the staged value.
+            </returns>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.RectSerializer.UnstageValue(Apex.Serialization.StageItem,System.Type)">
+            <summary>
+            Unstages the value.
+            </summary>
+            <param name="item">The stage item to unstage.</param>
+            <param name="targetType">Type of the value.</param>
+            <returns>
+            The unstaged value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Stagers.RectSerializer.handledTypes">
+            <summary>
+            Gets the types this stager can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Converters.StringConverter">
+            <summary>
+            Handles conversion of <see cref="T:System.String"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IValueConverter"/>
+        </member>
+        <member name="M:Apex.Serialization.Converters.StringConverter.ToString(System.Object)">
+            <summary>
+            Converts a value to its string representation.
+            </summary>
+            <param name="value">The value to convert</param>
+            <returns>The string representation of the value.</returns>
+        </member>
+        <member name="M:Apex.Serialization.Converters.StringConverter.FromString(System.String,System.Type)">
+            <summary>
+            Converts a string to the type handled by this converter.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="targetType">Type to convert to.</param>
+            <returns>
+            The converted value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Converters.StringConverter.handledTypes">
+            <summary>
+            Gets the types this converter can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Stagers.Vector2Serializer">
+            <summary>
+            Handles staging of <see cref="T:UnityEngine.Vector2"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IStager"/>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.Vector2Serializer.StageValue(System.String,System.Object)">
+            <summary>
+            Stages the value.
+            </summary>
+            <param name="name">The name to give the resulting <see cref="T:Apex.Serialization.StageItem"/>.</param>
+            <param name="value">The value to stage</param>
+            <returns>
+            The element containing the staged value.
+            </returns>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.Vector2Serializer.UnstageValue(Apex.Serialization.StageItem,System.Type)">
+            <summary>
+            Unstages the value.
+            </summary>
+            <param name="item">The stage item to unstage.</param>
+            <param name="targetType">Type of the value.</param>
+            <returns>
+            The unstaged value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Stagers.Vector2Serializer.handledTypes">
+            <summary>
+            Gets the types this stager can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Stagers.Vector3Serializer">
+            <summary>
+            Handles serialization of <see cref="T:UnityEngine.Vector3"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IStager"/>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.Vector3Serializer.StageValue(System.String,System.Object)">
+            <summary>
+            Stages the value.
+            </summary>
+            <param name="name">The name to give the resulting <see cref="T:Apex.Serialization.StageItem"/>.</param>
+            <param name="value">The value to stage</param>
+            <returns>
+            The element containing the staged value.
+            </returns>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.Vector3Serializer.UnstageValue(Apex.Serialization.StageItem,System.Type)">
+            <summary>
+            Unstages the value.
+            </summary>
+            <param name="item">The stage item to unstage.</param>
+            <param name="targetType">Type of the value.</param>
+            <returns>
+            The unstaged value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Stagers.Vector3Serializer.handledTypes">
+            <summary>
+            Gets the types this stager can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+        <member name="T:Apex.Serialization.Stagers.Vector4Serializer">
+            <summary>
+            Handles staging of <see cref="T:UnityEngine.Vector4"/>s.
+            </summary>
+            <seealso cref="T:Apex.Serialization.IStager"/>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.Vector4Serializer.StageValue(System.String,System.Object)">
+            <summary>
+            Stages the value.
+            </summary>
+            <param name="name">The name to give the resulting <see cref="T:Apex.Serialization.StageItem"/>.</param>
+            <param name="value">The value to stage</param>
+            <returns>
+            The element containing the staged value.
+            </returns>
+        </member>
+        <member name="M:Apex.Serialization.Stagers.Vector4Serializer.UnstageValue(Apex.Serialization.StageItem,System.Type)">
+            <summary>
+            Unstages the value.
+            </summary>
+            <param name="item">The stage item to unstage.</param>
+            <param name="targetType">Type of the value.</param>
+            <returns>
+            The unstaged value.
+            </returns>
+        </member>
+        <member name="P:Apex.Serialization.Stagers.Vector4Serializer.handledTypes">
+            <summary>
+            Gets the types this stager can handle.
+            </summary>
+            <value>
+            The handled types.
+            </value>
+        </member>
+    </members>
+</doc>

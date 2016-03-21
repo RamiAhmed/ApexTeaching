@@ -69,6 +69,15 @@
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
     </Reference>
+    <Reference Include="ApexSerialization">
+      <HintPath>Assets\Apex\Apex Binaries\ApexSerialization.dll</HintPath>
+    </Reference>
+    <Reference Include="ApexShared">
+      <HintPath>Assets\Apex\Apex Binaries\ApexShared.dll</HintPath>
+    </Reference>
+    <Reference Include="ApexAI">
+      <HintPath>Assets\Apex\Apex Binaries\ApexAI.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Apex Examples\Apex Teaching\01_FSM\Scripts\FSMAIControllerComponent.cs" />
@@ -99,6 +108,18 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\Example\SteeringScanner.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\MySteerForBlockAvoidance.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\03_Steering\Scripts\MySteerForUnitSeparation.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\AIContext.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\HarvesterAI\CanCarryMoreHarvest.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\ContextProvider.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\HarvesterAI\HarvestResource.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\HarvesterAI\HasOwnNestWithinReturnHarvestRadius.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\HarvesterAI\HasResourceWithinRange.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\HarvesterAI\HasResourceInMemory.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\HarvesterAI\MoveToOwnNest.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\HarvesterAI\NearestResourceScorer.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\HarvesterAI\RichestResourceScorer.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\HarvesterAI\SetBestResourceTarget.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\IsMoving.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIController.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIScannerComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\Base\AIComponentBase.cs" />
@@ -123,6 +144,13 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Visualizers\DestinationVisualizer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Visualizers\ObservationsVisualizer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Visualizers\SteeringVisualizer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Apex\Apex Binaries\ApexAI.XML" />
+    <None Include="Assets\Apex\Apex Binaries\ApexSerialization.XML" />
+    <None Include="Assets\Apex\Apex Binaries\ApexShared.XML" />
+    <None Include="Assets\Apex\Apex Binaries\Editor\ApexAIEditor.XML" />
+    <None Include="Assets\Apex\Apex Binaries\Editor\ApexSharedEditor.XML" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

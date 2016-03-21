@@ -1,0 +1,2677 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ApexAI</name>
+    </assembly>
+    <members>
+        <member name="T:Apex.AI.AILoadBalancer">
+            <summary>
+            Load Balancer for AIs
+            </summary>
+            <seealso cref="T:Apex.LoadBalancing.LoadBalancer"/>
+        </member>
+        <member name="F:Apex.AI.AILoadBalancer.aiLoadBalancer">
+            <summary>
+            The AI load balancer
+            </summary>
+        </member>
+        <member name="M:Apex.AI.AILoadBalancer.#ctor">
+            <summary>
+            Prevents a default instance of the <see cref="T:Apex.AI.AILoadBalancer"/> class from being created.
+            </summary>
+        </member>
+        <member name="T:Apex.AI.AIManager">
+            <summary>
+            Manages AIs and AI clients.
+            </summary>
+        </member>
+        <member name="F:Apex.AI.AIManager.StorageFolder">
+            <summary>
+            The AI storage folder
+            </summary>
+        </member>
+        <member name="F:Apex.AI.AIManager.GetAIClient">
+            <summary>
+            Delegate for resolving AI clients from a Game Object. The default will resolve using the <see cref="T:Apex.AI.Components.UtilityAIComponent"/>.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.AIManager.GetAIClients(System.Guid)">
+            <summary>
+            Gets the list of clients for a given AI. Please note that this is a live list that should not be modified directly.
+            </summary>
+            <param name="aiId">The AI ID.</param>
+            <returns>The list of clients for the specified AI</returns>
+        </member>
+        <member name="M:Apex.AI.AIManager.GetAI(System.Guid)">
+            <summary>
+            Gets an AI by ID.
+            </summary>
+            <param name="id">The ID.</param>
+            <returns>The AI with the specified ID, or null if no match is found.</returns>
+        </member>
+        <member name="M:Apex.AI.AIManager.ExecuteAI(System.Guid,Apex.AI.IAIContext)">
+            <summary>
+            Executes the specified AI once.
+            </summary>
+            <param name="id">The AI ID.</param>
+            <param name="context">The context.</param>
+            <returns><c>true</c> if the AI was found and executed; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Apex.AI.AIManager.EagerLoadAll">
+            <summary>
+            Loads and initializes all AIs. This means that calling <see cref="M:Apex.AI.AIManager.GetAI(System.Guid)"/> will never load AIs on demand and thus won't allocate memory.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.AIManager.Register(Apex.AI.Components.IUtilityAIClient)">
+            <summary>
+            Registers the specified client.
+            </summary>
+            <param name="client">The client.</param>
+        </member>
+        <member name="M:Apex.AI.AIManager.Unregister(Apex.AI.Components.IUtilityAIClient)">
+            <summary>
+            Unregisters the specified client.
+            </summary>
+            <param name="client">The client.</param>
+        </member>
+        <member name="P:Apex.AI.AIManager.allClients">
+            <summary>
+            Gets all registered clients.
+            </summary>
+        </member>
+        <member name="T:Apex.AI.AIManager.AIClientResolver">
+            <summary>
+            Signature of delegate for resolving AI clients from a Game Object.
+            </summary>
+            <param name="host">The host game object for which to obtain the AI Client.</param>
+            <param name="aiId">The AI ID.</param>
+            <returns>The AI client matching the ID, or null if no match is found.</returns>
+        </member>
+        <member name="T:Apex.AI.Components.IContextProvider">
+            <summary>
+            Interface for context provider responsible for supplying the <see cref="T:Apex.AI.IAIContext"/> implementing context instances for AI clients.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.IContextProvider.GetContext(System.Guid)">
+            <summary>
+            Retrieves the context instance. This can be a simple getter or a factory method.
+            </summary>
+            <param name="aiId">The Id of the requesting AI.</param>
+            <returns>The concrete context instance for the requesting AI client.</returns>
+        </member>
+        <member name="T:Apex.AI.Components.IUtilityAIClient">
+            <summary>
+            AI client interface. Controls the AI life cycle of an AI for a single unit.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.IUtilityAIClient.Start">
+            <summary>
+            Starts the AI and sets <see cref="P:Apex.AI.Components.IUtilityAIClient.state"/> to <see cref="F:Apex.AI.Components.UtilityAIClientState.Running"/>. Typically this will also register the client with the <see cref="T:Apex.AI.AIManager"/>.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.IUtilityAIClient.Stop">
+            <summary>
+            Stops the AI for this client and sets <see cref="P:Apex.AI.Components.IUtilityAIClient.state"/> to <see cref="F:Apex.AI.Components.UtilityAIClientState.Stopped"/>. Typically this will also unregister it with the <see cref="T:Apex.AI.AIManager"/>
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.IUtilityAIClient.Execute">
+            <summary>
+            Executes the AI. Typically this is called by whatever manager controls the AI execution cycle.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.IUtilityAIClient.Pause">
+            <summary>
+            Pauses the AI and sets <see cref="P:Apex.AI.Components.IUtilityAIClient.state"/> to <see cref="F:Apex.AI.Components.UtilityAIClientState.Paused"/>, call <see cref="M:Apex.AI.Components.IUtilityAIClient.Resume"/> to resume.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.IUtilityAIClient.Resume">
+            <summary>
+            Resumes the AI and sets <see cref="P:Apex.AI.Components.IUtilityAIClient.state"/> to <see cref="F:Apex.AI.Components.UtilityAIClientState.Running"/> if it was previously <see cref="M:Apex.AI.Components.IUtilityAIClient.Pause"/>d
+            </summary>
+        </member>
+        <member name="P:Apex.AI.Components.IUtilityAIClient.ai">
+            <summary>
+            Gets or sets the AI of the client.
+            </summary>
+        </member>
+        <member name="P:Apex.AI.Components.IUtilityAIClient.state">
+            <summary>
+            Gets the state if the client.
+            </summary>
+        </member>
+        <member name="T:Apex.AI.Components.LoadBalancedUtilityAIClient">
+            <summary>
+            An AI client implementation that schedules the AI to run on interval in the <see cref="T:Apex.LoadBalancing.LoadBalancer"/>.
+            </summary>
+        </member>
+        <member name="T:Apex.AI.Components.UtilityAIClient">
+            <summary>
+            Default base class for AI clients.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIClient.#ctor(System.Guid,Apex.AI.Components.IContextProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.Components.UtilityAIClient"/> class.
+            </summary>
+            <param name="aiId">The AI id.</param>
+            <param name="contextProvider">The context provider.</param>
+            <exception cref="T:System.ArgumentException">Unable to load associated AI.;aiId</exception>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIClient.#ctor(Apex.AI.IUtilityAI,Apex.AI.Components.IContextProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.Components.UtilityAIClient"/> class.
+            </summary>
+            <param name="ai">The AI.</param>
+            <param name="contextProvider">The context provider.</param>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIClient.Start">
+            <summary>
+            Starts the AI and sets <see cref="P:Apex.AI.Components.UtilityAIClient.state"/> to <see cref="F:Apex.AI.Components.UtilityAIClientState.Running"/>. This also registers the client with the <see cref="T:Apex.AI.AIManager"/>.
+            Deriving classes must implement <see cref="M:Apex.AI.Components.UtilityAIClient.OnStart"/> to do the actual starting.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIClient.Stop">
+            <summary>
+            Stops the AI for this client and sets <see cref="P:Apex.AI.Components.UtilityAIClient.state"/> to <see cref="F:Apex.AI.Components.UtilityAIClientState.Stopped"/>. This also unregisters the client with the <see cref="T:Apex.AI.AIManager"/>.
+            Deriving classes must implement <see cref="M:Apex.AI.Components.UtilityAIClient.OnStop"/> to do the actual stopping.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIClient.Pause">
+            <summary>
+            Pauses the AI and sets <see cref="P:Apex.AI.Components.UtilityAIClient.state"/> to <see cref="F:Apex.AI.Components.UtilityAIClientState.Paused"/>, call <see cref="M:Apex.AI.Components.UtilityAIClient.Resume"/> to resume.
+            Deriving classes must implement <see cref="M:Apex.AI.Components.UtilityAIClient.OnPause"/> to do the actual pausing.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIClient.Resume">
+            <summary>
+            Resumes the AI and sets <see cref="P:Apex.AI.Components.UtilityAIClient.state"/> to <see cref="F:Apex.AI.Components.UtilityAIClientState.Running"/> if it was previously <see cref="M:Apex.AI.Components.UtilityAIClient.Pause"/>d.
+            Deriving classes must implement <see cref="M:Apex.AI.Components.UtilityAIClient.OnResume"/> to do the actual resuming.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIClient.Execute">
+            <summary>
+            Executes the AI. Typically this is called by whatever manager controls the AI execution cycle.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIClient.OnStart">
+            <summary>
+            Called after <see cref="M:Apex.AI.Components.UtilityAIClient.Start"/>. Deriving classes should implement additional start-up logic here.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIClient.OnStop">
+            <summary>
+            Called after <see cref="M:Apex.AI.Components.UtilityAIClient.Stop"/>. Deriving classes should implement additional tear-down logic here.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIClient.OnPause">
+            <summary>
+            Called after <see cref="M:Apex.AI.Components.UtilityAIClient.Pause"/>. Deriving classes should implement additional pause logic here.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIClient.OnResume">
+            <summary>
+            Called after <see cref="M:Apex.AI.Components.UtilityAIClient.Resume"/>. Deriving classes should implement additional resume logic here.
+            </summary>
+        </member>
+        <member name="P:Apex.AI.Components.UtilityAIClient.ai">
+            <summary>
+            Gets the AI of the client.
+            </summary>
+        </member>
+        <member name="P:Apex.AI.Components.UtilityAIClient.state">
+            <summary>
+            Gets the state if the client.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.LoadBalancedUtilityAIClient.#ctor(System.Guid,Apex.AI.Components.IContextProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.Components.LoadBalancedUtilityAIClient"/> class, with an execution interval of 1 second and no start delay.
+            </summary>
+            <param name="aiId">The AI id.</param>
+            <param name="contextProvider">The context provider.</param>
+        </member>
+        <member name="M:Apex.AI.Components.LoadBalancedUtilityAIClient.#ctor(Apex.AI.IUtilityAI,Apex.AI.Components.IContextProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.Components.LoadBalancedUtilityAIClient"/> class, with an execution interval of 1 second and no start delay.
+            </summary>
+            <param name="ai">The AI.</param>
+            <param name="contextProvider">The context provider.</param>
+        </member>
+        <member name="M:Apex.AI.Components.LoadBalancedUtilityAIClient.#ctor(System.Guid,Apex.AI.Components.IContextProvider,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.Components.LoadBalancedUtilityAIClient"/> class.
+            </summary>
+            <param name="aiId">The AI identifier.</param>
+            <param name="contextProvider">The context provider.</param>
+            <param name="executionIntervalMin">The minimum execution interval in seconds.</param>
+            <param name="executionIntervalMax">The maximum execution interval in seconds.</param>
+            <param name="startDelayMin">The minimum number of seconds to delay the initial execution of the AI.</param>
+            <param name="startDelayMax">The maximum number of seconds to delay the initial execution of the AI.</param>
+        </member>
+        <member name="M:Apex.AI.Components.LoadBalancedUtilityAIClient.#ctor(Apex.AI.IUtilityAI,Apex.AI.Components.IContextProvider,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.Components.LoadBalancedUtilityAIClient"/> class.
+            </summary>
+            <param name="ai">The AI.</param>
+            <param name="contextProvider">The context provider.</param>
+            <param name="executionIntervalMin">The minimum execution interval in seconds.</param>
+            <param name="executionIntervalMax">The maximum execution interval in seconds.</param>
+            <param name="startDelayMin">The minimum number of seconds to delay the initial execution of the AI.</param>
+            <param name="startDelayMax">The maximum number of seconds to delay the initial execution of the AI.</param>
+        </member>
+        <member name="M:Apex.AI.Components.LoadBalancedUtilityAIClient.OnStart">
+            <summary>
+            Starts the AI.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.LoadBalancedUtilityAIClient.OnStop">
+            <summary>
+            Called after <see cref="M:Apex.AI.Components.IUtilityAIClient.Stop"/>.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.LoadBalancedUtilityAIClient.OnPause">
+            <summary>
+            Called after <see cref="M:Apex.AI.Components.IUtilityAIClient.Pause"/>.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.LoadBalancedUtilityAIClient.OnResume">
+            <summary>
+            Called after <see cref="M:Apex.AI.Components.IUtilityAIClient.Resume"/>.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.LoadBalancedUtilityAIClient.Apex#LoadBalancing#ILoadBalanced#ExecuteUpdate(System.Single,System.Single)">
+            <summary>
+            Executes the update.
+            </summary>
+            <param name="deltaTime">The delta time, i.e. the time passed since the last update.</param>
+            <param name="nextInterval">The time that will pass until the next update.</param>
+            <returns>
+            Can return the next interval by which the update should run. To use the default interval return null.
+            </returns>
+        </member>
+        <member name="P:Apex.AI.Components.LoadBalancedUtilityAIClient.executionIntervalMin">
+            <summary>
+            Gets or sets the minimum execution interval in seconds.
+            If <see cref="P:Apex.AI.Components.LoadBalancedUtilityAIClient.executionIntervalMin"/> and <see cref="P:Apex.AI.Components.LoadBalancedUtilityAIClient.executionIntervalMax"/> differ, the actual interval will be a random value in between the two (inclusive).
+            </summary>
+        </member>
+        <member name="P:Apex.AI.Components.LoadBalancedUtilityAIClient.executionIntervalMax">
+            <summary>
+            Gets or sets the maximum execution interval in seconds.
+            If <see cref="P:Apex.AI.Components.LoadBalancedUtilityAIClient.executionIntervalMin"/> and <see cref="P:Apex.AI.Components.LoadBalancedUtilityAIClient.executionIntervalMax"/> differ, the actual interval will be a random value in between the two (inclusive).
+            </summary>
+        </member>
+        <member name="P:Apex.AI.Components.LoadBalancedUtilityAIClient.startDelayMin">
+            <summary>
+            Gets or sets the minimum number of seconds to delay the initial execution of the AI.
+            If <see cref="P:Apex.AI.Components.LoadBalancedUtilityAIClient.startDelayMin"/> and <see cref="P:Apex.AI.Components.LoadBalancedUtilityAIClient.startDelayMax"/> differ, the actual delay will be a random value in between the two (inclusive).
+            </summary>
+        </member>
+        <member name="P:Apex.AI.Components.LoadBalancedUtilityAIClient.startDelayMax">
+            <summary>
+            Gets or sets the maximum number of seconds to delay the initial execution of the AI.
+            If <see cref="P:Apex.AI.Components.LoadBalancedUtilityAIClient.startDelayMin"/> and <see cref="P:Apex.AI.Components.LoadBalancedUtilityAIClient.startDelayMax"/> differ, the actual delay will be a random value in between the two (inclusive).
+            </summary>
+        </member>
+        <member name="P:Apex.AI.Components.LoadBalancedUtilityAIClient.Apex#LoadBalancing#ILoadBalanced#repeat">
+            <summary>
+            Gets a value indicating whether to repeatedly update this entity each interval.
+            </summary>
+            <value>
+            <c>true</c> if the entity should be updated each interval; <c>false</c> if it should only be updated once and then removed from the load balancer.
+            </value>
+        </member>
+        <member name="T:Apex.AI.Components.UtilityAIClientState">
+            <summary>
+            Represents the state of an <see cref="T:Apex.AI.Components.IUtilityAIClient"/>
+            </summary>
+        </member>
+        <member name="T:Apex.AI.Components.UtilityAIComponent">
+            <summary>
+            Component used to attach AIs to an entity. 
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Components.UtilityAIComponent.aiConfigs">
+            <summary>
+            The ai configurations
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIComponent.GetClient(System.Guid)">
+            <summary>
+            Gets the actual AI client for a specific AI.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIComponent.Pause">
+            <summary>
+            Pauses all AI clients.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIComponent.Resume">
+            <summary>
+            Resumes all previously paused AI clients.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Components.UtilityAIComponent.OnStartAndEnable">
+            <summary>
+            Called on Start and OnEnable, but only one of the two, i.e. at startup it is only called once.
+            </summary>
+        </member>
+        <member name="P:Apex.AI.Components.UtilityAIComponent.clients">
+            <summary>
+            Gets all the AI clients.
+            </summary>
+        </member>
+        <member name="T:Apex.AI.Components.UtilityAIConfig">
+            <summary>
+            Configuration settings for AIs 
+            </summary>
+        </member>
+        <member name="T:Apex.AI.ActionBase">
+            <summary>
+            Base class for AI actions
+            </summary>
+            <seealso cref="T:Apex.AI.IAction"/>
+        </member>
+        <member name="T:Apex.AI.IAction">
+            <summary>
+            Interface for Actions
+            </summary>
+        </member>
+        <member name="M:Apex.AI.IAction.Execute(Apex.AI.IAIContext)">
+            <summary>
+            Executes the action.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.ActionBase.Execute(Apex.AI.IAIContext)">
+            <summary>
+            Executes the action.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="T:Apex.AI.ActionBase`1">
+            <summary>
+            Base class for AI actions
+            </summary>
+            <typeparam name="TContext">The type of the context.</typeparam>
+            <seealso cref="T:Apex.AI.IAction"/>
+        </member>
+        <member name="M:Apex.AI.ActionBase`1.Apex#AI#IAction#Execute(Apex.AI.IAIContext)">
+            <summary>
+            Executes the action.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.ActionBase`1.Execute(`0)">
+            <summary>
+            Executes the action.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="T:Apex.AI.ActionWithOptions`1">
+            <summary>
+            Base class for an AI action that can select from a number of options to use in its execution.
+            </summary>
+            <typeparam name="TOption">The type of the option.</typeparam>
+            <seealso cref="T:Apex.AI.IAction"/>
+            <seealso cref="T:Apex.AI.ICanClone"/>
+        </member>
+        <member name="T:Apex.AI.ICanClone">
+            <summary>
+            Interface for entities that can clone or transfer settings from another entity to itself.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.ICanClone.CloneFrom(System.Object)">
+            <summary>
+            Clones or transfers settings from the other entity to itself.
+            </summary>
+            <param name="other">The other entity.</param>
+        </member>
+        <member name="F:Apex.AI.ActionWithOptions`1._scorers">
+            <summary>
+            The child options scorers used to select the option(s) used in execution of the action.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.ActionWithOptions`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.ActionWithOptions`1"/> class.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.ActionWithOptions`1.GetBest(Apex.AI.IAIContext,System.Collections.Generic.IList{`0})">
+            <summary>
+            Gets the best option, i.e. the option that was given the highest combined score by the <see cref="P:Apex.AI.ActionWithOptions`1.scorers"/>.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="options">The options from which to find the best.</param>
+            <returns>The best option.</returns>
+        </member>
+        <member name="M:Apex.AI.ActionWithOptions`1.GetAllScores(Apex.AI.IAIContext,System.Collections.Generic.IList{`0},System.Collections.Generic.IList{Apex.AI.ScoredOption{`0}})">
+            <summary>
+            Gets all options with the score they received from the <see cref="P:Apex.AI.ActionWithOptions`1.scorers"/>.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="options">The options.</param>
+            <param name="optionsBuffer">The buffer which is populated with the scored options.</param>
+        </member>
+        <member name="M:Apex.AI.ActionWithOptions`1.Execute(Apex.AI.IAIContext)">
+            <summary>
+            Executes the action.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.ActionWithOptions`1.CloneFrom(System.Object)">
+            <summary>
+            Clones or transfers settings from the other entity to itself.
+            </summary>
+            <param name="other">The other entity.</param>
+        </member>
+        <member name="P:Apex.AI.ActionWithOptions`1.scorers">
+            <summary>
+            Gets the child options scorers used to select the option(s) used in execution of the action.
+            </summary>
+            <value>
+            The scorers.
+            </value>
+        </member>
+        <member name="T:Apex.AI.AICategoryAttribute">
+            <summary>
+            Attribute used to categorize AI entities.
+            </summary>
+            <seealso cref="T:System.Attribute"/>
+        </member>
+        <member name="M:Apex.AI.AICategoryAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.AICategoryAttribute"/> class.
+            </summary>
+            <param name="name">The category name.</param>
+        </member>
+        <member name="M:Apex.AI.AICategoryAttribute.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.AICategoryAttribute"/> class.
+            </summary>
+            <param name="name">The category name.</param>
+            <param name="sortOrder">The sort order.</param>
+        </member>
+        <member name="P:Apex.AI.AICategoryAttribute.name">
+            <summary>
+            Gets the category name.
+            </summary>
+            <value>
+            The category name.
+            </value>
+        </member>
+        <member name="P:Apex.AI.AICategoryAttribute.sortOrder">
+            <summary>
+            Gets the sort order.
+            </summary>
+            <value>
+            The sort order.
+            </value>
+        </member>
+        <member name="T:Apex.AI.AIExecuteAction">
+            <summary>
+            An AI action that executes another AI once. This is similar to an <see cref="T:Apex.AI.AILinkAction"/> but this can be made part of a <see cref="T:Apex.AI.CompositeAction"/>.
+            </summary>
+            <seealso cref="T:Apex.AI.IAction"/>
+            <seealso cref="T:Apex.Serialization.IInitializeAfterDeserialization"/>
+        </member>
+        <member name="M:Apex.AI.AIExecuteAction.Execute(Apex.AI.IAIContext)">
+            <summary>
+            Executes the action.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.AIExecuteAction.Initialize(System.Object)">
+            <summary>
+            Will be called by the engine after deserialization of the AI is complete, allowing the implementing entity to initialize itself before the AI starts running.
+            </summary>
+            <param name="rootObject">The parent AI.</param>
+        </member>
+        <member name="T:Apex.AI.AILinkAction">
+            <summary>
+            An AI action that executes another AI.
+            </summary>
+            <seealso cref="T:Apex.AI.IAction"/>
+            <seealso cref="T:Apex.Serialization.IInitializeAfterDeserialization"/>
+        </member>
+        <member name="M:Apex.AI.AILinkAction.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.AILinkAction"/> class.
+            </summary>
+            <param name="aiId">The AI identifier.</param>
+        </member>
+        <member name="M:Apex.AI.AILinkAction.Execute(Apex.AI.IAIContext)">
+            <summary>
+            Executes the action.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.AILinkAction.Apex#Serialization#IInitializeAfterDeserialization#Initialize(System.Object)">
+            <summary>
+            Will be called by the engine after deserialization of the AI is complete, allowing the implementing entity to initialize itself before the AI starts running.
+            </summary>
+            <param name="rootObject">The parent AI.</param>
+        </member>
+        <member name="P:Apex.AI.AILinkAction.aiId">
+            <summary>
+            Gets or sets the AI identifier.
+            </summary>
+            <value>
+            The AI identifier.
+            </value>
+        </member>
+        <member name="T:Apex.AI.ISelect">
+            <summary>
+            Interface for entities that select an <see cref="T:Apex.AI.IAction"/> to execute.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.ISelect.Select(Apex.AI.IAIContext)">
+            <summary>
+            Selects the action for execution, given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>The action to execute.</returns>
+        </member>
+        <member name="P:Apex.AI.ISelect.id">
+            <summary>
+            Gets the identifier of the entity.
+            </summary>
+            <value>
+            The identifier.
+            </value>
+        </member>
+        <member name="T:Apex.AI.BasicExtensions">
+            <summary>
+            A range of basic extensions.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.BasicExtensions.ExecuteOnce(Apex.AI.IUtilityAI,Apex.AI.IAIContext)">
+            <summary>
+            Executes an AI once.
+            </summary>
+            <param name="ai">The AI.</param>
+            <param name="context">The context.</param>
+            <returns><c>true</c> if an action was selected and executed; otherwise <c>false</c></returns>
+        </member>
+        <member name="T:Apex.AI.CompositeAction">
+            <summary>
+            An AI action that is comprised of one or more other actions.
+            </summary>
+            <seealso cref="T:Apex.AI.IAction"/>
+            <seealso cref="T:Apex.AI.ICanClone"/>
+        </member>
+        <member name="F:Apex.AI.CompositeAction._actions">
+            <summary>
+            The child actions
+            </summary>
+        </member>
+        <member name="M:Apex.AI.CompositeAction.Execute(Apex.AI.IAIContext)">
+            <summary>
+            Executes the action, which means it executes each child in sequence.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.CompositeAction.CloneFrom(System.Object)">
+            <summary>
+            Clones or transfers settings from the other entity to itself.
+            </summary>
+            <param name="other">The other entity.</param>
+        </member>
+        <member name="P:Apex.AI.CompositeAction.actions">
+            <summary>
+            Gets the child actions.
+            </summary>
+            <value>
+            The actions.
+            </value>
+        </member>
+        <member name="T:Apex.AI.CompositeAllOrNothingQualifier">
+            <summary>
+            A composite qualifier whose score is either the sum off all its child scorers or 0 if one or more scorers score below the threshold.
+            </summary>
+            <seealso cref="T:Apex.AI.CompositeQualifier"/>
+        </member>
+        <member name="T:Apex.AI.CompositeQualifier">
+            <summary>
+            A base class for Qualifiers that base their score on a number of child <see cref="T:Apex.AI.IContextualScorer"/>s.
+            </summary>
+            <seealso cref="T:Apex.AI.IQualifier"/>
+            <seealso cref="T:Apex.AI.ICompositeScorer"/>
+            <seealso cref="T:Apex.AI.ICanClone"/>
+        </member>
+        <member name="T:Apex.AI.IQualifier">
+            <summary>
+            Interface for Qualifiers
+            </summary>
+            <seealso cref="T:Apex.AI.ICanBeDisabled"/>
+        </member>
+        <member name="T:Apex.AI.ICanBeDisabled">
+            <summary>
+            Interface for entities that can be disabled
+            </summary>
+        </member>
+        <member name="P:Apex.AI.ICanBeDisabled.isDisabled">
+            <summary>
+            Gets or sets a value indicating whether this instance is disabled.
+            </summary>
+            <value>
+            <c>true</c> if this instance is disabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:Apex.AI.IQualifier.Score(Apex.AI.IAIContext)">
+            <summary>
+            Calculates the score for this qualifier given the provided context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>The score.</returns>
+        </member>
+        <member name="P:Apex.AI.IQualifier.action">
+            <summary>
+            Gets or sets the associated action.
+            </summary>
+            <value>
+            The action.
+            </value>
+        </member>
+        <member name="T:Apex.AI.ICompositeScorer">
+            <summary>
+            Interface for scorers that themselves calculate a score based on the scores of <see cref="T:Apex.AI.IContextualScorer"/>s.
+            </summary>
+            <seealso cref="T:Apex.AI.CompositeQualifier"/>
+        </member>
+        <member name="M:Apex.AI.ICompositeScorer.Score(Apex.AI.IAIContext,System.Collections.Generic.IList{Apex.AI.IContextualScorer})">
+            <summary>
+            Calculates a score using the supplied scorers given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="scorers">The scorers.</param>
+            <returns>The score.</returns>
+        </member>
+        <member name="P:Apex.AI.ICompositeScorer.scorers">
+            <summary>
+            Gets the scorers that this composite uses.
+            </summary>
+            <value>
+            The scorers.
+            </value>
+        </member>
+        <member name="F:Apex.AI.CompositeQualifier._scorers">
+            <summary>
+            The scorers on which to base the final score.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.CompositeQualifier.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.CompositeQualifier"/> class.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.CompositeQualifier.Score(Apex.AI.IAIContext)">
+            <summary>
+            Calculates the score for this qualifier given the provided context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="M:Apex.AI.CompositeQualifier.Score(Apex.AI.IAIContext,System.Collections.Generic.IList{Apex.AI.IContextualScorer})">
+            <summary>
+            Calculates a score using the supplied scorers given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="scorers">The scorers.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="M:Apex.AI.CompositeQualifier.CloneFrom(System.Object)">
+            <summary>
+            Clones or transfers settings from the other entity to itself.
+            </summary>
+            <param name="other">The other entity.</param>
+        </member>
+        <member name="P:Apex.AI.CompositeQualifier.isDisabled">
+            <summary>
+            Gets or sets a value indicating whether this instance is disabled.
+            </summary>
+            <value>
+            <c>true</c> if this instance is disabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Apex.AI.CompositeQualifier.action">
+            <summary>
+            Gets or sets the associated action.
+            </summary>
+            <value>
+            The action.
+            </value>
+        </member>
+        <member name="P:Apex.AI.CompositeQualifier.scorers">
+            <summary>
+            Gets the scorers that this composite uses.
+            </summary>
+            <value>
+            The scorers.
+            </value>
+        </member>
+        <member name="F:Apex.AI.CompositeAllOrNothingQualifier.threshold">
+            <summary>
+            The threshold, which if any child scorer scores below this, the score of this qualifier will be 0.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.CompositeAllOrNothingQualifier.Score(Apex.AI.IAIContext,System.Collections.Generic.IList{Apex.AI.IContextualScorer})">
+            <summary>
+            Calculates a score using the supplied scorers given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="scorers">The scorers.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="T:Apex.AI.CompositePriorityQualifier">
+            <summary>
+            Composite qualifier whose score is the sum of scorer scores until one scorer scores below the threshold.
+            </summary>
+            <seealso cref="T:Apex.AI.CompositeQualifier"/>
+        </member>
+        <member name="F:Apex.AI.CompositePriorityQualifier.threshold">
+            <summary>
+            The threshold, which will stop summation of scores if/once the first scorer scores below this.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.CompositePriorityQualifier.Score(Apex.AI.IAIContext,System.Collections.Generic.IList{Apex.AI.IContextualScorer})">
+            <summary>
+            Calculates a score using the supplied scorers given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="scorers">The scorers.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="T:Apex.AI.CompositeScoreQualifier">
+            <summary>
+            A composite qualifier whose score is the sum of child scorers' scores.
+            </summary>
+            <seealso cref="T:Apex.AI.CompositeQualifier"/>
+        </member>
+        <member name="M:Apex.AI.CompositeScoreQualifier.Score(Apex.AI.IAIContext,System.Collections.Generic.IList{Apex.AI.IContextualScorer})">
+            <summary>
+            Calculates a score using the supplied scorers given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="scorers">The scorers.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="T:Apex.AI.OptionScorerBase`2">
+            <summary>
+            Base class for option scorers used by <see cref="T:Apex.AI.ActionWithOptions`1"/>
+            </summary>
+            <typeparam name="T">The type of the option</typeparam>
+            <typeparam name="TContext">The type of the context.</typeparam>
+            <seealso cref="T:Apex.AI.IOptionScorer`1"/>
+        </member>
+        <member name="T:Apex.AI.IOptionScorer`1">
+            <summary>
+            Interface for options scorers.
+            </summary>
+            <typeparam name="T">The type of the option.</typeparam>
+            <seealso cref="T:Apex.AI.ICanBeDisabled"/>
+        </member>
+        <member name="M:Apex.AI.IOptionScorer`1.Score(Apex.AI.IAIContext,`0)">
+            <summary>
+            Calculates the score for the option given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="option">The option to score.</param>
+            <returns>The score.</returns>
+        </member>
+        <member name="M:Apex.AI.OptionScorerBase`2.Apex#AI#IOptionScorer{T}#Score(Apex.AI.IAIContext,`0)">
+            <summary>
+            Calculates the score for the option given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="option">The option to score.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="M:Apex.AI.OptionScorerBase`2.Score(`1,`0)">
+            <summary>
+            Calculates the score for the option given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="option">The option to score.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="P:Apex.AI.OptionScorerBase`2.isDisabled">
+            <summary>
+            Gets or sets a value indicating whether this instance is disabled.
+            </summary>
+            <value>
+            <c>true</c> if this instance is disabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Apex.AI.OptionScorerBase`1">
+            <summary>
+            Base class for option scorers used by <see cref="T:Apex.AI.ActionWithOptions`1"/>
+            </summary>
+            <typeparam name="T"></typeparam>
+            <seealso cref="T:Apex.AI.IOptionScorer`1"/>
+        </member>
+        <member name="M:Apex.AI.OptionScorerBase`1.Score(Apex.AI.IAIContext,`0)">
+            <summary>
+            Calculates the score for the option given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="option">The option to score.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="P:Apex.AI.OptionScorerBase`1.isDisabled">
+            <summary>
+            Gets or sets a value indicating whether this instance is disabled.
+            </summary>
+            <value>
+            <c>true</c> if this instance is disabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Apex.AI.ContextualScorerBase">
+            <summary>
+            Base class for contextual scorers used by <see cref="T:Apex.AI.ICompositeScorer"/>s
+            </summary>
+            <seealso cref="T:Apex.AI.IContextualScorer"/>
+        </member>
+        <member name="T:Apex.AI.IContextualScorer">
+            <summary>
+            Interface for contextual scorers. 
+            </summary>
+            <seealso cref="T:Apex.AI.ICanBeDisabled"/>
+            <seealso cref="T:Apex.AI.ICompositeScorer"/>
+        </member>
+        <member name="M:Apex.AI.IContextualScorer.Score(Apex.AI.IAIContext)">
+            <summary>
+            Calculates a score given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>The score.</returns>
+        </member>
+        <member name="F:Apex.AI.ContextualScorerBase.score">
+            <summary>
+            The base or default score
+            </summary>
+        </member>
+        <member name="M:Apex.AI.ContextualScorerBase.Score(Apex.AI.IAIContext)">
+            <summary>
+            Calculates a score given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="P:Apex.AI.ContextualScorerBase.isDisabled">
+            <summary>
+            Gets or sets a value indicating whether this instance is disabled.
+            </summary>
+            <value>
+            <c>true</c> if this instance is disabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Apex.AI.ContextualScorerBase`1">
+            <summary>
+            Base class for contextual scorers used by <see cref="T:Apex.AI.ICompositeScorer"/>s
+            </summary>
+            <typeparam name="TContext">The type of the context.</typeparam>
+            <seealso cref="T:Apex.AI.IContextualScorer"/>
+        </member>
+        <member name="F:Apex.AI.ContextualScorerBase`1.score">
+            <summary>
+            The base or default score
+            </summary>
+        </member>
+        <member name="M:Apex.AI.ContextualScorerBase`1.Apex#AI#IContextualScorer#Score(Apex.AI.IAIContext)">
+            <summary>
+            Calculates a score given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="M:Apex.AI.ContextualScorerBase`1.Score(`0)">
+            <summary>
+            Calculates a score given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="P:Apex.AI.ContextualScorerBase`1.isDisabled">
+            <summary>
+            Gets or sets a value indicating whether this instance is disabled.
+            </summary>
+            <value>
+            <c>true</c> if this instance is disabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Apex.DataStructures.CircularStack`1">
+            <summary>
+            A circular stack ADT, i.e. fixed size.
+            </summary>
+            <typeparam name="T">The item type</typeparam>
+        </member>
+        <member name="M:Apex.DataStructures.CircularStack`1.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.DataStructures.CircularStack`1"/> class.
+            </summary>
+            <param name="capacity">The capacity.</param>
+        </member>
+        <member name="M:Apex.DataStructures.CircularStack`1.Clear">
+            <summary>
+            Clears this instance.
+            </summary>
+        </member>
+        <member name="M:Apex.DataStructures.CircularStack`1.Peek">
+            <summary>
+            Returns the item at the top of the stack, but does not remove it.
+            </summary>
+            <returns>The item at the top of the stack.</returns>
+            <exception cref="T:System.InvalidOperationException">The stack is empty.</exception>
+        </member>
+        <member name="M:Apex.DataStructures.CircularStack`1.Pop">
+            <summary>
+            Removes and returns the item at the top of the stack.
+            </summary>
+            <returns>The item at the top of the stack</returns>
+            <exception cref="T:System.InvalidOperationException">The stack is empty.</exception>
+        </member>
+        <member name="M:Apex.DataStructures.CircularStack`1.Push(`0)">
+            <summary>
+            Pushes the specified item onto the stack.
+            </summary>
+            <param name="item">The item.</param>
+        </member>
+        <member name="P:Apex.DataStructures.CircularStack`1.count">
+            <summary>
+            Gets the count.
+            </summary>
+            <value>
+            The count.
+            </value>
+        </member>
+        <member name="T:Apex.DataStructures.IQueue`1">
+            <summary>
+            Interface for a typed Queue
+            </summary>
+            <typeparam name="T">The type stored.</typeparam>
+        </member>
+        <member name="M:Apex.DataStructures.IQueue`1.Enqueue(`0)">
+            <summary>
+            Enqueues the specified object.
+            </summary>
+            <param name="obj">The object to add to the queue.</param>
+        </member>
+        <member name="M:Apex.DataStructures.IQueue`1.Dequeue">
+            <summary>
+            Removes the first item in the queue and returns it.
+            </summary>
+            <returns>The first item in the queue.</returns>
+        </member>
+        <member name="T:Apex.DataStructures.KeyedQueue`2">
+            <summary>
+            A combination of a queue and a hashset. Lookups are O(1) and the data structure is indexable.
+            </summary>
+            <typeparam name="T">The value type</typeparam>
+            <typeparam name="TKey">The key type</typeparam>
+        </member>
+        <member name="M:Apex.DataStructures.KeyedQueue`2.#ctor(System.Func{`0,`1},System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.DataStructures.KeyedQueue`2"/> class.
+            </summary>
+            <param name="keyProvider">The function to select the key to use for the object stored in the queue.</param>
+            <param name="strictSet">If <see langword="true"/> the queue will only accept a given object once, even if the object is no longer queued the same object cannot be added again.</param>
+        </member>
+        <member name="M:Apex.DataStructures.KeyedQueue`2.#ctor(System.Int32,System.Func{`0,`1},System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.DataStructures.KeyedQueue`2"/> class.
+            </summary>
+            <param name="capacity">The capacity.</param>
+            <param name="keyProvider">The function to select the key to use for the object stored in the queue.</param>
+            <param name="strictSet">If <see langword="true"/> the queue will only accept a given object once, even if the object is no longer queued the same object cannot be added again.</param>
+        </member>
+        <member name="M:Apex.DataStructures.KeyedQueue`2.Enqueue(`0)">
+            <summary>
+            Enqueues the specified object.
+            </summary>
+            <param name="obj">The object.</param>
+        </member>
+        <member name="M:Apex.DataStructures.KeyedQueue`2.Dequeue">
+            <summary>
+            Removes the first item in the queue and returns it.
+            </summary>
+            <returns>
+            The first item in the queue.
+            </returns>
+        </member>
+        <member name="M:Apex.DataStructures.KeyedQueue`2.Contains(`0)">
+            <summary>
+            Determines whether the set contains the object, or once did if the queue was created as a strict set.
+            </summary>
+            <param name="obj">The object.</param>
+            <returns><c>true</c> if the object is (or was) contained in the set; otherwise <c>false</c></returns>
+        </member>
+        <member name="M:Apex.DataStructures.KeyedQueue`2.Clear">
+            <summary>
+            Clears this instance.
+            </summary>
+        </member>
+        <member name="P:Apex.DataStructures.KeyedQueue`2.count">
+            <summary>
+            Gets the count.
+            </summary>
+            <value>
+            The count.
+            </value>
+        </member>
+        <member name="P:Apex.DataStructures.KeyedQueue`2.Item(System.Int32)">
+            <summary>
+            Gets the value with the specified index.
+            </summary>
+            <param name="idx">The index.</param>
+            <returns>The value at the index</returns>
+        </member>
+        <member name="T:Apex.DataStructures.SafeDynamicArray`1">
+            <summary>
+            A wrapper around a <see cref="T:Apex.DataStructures.IDynamicArray`1"/> which ensures that iteration never returns a null item.
+            </summary>
+            <typeparam name="T">The type stored</typeparam>
+            <seealso cref="T:Apex.DataStructures.IDynamicArray`1"/>
+        </member>
+        <member name="M:Apex.DataStructures.SafeDynamicArray`1.#ctor(Apex.DataStructures.IDynamicArray{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.DataStructures.SafeDynamicArray`1"/> class.
+            </summary>
+            <param name="array">The array to wrap.</param>
+        </member>
+        <member name="M:Apex.DataStructures.SafeDynamicArray`1.Add(`0)">
+            <summary>
+            Adds the specified item.
+            </summary>
+            <param name="item">The item.</param>
+        </member>
+        <member name="M:Apex.DataStructures.SafeDynamicArray`1.Remove(`0)">
+            <summary>
+            Removes the specified item.
+            </summary>
+            <param name="item">The item.</param>
+            <returns><c>true</c> if found and removed; otherwise <c>false</c></returns>
+        </member>
+        <member name="M:Apex.DataStructures.SafeDynamicArray`1.RemoveAt(System.Int32)">
+            <summary>
+            Removes the item at the specified index.
+            </summary>
+            <param name="index">The index.</param>
+        </member>
+        <member name="M:Apex.DataStructures.SafeDynamicArray`1.Clear">
+            <summary>
+            Clears the array.
+            </summary>
+        </member>
+        <member name="M:Apex.DataStructures.SafeDynamicArray`1.EnsureCapacity(System.Int32)">
+            <summary>
+            Ensures the capacity.
+            </summary>
+            <param name="capacity">The capacity.</param>
+        </member>
+        <member name="M:Apex.DataStructures.SafeDynamicArray`1.System#Collections#Generic#IEnumerable{T}#GetEnumerator">
+            <summary>
+            Gets the enumerator. This will skip any null items.
+            </summary>
+            <returns>The enumerator</returns>
+        </member>
+        <member name="M:Apex.DataStructures.SafeDynamicArray`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Gets the enumerator. This will skip any null items.
+            </summary>
+            <returns>The enumerator</returns>
+        </member>
+        <member name="P:Apex.DataStructures.SafeDynamicArray`1.count">
+            <summary>
+            Gets the count.
+            </summary>
+            <value>
+            The count.
+            </value>
+        </member>
+        <member name="P:Apex.DataStructures.SafeDynamicArray`1.Item(System.Int32)">
+            <summary>
+            Gets the item at the specified index. This is not safe from nulls.
+            </summary>
+            <param name="idx">The index.</param>
+            <returns>The item at the index</returns>
+        </member>
+        <member name="T:Apex.DataStructures.SortedArray`1">
+            <summary>
+            Basic implementation of a sorted array that forgoes most safety checks and relies on a certain usage pattern.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Apex.DataStructures.SortedArray`1.#ctor(System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.DataStructures.SortedArray`1"/> class.
+            </summary>
+            <param name="sortComparer">The sort comparer.</param>
+        </member>
+        <member name="M:Apex.DataStructures.SortedArray`1.#ctor(System.Int32,System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.DataStructures.SortedArray`1"/> class.
+            </summary>
+            <param name="capacity">The capacity.</param>
+            <param name="sortComparer">The sort comparer.</param>
+        </member>
+        <member name="M:Apex.DataStructures.SortedArray`1.#ctor(`0[],System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.DataStructures.SortedArray`1"/> class.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="sortComparer">The sort comparer.</param>
+        </member>
+        <member name="M:Apex.DataStructures.SortedArray`1.#ctor(Apex.DataStructures.IIndexable{`0},System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.DataStructures.SortedArray`1"/> class.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="sortComparer">The sort comparer.</param>
+        </member>
+        <member name="M:Apex.DataStructures.SortedArray`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.DataStructures.SortedArray`1"/> class.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="sortComparer">The sort comparer.</param>
+        </member>
+        <member name="M:Apex.DataStructures.SortedArray`1.Add(`0)">
+            <summary>
+            Adds the specified item.
+            </summary>
+            <param name="item">The item.</param>
+        </member>
+        <member name="M:Apex.DataStructures.SortedArray`1.AddRange(Apex.DataStructures.IIndexable{`0})">
+            <summary>
+            Adds the range of items.
+            </summary>
+            <param name="items">The items.</param>
+        </member>
+        <member name="M:Apex.DataStructures.SortedArray`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds the range of items.
+            </summary>
+            <param name="items">The items.</param>
+        </member>
+        <member name="M:Apex.DataStructures.SortedArray`1.Remove(`0)">
+            <summary>
+            Removes the specified item.
+            </summary>
+            <param name="item">The item.</param>
+            <returns><c>true</c> if found and removed; otherwise <c>false</c></returns>
+        </member>
+        <member name="M:Apex.DataStructures.SortedArray`1.RemoveAt(System.Int32)">
+            <summary>
+            Removes the item at the specified index.
+            </summary>
+            <param name="index">The index.</param>
+        </member>
+        <member name="M:Apex.DataStructures.SortedArray`1.Clear">
+            <summary>
+            Clears the array.
+            </summary>
+        </member>
+        <member name="M:Apex.DataStructures.SortedArray`1.EnsureCapacity(System.Int32)">
+            <summary>
+            Ensures a certain capacity of the array, i.e. resizes the array to hold the specified number of items if not already able to.
+            </summary>
+            <param name="capacity">The capacity to ensure.</param>
+        </member>
+        <member name="P:Apex.DataStructures.SortedArray`1.count">
+            <summary>
+            Gets the count.
+            </summary>
+            <value>
+            The count.
+            </value>
+        </member>
+        <member name="P:Apex.DataStructures.SortedArray`1.Item(System.Int32)">
+            <summary>
+            Gets the value with the specified index. There is no bounds checking on get.
+            </summary>
+            <param name="idx">The index.</param>
+            <returns>The value at the index</returns>
+        </member>
+        <member name="T:Apex.AI.DefaultQualifier">
+            <summary>
+            Represents the default Qualifier of a <see cref="T:Apex.AI.Selector"/>. If no other Qualifiers are selected, this is selected.
+            </summary>
+            <seealso cref="T:Apex.AI.QualifierBase"/>
+            <seealso cref="T:Apex.AI.IDefaultQualifier"/>
+        </member>
+        <member name="T:Apex.AI.QualifierBase">
+            <summary>
+            Base class for Qualifiers
+            </summary>
+            <seealso cref="T:Apex.AI.IQualifier"/>
+        </member>
+        <member name="M:Apex.AI.QualifierBase.Score(Apex.AI.IAIContext)">
+            <summary>
+            Calculates the score for this qualifier given the provided context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="P:Apex.AI.QualifierBase.isDisabled">
+            <summary>
+            Gets or sets a value indicating whether this instance is disabled.
+            </summary>
+            <value>
+            <c>true</c> if this instance is disabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Apex.AI.QualifierBase.action">
+            <summary>
+            Gets or sets the associated action.
+            </summary>
+            <value>
+            The action.
+            </value>
+        </member>
+        <member name="T:Apex.AI.IDefaultQualifier">
+            <summary>
+            Interface for default qualifiers.
+            </summary>
+            <seealso cref="T:Apex.AI.IQualifier"/>
+        </member>
+        <member name="P:Apex.AI.IDefaultQualifier.score">
+            <summary>
+            Gets or sets the default score.
+            </summary>
+            <value>
+            The score.
+            </value>
+        </member>
+        <member name="M:Apex.AI.DefaultQualifier.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.DefaultQualifier"/> class.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.DefaultQualifier.Score(Apex.AI.IAIContext)">
+            <summary>
+            Calculates the score for this qualifier given the provided context. This will always be <see cref="P:Apex.AI.DefaultQualifier.score"/>
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="P:Apex.AI.DefaultQualifier.score">
+            <summary>
+            Gets or sets the default score.
+            </summary>
+            <value>
+            The score.
+            </value>
+        </member>
+        <member name="T:Apex.AI.FixedScoreQualifier">
+            <summary>
+            A qualifier that always returns the same score.
+            </summary>
+            <seealso cref="T:Apex.AI.QualifierBase"/>
+        </member>
+        <member name="F:Apex.AI.FixedScoreQualifier.score">
+            <summary>
+            The score
+            </summary>
+        </member>
+        <member name="M:Apex.AI.FixedScoreQualifier.Score(Apex.AI.IAIContext)">
+            <summary>
+            Calculates the score for this qualifier given the provided context. This will always be <see cref="F:Apex.AI.FixedScoreQualifier.score"/>
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="T:Apex.AI.FriendlyNameAttribute">
+            <summary>
+            An attribute to decorate AI entity fields and properties to give them a friendly name, description and sort order in the Editor inspector UI.
+            </summary>
+            <seealso cref="T:System.Attribute"/>
+        </member>
+        <member name="M:Apex.AI.FriendlyNameAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.FriendlyNameAttribute"/> class.
+            </summary>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:Apex.AI.FriendlyNameAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.FriendlyNameAttribute"/> class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="description">The description.</param>
+        </member>
+        <member name="P:Apex.AI.FriendlyNameAttribute.name">
+            <summary>
+            Gets the name.
+            </summary>
+            <value>
+            The name.
+            </value>
+        </member>
+        <member name="P:Apex.AI.FriendlyNameAttribute.description">
+            <summary>
+            Gets or sets the description.
+            </summary>
+            <value>
+            The description.
+            </value>
+        </member>
+        <member name="P:Apex.AI.FriendlyNameAttribute.sortOrder">
+            <summary>
+            Gets or sets the sort order.
+            </summary>
+            <value>
+            The sort order.
+            </value>
+        </member>
+        <member name="T:Apex.AI.HiddenAttribute">
+            <summary>
+            Attribute used to mark an entity type, field or property as hidden. If hidden it won't be shown in the editor UI.
+            </summary>
+            <seealso cref="T:System.Attribute"/>
+        </member>
+        <member name="T:Apex.AI.IAIContext">
+            <summary>
+            Base interface for all AI contexts. An AI context can take any form desired, it simply needs to implement this interface.
+            </summary>
+        </member>
+        <member name="T:Apex.AI.IHaveFriendlyName">
+            <summary>
+            Interface for elements that want to expose a friendly name and description.
+            </summary>
+        </member>
+        <member name="P:Apex.AI.IHaveFriendlyName.friendlyName">
+            <summary>
+            Gets the friendly name.
+            </summary>
+            <value>
+            The friendly name.
+            </value>
+        </member>
+        <member name="P:Apex.AI.IHaveFriendlyName.description">
+            <summary>
+            Gets the description.
+            </summary>
+            <value>
+            The description.
+            </value>
+        </member>
+        <member name="T:Apex.AI.IRequireTermination">
+            <summary>
+            Interface to be implemented by <see cref="T:Apex.AI.IAction"/>s that need to be told when they are no longer the active action.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.IRequireTermination.Terminate">
+            <summary>
+            Called when the action is no longer the active action, i.e. when another action is chosen for execution.
+            </summary>
+        </member>
+        <member name="T:Apex.AI.IUtilityAI">
+            <summary>
+            Interface that represents a Utility AI implementation.
+            </summary>
+            <seealso cref="T:Apex.AI.ISelect"/>
+        </member>
+        <member name="M:Apex.AI.IUtilityAI.AddSelector(Apex.AI.Selector)">
+            <summary>
+            Adds the selector.
+            </summary>
+            <param name="s">The selector.</param>
+        </member>
+        <member name="M:Apex.AI.IUtilityAI.RemoveSelector(Apex.AI.Selector)">
+            <summary>
+            Removes the selector.
+            </summary>
+            <param name="s">The selector.</param>
+        </member>
+        <member name="M:Apex.AI.IUtilityAI.ReplaceSelector(Apex.AI.Selector,Apex.AI.Selector)">
+            <summary>
+            Replaces a selector with another selector.
+            </summary>
+            <param name="current">The current selector.</param>
+            <param name="replacement">The replacement.</param>
+            <returns><c>true</c> if the replacement was done; otherwise <c>false</c></returns>
+        </member>
+        <member name="M:Apex.AI.IUtilityAI.FindSelector(System.Guid)">
+            <summary>
+            Finds the selector with the specified ID.
+            </summary>
+            <param name="id">The ID.</param>
+            <returns>The selector or <c>null</c> if not found.</returns>
+        </member>
+        <member name="M:Apex.AI.IUtilityAI.RegenerateIds">
+            <summary>
+            Regenerates the IDs of this AI.
+            </summary>
+        </member>
+        <member name="P:Apex.AI.IUtilityAI.name">
+            <summary>
+            Gets or sets the name of the AI.
+            </summary>
+            <value>
+            The name of the AI
+            </value>
+        </member>
+        <member name="P:Apex.AI.IUtilityAI.rootSelector">
+            <summary>
+            Gets or sets the root selector of the AI.
+            </summary>
+            <value>
+            The root selector of the AI.
+            </value>
+        </member>
+        <member name="P:Apex.AI.IUtilityAI.selectorCount">
+            <summary>
+            Gets the number of selectors in the AI.
+            </summary>
+            <value>
+            The number of selectors in the AI.
+            </value>
+        </member>
+        <member name="P:Apex.AI.IUtilityAI.Item(System.Int32)">
+            <summary>
+            Gets the <see cref="T:Apex.AI.Selector"/> with the specified index.
+            </summary>
+            <value>
+            The <see cref="T:Apex.AI.Selector"/>.
+            </value>
+            <param name="idx">The index.</param>
+            <returns>The selector at the specified index.</returns>
+        </member>
+        <member name="T:Apex.AI.PrioritySelector">
+            <summary>
+            A Selector that choses the first <see cref="T:Apex.AI.IQualifier"/> to score above the <see cref="P:Apex.AI.Selector.defaultQualifier"/>.
+            </summary>
+            <seealso cref="T:Apex.AI.Selector"/>
+        </member>
+        <member name="T:Apex.AI.Selector">
+            <summary>
+            Base class for selectors. To create a new type of selector you must inherit from this.
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Selector._id">
+            <summary>
+            The ID of the selector
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Selector._qualifiers">
+            <summary>
+            The list of qualifiers for this selector
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Selector._defaultQualifier">
+            <summary>
+            The default qualifier of this selector
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Selector.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.Selector"/> class.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Selector.Select(Apex.AI.IAIContext)">
+            <summary>
+            Selects the action for execution, given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The action to execute.
+            </returns>
+        </member>
+        <member name="M:Apex.AI.Selector.Select(Apex.AI.IAIContext,System.Collections.Generic.IList{Apex.AI.IQualifier},Apex.AI.IDefaultQualifier)">
+            <summary>
+            Selects the action for execution, given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="qualifiers">The qualifiers from which to find the action.</param>
+            <param name="defaultQualifier">The default qualifier.</param>
+            <returns>The qualifier whose action should be chosen.</returns>
+        </member>
+        <member name="M:Apex.AI.Selector.RegenerateId">
+            <summary>
+            Regenerates the ID.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Selector.CloneFrom(System.Object)">
+            <summary>
+            Clones or transfers settings from the other entity to itself.
+            </summary>
+            <param name="other">The other entity.</param>
+        </member>
+        <member name="P:Apex.AI.Selector.qualifiers">
+            <summary>
+            Gets the qualifiers of this selector.
+            </summary>
+            <value>
+            The qualifiers.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Selector.defaultQualifier">
+            <summary>
+            Gets or sets the default qualifier.
+            </summary>
+            <value>
+            The default qualifier.
+            </value>
+            <exception cref="T:System.ArgumentNullException">Value cannot be null.;defaultQualifier</exception>
+        </member>
+        <member name="P:Apex.AI.Selector.id">
+            <summary>
+            Gets the ID of this selector.
+            </summary>
+            <value>
+            The ID.
+            </value>
+        </member>
+        <member name="M:Apex.AI.PrioritySelector.Select(Apex.AI.IAIContext,System.Collections.Generic.IList{Apex.AI.IQualifier},Apex.AI.IDefaultQualifier)">
+            <summary>
+            Selects the action for execution, given the specified context.
+            This selector choses the first <see cref="T:Apex.AI.IQualifier"/> to score above the <see cref="P:Apex.AI.Selector.defaultQualifier"/>.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="qualifiers">The qualifiers from which to find the action.</param>
+            <param name="defaultQualifier">The default qualifier.</param>
+            <returns>
+            The qualifier whose action should be chosen.
+            </returns>
+        </member>
+        <member name="T:Apex.AI.QualifierBase`1">
+            <summary>
+            Base class for Qualifiers
+            </summary>
+            <typeparam name="TContext">The type of the context.</typeparam>
+            <seealso cref="T:Apex.AI.IQualifier"/>
+        </member>
+        <member name="M:Apex.AI.QualifierBase`1.Apex#AI#IQualifier#Score(Apex.AI.IAIContext)">
+            <summary>
+            Calculates the score for this qualifier given the provided context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="M:Apex.AI.QualifierBase`1.Score(`0)">
+            <summary>
+            Calculates the score for this qualifier given the provided context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="P:Apex.AI.QualifierBase`1.isDisabled">
+            <summary>
+            Gets or sets a value indicating whether this instance is disabled.
+            </summary>
+            <value>
+            <c>true</c> if this instance is disabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Apex.AI.QualifierBase`1.action">
+            <summary>
+            Gets or sets the associated action.
+            </summary>
+            <value>
+            The action.
+            </value>
+        </member>
+        <member name="T:Apex.AI.NotReorderableAttribute">
+            <summary>
+            Marks a list property or field as not reorderable in the UI.
+            </summary>
+            <seealso cref="T:System.Attribute"/>
+        </member>
+        <member name="T:Apex.AI.ScoredOption`1">
+            <summary>
+            Represents an option and its score.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.ScoredOption`1.#ctor(`0,System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.ScoredOption`1"/> struct.
+            </summary>
+            <param name="option">The option.</param>
+            <param name="score">The score.</param>
+        </member>
+        <member name="P:Apex.AI.ScoredOption`1.option">
+            <summary>
+            The option
+            </summary>
+        </member>
+        <member name="P:Apex.AI.ScoredOption`1.score">
+            <summary>
+            The score
+            </summary>
+        </member>
+        <member name="T:Apex.AI.ScoredOptionComparer`1">
+            <summary>
+            Comparer for scored options.
+            </summary>
+        </member>
+        <member name="F:Apex.AI.ScoredOptionComparer`1.descending">
+            <summary>
+            Whether or not to reverse comparison, i.e. descending sort.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.ScoredOptionComparer`1.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.ScoredOptionComparer`1"/> struct.
+            </summary>
+            <param name="descending">if set to <c>true</c> comparison is descending.</param>
+        </member>
+        <member name="M:Apex.AI.ScoredOptionComparer`1.Compare(Apex.AI.ScoredOption{`0},Apex.AI.ScoredOption{`0})">
+            <summary>
+            Compares the specified two options.
+            </summary>
+            <param name="x">The first option.</param>
+            <param name="y">The second option.</param>
+            <returns>The comparison value, -1, 0 or 1</returns>
+        </member>
+        <member name="T:Apex.AI.ScoreSelector">
+            <summary>
+            A Selector that choses the highest scoring <see cref="T:Apex.AI.IQualifier"/>.
+            </summary>
+            <seealso cref="T:Apex.AI.Selector"/>
+        </member>
+        <member name="M:Apex.AI.ScoreSelector.Select(Apex.AI.IAIContext,System.Collections.Generic.IList{Apex.AI.IQualifier},Apex.AI.IDefaultQualifier)">
+            <summary>
+            Selects the action for execution, given the specified context.
+            This selector choses the highest scoring <see cref="T:Apex.AI.IQualifier"/>.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="qualifiers">The qualifiers from which to find the action.</param>
+            <param name="defaultQualifier">The default qualifier.</param>
+            <returns>
+            The qualifier whose action should be chosen.
+            </returns>
+        </member>
+        <member name="T:Apex.AI.SelectorAction">
+            <summary>
+            An action that connects one selector to another.
+            </summary>
+            <seealso cref="T:Apex.AI.IAction"/>
+            <seealso cref="T:Apex.Serialization.IPrepareForSerialization"/>
+            <seealso cref="T:Apex.Serialization.IInitializeAfterDeserialization"/>
+        </member>
+        <member name="M:Apex.AI.SelectorAction.#ctor(Apex.AI.Selector)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.SelectorAction"/> class.
+            </summary>
+            <param name="selector">The connected selector.</param>
+        </member>
+        <member name="M:Apex.AI.SelectorAction.Execute(Apex.AI.IAIContext)">
+            <summary>
+            Executes the action.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.SelectorAction.Apex#Serialization#IPrepareForSerialization#Prepare">
+            <summary>
+            Will be called by the engine just before the AI is serialized.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.SelectorAction.Apex#Serialization#IInitializeAfterDeserialization#Initialize(System.Object)">
+            <summary>
+            Will be called by the engine after deserialization of the AI is complete, allowing the implementing entity to initialize itself before the AI starts running.
+            </summary>
+            <param name="rootObject">The parent AI.</param>
+        </member>
+        <member name="P:Apex.AI.SelectorAction.selector">
+            <summary>
+            Gets or sets the connected selector.
+            </summary>
+            <value>
+            The selector.
+            </value>
+        </member>
+        <member name="T:Apex.AI.Visualization.CustomGizmoVisualizerComponent`2">
+            <summary>
+            Base class for custom visualizer components that draws Gizmos.
+            </summary>
+            <typeparam name="T">The type that this visualizer visualizes.</typeparam>
+            <typeparam name="TData">The type of the data to be visualized.</typeparam>
+        </member>
+        <member name="T:Apex.AI.Visualization.CustomVisualizerComponent`2">
+            <summary>
+            Base class for custom visualizer components
+            </summary>
+            <typeparam name="T">The type that this visualizer visualizes.</typeparam>
+            <typeparam name="TData">The type of the data to be visualized.</typeparam>
+            <seealso cref="T:Apex.AI.Visualization.ICustomVisualizer"/>
+        </member>
+        <member name="T:Apex.AI.Visualization.ContextVisualizerComponent">
+            <summary>
+            Possible base class for scene visualizers, that facilitate drawing visualizations of context state.
+            </summary>
+            <seealso cref="T:UnityEngine.MonoBehaviour"/>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextVisualizerComponent.GetContextsToVisualize(System.Collections.Generic.List{Apex.AI.IAIContext},System.Guid)">
+            <summary>
+            If the Mode of the visualizer is set to <see cref="F:Apex.AI.Visualization.SceneVisualizationMode.Custom"/>, implement this to return the relevant contexts to visualize.
+            </summary>
+            <param name="contextsBuffer">The contexts buffer to be filled with relevant contexts for visualization.</param>
+            <param name="relevantAIId">The relevant AI identifier, or <see cref="F:System.Guid.Empty"/> if no specific AI is targeted..</param>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextVisualizerComponent.Awake">
+            <summary>
+            The Unity Awake message. If needed this can be overridden, just be sure to call the base.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextVisualizerComponent.DoDraw(System.Action{Apex.AI.IAIContext})">
+            <summary>
+            Draws stuff
+            </summary>
+        </member>
+        <member name="T:Apex.AI.Visualization.ICustomVisualizer">
+            <summary>
+            Interface for custom visualizers that can be registered with the <see cref="T:Apex.AI.Visualization.VisualizationManager"/> to show additional visualization for specific AI entity types, typically in the form of Gizmos.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.ICustomVisualizer.EntityUpdate(System.Object,Apex.AI.IAIContext,System.Guid)">
+            <summary>
+            Called after an entity of the type associated with this visualizer has been executed in the AI, e.g. an <see cref="T:Apex.AI.IAction"/>.
+            </summary>
+            <param name="aiEntity">The AI entity that has just executed.</param>
+            <param name="context">The context.</param>
+            <param name="aiId">The ID of the AI the entity belongs to.</param>
+        </member>
+        <member name="F:Apex.AI.Visualization.CustomVisualizerComponent`2._data">
+            <summary>
+            The data registered for visualization
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.CustomVisualizerComponent`2.Awake">
+            <summary>
+            Unity Awake
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.CustomVisualizerComponent`2.OnEnable">
+            <summary>
+            Unity OnEnable
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.CustomVisualizerComponent`2.OnDisable">
+            <summary>
+            Unity OnDisable
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.CustomVisualizerComponent`2.Apex#AI#Visualization#ICustomVisualizer#EntityUpdate(System.Object,Apex.AI.IAIContext,System.Guid)">
+            <summary>
+            Called after an entity of the type associated with this visualizer has been executed in the AI, e.g. an <see cref="T:Apex.AI.IAction"/>.
+            </summary>
+            <param name="aiEntity">The AI entity that has just executed.</param>
+            <param name="context">The context.</param>
+            <param name="aiId">The ID of the AI the entity belongs to.</param>
+        </member>
+        <member name="M:Apex.AI.Visualization.CustomVisualizerComponent`2.GetDataForVisualization(`0,Apex.AI.IAIContext,System.Guid)">
+            <summary>
+            Called after an entity of the type associated with this visualizer has been executed in the AI, e.g. an <see cref="T:Apex.AI.IAction"/>.
+            </summary>
+            <param name="aiEntity">The AI entity that has just executed.</param>
+            <param name="context">The context.</param>
+            <param name="aiId">The ID of the AI the entity belongs to.</param>
+            <returns>The data that should be visualized.</returns>
+        </member>
+        <member name="P:Apex.AI.Visualization.CustomVisualizerComponent`2.registerForDerivedTypes">
+            <summary>
+            Gets or sets a value indicating whether to register this visualizer for derived types of <typeparamref name="T"/>.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.CustomGizmoVisualizerComponent`2.DrawGizmos(`1)">
+            <summary>
+            Draw gizmos using the provided data.
+            </summary>
+            <param name="data">The data to visualize.</param>
+        </member>
+        <member name="T:Apex.AI.Visualization.CustomGUIVisualizerComponent`2">
+            <summary>
+            Base class for custom visualizer components that draws GUI.
+            </summary>
+            <typeparam name="T">The type that this visualizer visualizes.</typeparam>
+            <typeparam name="TData">The type of the data to be visualized.</typeparam>
+        </member>
+        <member name="M:Apex.AI.Visualization.CustomGUIVisualizerComponent`2.DrawGUI(`1)">
+            <summary>
+            Draw GUI using the provided data.
+            </summary>
+            <param name="data">The data to visualize.</param>
+        </member>
+        <member name="T:Apex.AI.Serialization.AIReferenceAttribute">
+            <summary>
+            Marker attribute that marks a <see cref="T:System.Guid"/> property or field as a reference to an AI.
+            </summary>
+            <seealso cref="T:Apex.AI.Serialization.MemberEditorAttribute"/>
+        </member>
+        <member name="T:Apex.AI.Serialization.MemberEditorAttribute">
+            <summary>
+            Base class for attributes used to designate which renderer to use when displaying the member in the editor.
+            </summary>
+            <seealso cref="T:System.Attribute"/>
+        </member>
+        <member name="T:Apex.AI.MemberDependencyAttribute">
+            <summary>
+            An attribute to decorate AI entity fields and properties to set dependency on another field or property.
+            </summary>
+            <seealso cref="T:System.Attribute"/>
+        </member>
+        <member name="M:Apex.AI.MemberDependencyAttribute.#ctor(System.String,System.Int32,Apex.MaskMatch)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.MemberDependencyAttribute"/> class.
+            </summary>
+            <param name="dependsOn">The name of the field/property to set a dependency on.</param>
+            <param name="value">The value that satisfies the dependency.</param>
+            <param name="match">The mask matching rule.</param>
+        </member>
+        <member name="M:Apex.AI.MemberDependencyAttribute.#ctor(System.String,System.Int32,Apex.AI.CompareOperator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.MemberDependencyAttribute"/> class.
+            </summary>
+            <param name="dependsOn">The name of the field/property to set a dependency on.</param>
+            <param name="value">The value that satisfies the dependency.</param>
+            <param name="compare">The compare operator used to check if the dependency is satisfied.</param>
+        </member>
+        <member name="M:Apex.AI.MemberDependencyAttribute.#ctor(System.String,System.Single,Apex.AI.CompareOperator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.MemberDependencyAttribute"/> class.
+            </summary>
+            <param name="dependsOn">The name of the field/property to set a dependency on.</param>
+            <param name="value">The value that satisfies the dependency.</param>
+            <param name="compare">The compare operator used to check if the dependency is satisfied.</param>
+        </member>
+        <member name="M:Apex.AI.MemberDependencyAttribute.#ctor(System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.MemberDependencyAttribute"/> class.
+            </summary>
+            <param name="dependsOn">The name of the field/property to set a dependency on.</param>
+            <param name="value">The value that satisfies the dependency.</param>
+        </member>
+        <member name="P:Apex.AI.MemberDependencyAttribute.dependsOn">
+            <summary>
+            Gets the name of the field/property to set a dependency on.
+            </summary>
+            <value>
+            The name of the field/property to set a dependency on.
+            </value>
+        </member>
+        <member name="P:Apex.AI.MemberDependencyAttribute.value">
+            <summary>
+            Gets the value that satisfies the dependency.
+            </summary>
+            <value>
+            The value that satisfies the dependency.
+            </value>
+        </member>
+        <member name="P:Apex.AI.MemberDependencyAttribute.match">
+            <summary>
+            Gets the mask matching rule. Only relevant if <see cref="P:Apex.AI.MemberDependencyAttribute.value"/> is an <see cref="T:System.Int32"/>
+            </summary>
+            <value>
+            The mask matching rule.
+            </value>
+        </member>
+        <member name="P:Apex.AI.MemberDependencyAttribute.compare">
+            <summary>
+            Gets the compare operator used to check if the dependency is satisfied.
+            </summary>
+            <value>
+            The compare operator used to check if the dependency is satisfied.
+            </value>
+        </member>
+        <member name="P:Apex.AI.MemberDependencyAttribute.isMask">
+            <summary>
+            Gets a value indicating whether the dependency check is a mask check or a basic comparison.
+            </summary>
+        </member>
+        <member name="T:Apex.AI.MemberCategoryAttribute">
+            <summary>
+             An attribute to decorate AI entity fields and properties to assign them to a category when displayed in the AI editor inspector.
+            </summary>
+            <seealso cref="T:System.Attribute"/>
+        </member>
+        <member name="M:Apex.AI.MemberCategoryAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.MemberCategoryAttribute"/> class.
+            </summary>
+            <param name="name">The category name.</param>
+        </member>
+        <member name="M:Apex.AI.MemberCategoryAttribute.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.MemberCategoryAttribute"/> class.
+            </summary>
+            <param name="name">The category name.</param>
+            <param name="sortOrder">The sort order.</param>
+        </member>
+        <member name="P:Apex.AI.MemberCategoryAttribute.name">
+            <summary>
+            Gets the category name.
+            </summary>
+            <value>
+            The category name.
+            </value>
+        </member>
+        <member name="P:Apex.AI.MemberCategoryAttribute.sortOrder">
+            <summary>
+            Gets the sort order.
+            </summary>
+            <value>
+            The sort order.
+            </value>
+        </member>
+        <member name="T:Apex.AI.UtilityAI">
+            <summary>
+            The Utility AI root entity.
+            </summary>
+            <seealso cref="T:Apex.AI.IUtilityAI"/>
+            <seealso cref="T:Apex.Serialization.IPrepareForSerialization"/>
+            <seealso cref="T:Apex.Serialization.IInitializeAfterDeserialization"/>
+        </member>
+        <member name="M:Apex.AI.UtilityAI.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Apex.AI.UtilityAI"/> class.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.UtilityAI.AddSelector(Apex.AI.Selector)">
+            <summary>
+            Adds the selector.
+            </summary>
+            <param name="s">The selector.</param>
+        </member>
+        <member name="M:Apex.AI.UtilityAI.RemoveSelector(Apex.AI.Selector)">
+            <summary>
+            Removes the selector.
+            </summary>
+            <param name="s">The selector.</param>
+            <exception cref="T:System.ArgumentException">The root selector cannot be removed!</exception>
+        </member>
+        <member name="M:Apex.AI.UtilityAI.ReplaceSelector(Apex.AI.Selector,Apex.AI.Selector)">
+            <summary>
+            Replaces a selector with another selector.
+            </summary>
+            <param name="current">The current selector.</param>
+            <param name="replacement">The replacement.</param>
+            <returns>
+              <c>true</c> if the replacement was done; otherwise <c>false</c>
+            </returns>
+        </member>
+        <member name="M:Apex.AI.UtilityAI.FindSelector(System.Guid)">
+            <summary>
+            Finds the selector with the specified ID.
+            </summary>
+            <param name="id">The ID.</param>
+            <returns>
+            The selector or <c>null</c> if not found.
+            </returns>
+        </member>
+        <member name="M:Apex.AI.UtilityAI.Select(Apex.AI.IAIContext)">
+            <summary>
+            Selects the action for execution, given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The action to execute.
+            </returns>
+        </member>
+        <member name="M:Apex.AI.UtilityAI.RegenerateIds">
+            <summary>
+            Regenerates the IDs of this AI.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.UtilityAI.Apex#Serialization#IPrepareForSerialization#Prepare">
+            <summary>
+            Will be called by the engine just before the AI is serialized.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.UtilityAI.Apex#Serialization#IInitializeAfterDeserialization#Initialize(System.Object)">
+            <summary>
+            Will be called by the engine after deserialization of the AI is complete, allowing the implementing entity to initialize itself before the AI starts running.
+            </summary>
+            <param name="rootObject">The parent AI.</param>
+        </member>
+        <member name="P:Apex.AI.UtilityAI.id">
+            <summary>
+            Gets the ID of the AI.
+            </summary>
+            <value>
+            The ID.
+            </value>
+        </member>
+        <member name="P:Apex.AI.UtilityAI.name">
+            <summary>
+            Gets or sets the name of the AI.
+            </summary>
+            <value>
+            The name of the AI
+            </value>
+        </member>
+        <member name="P:Apex.AI.UtilityAI.rootSelector">
+            <summary>
+            Gets or sets the root selector of the AI.
+            </summary>
+            <value>
+            The root selector of the AI.
+            </value>
+        </member>
+        <member name="P:Apex.AI.UtilityAI.selectorCount">
+            <summary>
+            Gets the number of selectors in the AI.
+            </summary>
+            <value>
+            The number of selectors in the AI.
+            </value>
+        </member>
+        <member name="P:Apex.AI.UtilityAI.Item(System.Int32)">
+            <summary>
+            Gets the <see cref="T:Apex.AI.Selector"/> with the specified index.
+            </summary>
+            <value>
+            The <see cref="T:Apex.AI.Selector"/>.
+            </value>
+            <param name="idx">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Apex.AI.Visualization.IVisualizedObject">
+            <summary>
+            Interface used by visualizers to expose the object they are visualizing.
+            </summary>
+        </member>
+        <member name="P:Apex.AI.Visualization.IVisualizedObject.target">
+            <summary>
+            Gets the target object of this visualizer, i.e. the visualized object.
+            </summary>
+            <value>
+            The target.
+            </value>
+        </member>
+        <member name="T:Apex.AI.Visualization.ActionWithOptionsVisualizerComponent`2">
+            <summary>
+            A specialized visualizer that handles visualization of <see cref="T:Apex.AI.ScoredOption`1"/> for a <see cref="T:Apex.AI.ActionWithOptions`1"/>
+            </summary>
+            <typeparam name="T">The concrete ActionWithOptions type</typeparam>
+            <typeparam name="TOption">The type of the options.</typeparam>
+            <seealso cref="T:Apex.AI.Visualization.CustomGizmoGUIVisualizerComponent`2"/>
+        </member>
+        <member name="T:Apex.AI.Visualization.CustomGizmoGUIVisualizerComponent`2">
+            <summary>
+            Base class for custom visualizer components that draws GUI and Gizmos
+            </summary>
+            <typeparam name="T">The type that this visualizer visualizes.</typeparam>
+            <typeparam name="TData">The type of the data to be visualized.</typeparam>
+        </member>
+        <member name="F:Apex.AI.Visualization.CustomGizmoGUIVisualizerComponent`2.drawGizmos">
+            <summary>
+            Should we draw gizmos
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Visualization.CustomGizmoGUIVisualizerComponent`2.drawGUI">
+            <summary>
+            Should we draw GUI
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.CustomGizmoGUIVisualizerComponent`2.DrawGUI(`1)">
+            <summary>
+            Draw GUI using the provided data.
+            </summary>
+            <param name="data">The data to visualize.</param>
+        </member>
+        <member name="M:Apex.AI.Visualization.CustomGizmoGUIVisualizerComponent`2.DrawGizmos(`1)">
+            <summary>
+            Draw gizmos using the provided data.
+            </summary>
+            <param name="data">The data to visualize.</param>
+        </member>
+        <member name="M:Apex.AI.Visualization.ActionWithOptionsVisualizerComponent`2.GetDataForVisualization(`0,Apex.AI.IAIContext,System.Guid)">
+            <summary>
+            Called after an entity of the type associated with this visualizer has been executed in the AI, e.g. an <see cref="T:Apex.AI.IAction" />.
+            </summary>
+            <param name="aiEntity">The AI entity that has just executed.</param>
+            <param name="context">The context.</param>
+            <param name="aiId">The ID of the AI the entity belongs to.</param>
+            <returns>
+            The data that should be visualized.
+            </returns>
+        </member>
+        <member name="M:Apex.AI.Visualization.ActionWithOptionsVisualizerComponent`2.GetOptions(Apex.AI.IAIContext)">
+            <summary>
+            Gets the options to score and visualize.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>The options to score and visualize</returns>
+        </member>
+        <member name="T:Apex.AI.Visualization.BreakpointCondition">
+            <summary>
+            Defines a break point condition based on a score.
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Visualization.BreakpointCondition.scoreThreshold">
+            <summary>
+            The score threshold. The score is compared to this.
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Visualization.BreakpointCondition.compareOperator">
+            <summary>
+            The compare operator
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.BreakpointCondition.Evaluate(System.Nullable{System.Single})">
+            <summary>
+            Evaluates the specified score.
+            </summary>
+            <param name="score">The score.</param>
+            <returns><c>true</c> if the score matches the compare criteria; otherwise <c>false</c></returns>
+        </member>
+        <member name="M:Apex.AI.Visualization.BreakpointCondition.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Apex.AI.Visualization.ICompositeVisualizer">
+            <summary>
+            Interface for composite visualizers
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.ICompositeVisualizer.Add(System.Object)">
+            <summary>
+            Adds the specified item to the composite.
+            </summary>
+            <param name="item">The item.</param>
+        </member>
+        <member name="P:Apex.AI.Visualization.ICompositeVisualizer.children">
+            <summary>
+            Gets the child items of the composite.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.IQualifierVisualizer.Init">
+            <summary>
+            Initializes this instance.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.IQualifierVisualizer.Reset">
+            <summary>
+            Resets this instance.
+            </summary>
+        </member>
+        <member name="P:Apex.AI.Visualization.IQualifierVisualizer.parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <value>
+            The parent.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.IQualifierVisualizer.qualifier">
+            <summary>
+            Gets the qualifier.
+            </summary>
+            <value>
+            The qualifier.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.IQualifierVisualizer.isHighScorer">
+            <summary>
+            Gets a value indicating whether the qualifier is the current high scorer.
+            </summary>
+            <value>
+            <c>true</c> if this instance is high scorer; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.IQualifierVisualizer.isBreakPoint">
+            <summary>
+            Gets or sets a value indicating whether this qualifier has a break point set.
+            </summary>
+            <value>
+            <c>true</c> if this qualifier has a break point set; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.IQualifierVisualizer.breakPointHit">
+            <summary>
+            Gets or sets a value indicating whether this qualifier's break point was hit.
+            </summary>
+            <value>
+            <c>true</c> if this qualifier's break point was hit; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.IQualifierVisualizer.breakpointCondition">
+            <summary>
+            Gets or sets the breakpoint condition.
+            </summary>
+            <value>
+            The breakpoint condition.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.IQualifierVisualizer.lastScore">
+            <summary>
+            Gets the last score.
+            </summary>
+            <value>
+            The last score.
+            </value>
+        </member>
+        <member name="M:Apex.AI.Visualization.QualifierVisualizer.Apex#AI#Visualization#IQualifierVisualizer#Init">
+            <summary>
+            Initializes this instance.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.QualifierVisualizer.Reset">
+            <summary>
+            Resets this instance.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.QualifierVisualizer.Score(Apex.AI.IAIContext)">
+            <summary>
+            Calculates the score for this qualifier given the provided context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="P:Apex.AI.Visualization.QualifierVisualizer.parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <value>
+            The parent.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.QualifierVisualizer.qualifier">
+            <summary>
+            Gets the qualifier.
+            </summary>
+            <value>
+            The qualifier.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.QualifierVisualizer.isDisabled">
+            <summary>
+            Gets or sets a value indicating whether this instance is disabled.
+            </summary>
+            <value>
+            <c>true</c> if this instance is disabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.QualifierVisualizer.action">
+            <summary>
+            Gets or sets the associated action.
+            </summary>
+            <value>
+            The action.
+            </value>
+            <exception cref="T:System.NotSupportedException"></exception>
+        </member>
+        <member name="P:Apex.AI.Visualization.QualifierVisualizer.isHighScorer">
+            <summary>
+            Gets a value indicating whether the qualifier is the current high scorer.
+            </summary>
+            <value>
+            <c>true</c> if this instance is high scorer; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.QualifierVisualizer.isBreakPoint">
+            <summary>
+            Gets or sets a value indicating whether this qualifier has a break point set.
+            </summary>
+            <value>
+            <c>true</c> if this qualifier has a break point set; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.QualifierVisualizer.breakPointHit">
+            <summary>
+            Gets or sets a value indicating whether this qualifier's break point was hit.
+            </summary>
+            <value>
+            <c>true</c> if this qualifier's break point was hit; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.QualifierVisualizer.breakpointCondition">
+            <summary>
+            Gets or sets the breakpoint condition.
+            </summary>
+            <value>
+            The breakpoint condition.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.QualifierVisualizer.lastScore">
+            <summary>
+            Gets the last score.
+            </summary>
+            <value>
+            The last score.
+            </value>
+        </member>
+        <member name="P:Apex.AI.Visualization.QualifierVisualizer.Apex#AI#Visualization#IVisualizedObject#target">
+            <summary>
+            Gets the target object of this visualizer, i.e. the visualized object.
+            </summary>
+            <value>
+            The target.
+            </value>
+        </member>
+        <member name="M:Apex.AI.Visualization.CompositeQualifierVisualizer.Reset">
+            <summary>
+            Resets this instance.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.CompositeQualifierVisualizer.Score(Apex.AI.IAIContext)">
+            <summary>
+            Calculates a score using the supplied scorers given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="T:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent">
+            <summary>
+            Possible base class for scene visualizers, that facilitate drawing gizmos and GUI to visualize context state.
+            </summary>
+            <seealso cref="T:Apex.AI.Visualization.ContextGizmoVisualizerComponent"/>
+            <seealso cref="T:Apex.AI.Visualization.ContextGUIVisualizerComponent"/>
+        </member>
+        <member name="F:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent.drawGizmos">
+            <summary>
+            Should we draw gizmos
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent.drawGUI">
+            <summary>
+            Should we draw GUI
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent.DrawGUI(Apex.AI.IAIContext)">
+            <summary>
+            Draw GUI using the provided context.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent.DrawGizmos(Apex.AI.IAIContext)">
+            <summary>
+            Draw gizmos using the provided context.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="T:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent`1">
+            <summary>
+            Generic version of <see cref="T:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent"/>.
+            </summary>
+            <typeparam name="T">The context type.</typeparam>
+            <seealso cref="T:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent"/>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent`1.DrawGizmos(Apex.AI.IAIContext)">
+            <summary>
+            Draw gizmos using the provided context.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent`1.DrawGizmos(`0)">
+            <summary>
+            Draw gizmos using the provided context.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent`1.DrawGUI(Apex.AI.IAIContext)">
+            <summary>
+            Draw GUI using the provided context.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent`1.DrawGUI(`0)">
+            <summary>
+            Draw GUI using the provided context.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="T:Apex.AI.Visualization.ContextGizmoVisualizerComponent">
+            <summary>
+            Possible base class for scene visualizers, that facilitate drawing gizmos to visualize context state.
+            </summary>
+            <seealso cref="T:Apex.AI.Visualization.ContextGUIVisualizerComponent"/>
+            <seealso cref="T:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent"/>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextGizmoVisualizerComponent.DrawGizmos(Apex.AI.IAIContext)">
+            <summary>
+            Draw gizmos using the provided context.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="T:Apex.AI.Visualization.ContextGUIVisualizerComponent`1">
+            <summary>
+            Generic version of <see cref="T:Apex.AI.Visualization.ContextGUIVisualizerComponent"/>.
+            </summary>
+            <typeparam name="T">The context type.</typeparam>
+            <seealso cref="T:Apex.AI.Visualization.ContextGUIVisualizerComponent"/>
+        </member>
+        <member name="T:Apex.AI.Visualization.ContextGUIVisualizerComponent">
+            <summary>
+            Possible base class for scene visualizers, that facilitate drawing gizmos and GUI to visualize context state.
+            </summary>
+            <seealso cref="T:Apex.AI.Visualization.ContextGizmoVisualizerComponent"/>
+            <seealso cref="T:Apex.AI.Visualization.ContextGizmoGUIVisualizerComponent"/>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextGUIVisualizerComponent.DrawGUI(Apex.AI.IAIContext)">
+            <summary>
+            Draw GUI using the provided context.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextGUIVisualizerComponent`1.DrawGUI(Apex.AI.IAIContext)">
+            <summary>
+            Draw GUI using the provided context.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextGUIVisualizerComponent`1.DrawGUI(`0)">
+            <summary>
+            Draw GUI using the provided context.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="T:Apex.AI.Visualization.ContextGizmoVisualizerComponent`1">
+            <summary>
+            Generic version of <see cref="T:Apex.AI.Visualization.ContextGizmoVisualizerComponent"/>.
+            </summary>
+            <typeparam name="T">The context type.</typeparam>
+            <seealso cref="T:Apex.AI.Visualization.ContextGizmoVisualizerComponent"/>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextGizmoVisualizerComponent`1.DrawGizmos(Apex.AI.IAIContext)">
+            <summary>
+            Draw gizmos using the provided context.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Apex.AI.Visualization.ContextGizmoVisualizerComponent`1.DrawGizmos(`0)">
+            <summary>
+            Draw gizmos using the provided context.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="P:Apex.AI.Visualization.DefaultQualifierVisualizer.score">
+            <summary>
+            Gets or sets the default score.
+            </summary>
+            <value>
+            The score.
+            </value>
+        </member>
+        <member name="T:Apex.AI.Visualization.SceneVisualizationMode">
+            <summary>
+            Represents which objects are visualized by scene visualizers, i.e. derivatives of <see cref="T:Apex.AI.Visualization.ContextGizmoVisualizerComponent"/>
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Visualization.SceneVisualizationMode.SingleSelectedGameObject">
+            <summary>
+            Visualization is done for the single selected game object. If more are selected the first one is the only one visualized.
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Visualization.SceneVisualizationMode.AllSelectedGameObjects">
+            <summary>
+            Visualization is done for all selected game objects.
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Visualization.SceneVisualizationMode.Custom">
+            <summary>
+            Visualization is controlled by a custom implementation on the visualizer, e.g. <see cref="M:Apex.AI.Visualization.ContextVisualizerComponent.GetContextsToVisualize(System.Collections.Generic.List{Apex.AI.IAIContext},System.Guid)"/>
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.ScorerVisualizer.Score(Apex.AI.IAIContext)">
+            <summary>
+            Calculates a score given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            The score.
+            </returns>
+        </member>
+        <member name="P:Apex.AI.Visualization.ScorerVisualizer.isDisabled">
+            <summary>
+            Gets or sets a value indicating whether this instance is disabled.
+            </summary>
+            <value>
+            <c>true</c> if this instance is disabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:Apex.AI.Visualization.SelectorVisualizer.Select(Apex.AI.IAIContext,System.Collections.Generic.IList{Apex.AI.IQualifier},Apex.AI.IDefaultQualifier)">
+            <summary>
+            Selects the action for execution, given the specified context.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="qualifiers">The qualifiers from which to find the action.</param>
+            <param name="defaultQualifier">The default qualifier.</param>
+            <returns>
+            The qualifier whose action should be chosen.
+            </returns>
+        </member>
+        <member name="T:Apex.AI.Visualization.VisualizationManager">
+            <summary>
+            Manager that handles AI Visualization.
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Visualization.VisualizationManager.RegisterVisualizer``1(Apex.AI.Visualization.ICustomVisualizer,System.Boolean)">
+            <summary>
+            Registers a custom visualizer.
+            </summary>
+            <typeparam name="TFor">The type visualized by the custom visualizer.</typeparam>
+            <param name="visualizer">The visualizer.</param>
+            <param name="registerDerivedTypes">Whether to register the visualizer for all types derived from <typeparamref name="TFor"/>.</param>
+        </member>
+        <member name="M:Apex.AI.Visualization.VisualizationManager.RegisterVisualizer(System.Type,Apex.AI.Visualization.ICustomVisualizer,System.Boolean)">
+            <summary>
+            Registers a custom visualizer.
+            </summary>
+            <param name="forType">The type visualized by the custom visualizer.</param>
+            <param name="visualizer">The visualizer.</param>
+            <param name="registerDerivedTypes">Whether to register the visualizer for all types derived from <paramref name="forType"/></param>
+        </member>
+        <member name="M:Apex.AI.Visualization.VisualizationManager.UnregisterVisualizer``1(System.Boolean)">
+            <summary>
+            Unregisters a visualizer.
+            </summary>
+            <typeparam name="TFor">The type for which to unregister the visualizer.</typeparam>
+            <param name="registeredDerivedTypes">Whether the visualizer was registered for all types derived from <typeparamref name="TFor"/></param>
+        </member>
+        <member name="M:Apex.AI.Visualization.VisualizationManager.UnregisterVisualizer(System.Type,System.Boolean)">
+            <summary>
+            Unregisters a visualizer.
+            </summary>
+            <param name="forType">The type for which to unregister the visualizer.</param>
+            <param name="registeredDerivedTypes">Whether the visualizer was registered for all types derived from <paramref name="forType"/></param>
+        </member>
+        <member name="P:Apex.AI.Visualization.VisualizationManager.isVisualizing">
+            <summary>
+            Gets a value indicating whether AI visualization is currently active.
+            </summary>
+            <value>
+            <c>true</c> if visualization is active; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Apex.AI.Serialization.AIStorage">
+            <summary>
+            Storage entity for AIs
+            </summary>
+            <seealso cref="T:UnityEngine.ScriptableObject"/>
+            <seealso cref="T:Apex.AI.IHaveFriendlyName"/>
+        </member>
+        <member name="F:Apex.AI.Serialization.AIStorage.description">
+            <summary>
+            The description
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Serialization.AIStorage.version">
+            <summary>
+            The version of the AI with which this was last saved.
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Serialization.AIStorage.aiId">
+            <summary>
+            The AI ID
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Serialization.AIStorage.configuration">
+            <summary>
+            The AI configuration
+            </summary>
+        </member>
+        <member name="F:Apex.AI.Serialization.AIStorage.editorConfiguration">
+            <summary>
+            The AI editor configuration
+            </summary>
+        </member>
+        <member name="M:Apex.AI.Serialization.AIStorage.Create(System.String,System.String)">
+            <summary>
+            Creates an instance for the specified AI.
+            </summary>
+            <param name="aiId">The AI ID.</param>
+            <param name="aiName">Name of the AI.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Apex.AI.UtilityCurveEditorBaseScorer">
+            <summary>
+            A base class for contextual scorers that score based on Utility Curves.
+            </summary>
+            <seealso cref="T:Apex.AI.ContextualScorerBase"/>
+        </member>
+        <member name="F:Apex.AI.UtilityCurveEditorBaseScorer.curve">
+            <summary>
+            The Utility Curve
+            </summary>
+        </member>
+        <member name="M:Apex.AI.UtilityCurveEditorBaseScorer.GetCurveScore(System.Single)">
+            <summary>
+            Gets the curve score.
+            </summary>
+            <param name="value">The value from which to get a score.</param>
+            <returns>The curve score.</returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ApexSharedEditor</name>
+    </assembly>
+    <members>
+        <member name="T:Apex.Editor.EditorAsync">
+            <summary>
+            Utility for executing actions asynchronously in the editor
+            </summary>
+        </member>
+        <member name="M:Apex.Editor.EditorAsync.Execute(System.Action,System.Action)">
+            <summary>
+            Executes the specified task.
+            </summary>
+            <param name="task">The task.</param>
+            <param name="callback">The callback.</param>
+        </member>
+        <member name="M:Apex.Editor.EditorAsync.Execute``1(System.Func{``0},System.Action{``0})">
+            <summary>
+            Executes the specified task.
+            </summary>
+            <typeparam name="TResult">The type of the result.</typeparam>
+            <param name="task">The task.</param>
+            <param name="callback">The callback.</param>
+        </member>
+        <member name="M:Apex.Editor.EditorAsync.ExecuteDelayed(System.Action,System.Int32)">
+            <summary>
+            Executes the specified task with a time delay.
+            </summary>
+            <param name="task">The task.</param>
+            <param name="millisecondDelay">The delay in milliseconds.</param>
+        </member>
+    </members>
+</doc>
