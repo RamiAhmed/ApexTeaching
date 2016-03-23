@@ -1,5 +1,6 @@
 ﻿namespace Apex.AI.Teaching
 {
+    using System.Collections.Generic;
     using UnityEngine;
 
     public class AIContext : IAIContext
@@ -9,6 +10,7 @@
             this.gameObject = gameObject;
             this.unit = gameObject.GetComponent<UnitBase>();
             this.steerForPath = gameObject.GetComponent<SteerForPath>();
+            this.sampledCells = new List<Cell>(64);
         }
 
         public GameObject gameObject
@@ -24,6 +26,12 @@
         }
 
         public UnitBase unit
+        {
+            get;
+            private set;
+        }
+
+        public List<Cell> sampledCells
         {
             get;
             private set;
