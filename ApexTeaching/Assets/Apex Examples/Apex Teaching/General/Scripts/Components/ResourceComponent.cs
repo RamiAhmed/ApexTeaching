@@ -16,6 +16,11 @@
             this.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, Random.Range(0, 360), this.transform.eulerAngles.z);
         }
 
+        private void OnDisable()
+        {
+            Grid.instance.UpdateCellsBlockedStatus(this.GetComponent<Collider>());
+        }
+
         public void Harvest(HarvesterUnit unit)
         {
             var resources = Random.Range(1, this.maxResourcesPerHarvest);

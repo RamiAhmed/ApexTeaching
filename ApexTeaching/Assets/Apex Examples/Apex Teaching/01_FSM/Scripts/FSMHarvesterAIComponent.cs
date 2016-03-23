@@ -53,8 +53,7 @@
             }
 
             // nest inside range
-            _entity.nest.currentResources += _entity.currentCarriedResources;
-            _entity.currentCarriedResources = 0;
+            _entity.ReturnHarvest();
             _currentState = HarvesterState.Idle;
         }
 
@@ -110,8 +109,6 @@
         private void HandleIdle()
         {
             var observations = _entity.observations;
-            observations.Sort(new GameObjectDistanceSortComparer(this.transform.position));
-
             var count = observations.Count;
             for (int i = 0; i < count; i++)
             {

@@ -61,8 +61,8 @@
             this.path = grid.FindPath(currentCell.position, destination);
             if (this.path != null && this.path.Count > 0)
             {
-                // if the path is valid, let's start moving to the first path node
-                _currentDestination = this.path.Pop();
+                // if the path is valid, let's start moving towards the first path node
+                _currentDestination = this.transform.position + (destination - this.transform.position).normalized * grid.cellSize;
             }
         }
 
@@ -97,7 +97,7 @@
             }
 
             // Velocity is a vector in the direction from the current location to the next destination, with a length of speed capped to the current distance if we are at the last path node - for slowdown
-            var speed = this.path.Count == 1 ? Mathf.Clamp(this.speed, currentDistance, 1f) : this.speed;
+            var speed = this.path.Count == 1 ? Mathf.Clamp(this.speed, 1f, Mathf.Max(1f, currentDistance)) : this.speed;
             var velocity = (currentDirection / currentDistance) * speed;
             return velocity;
         }

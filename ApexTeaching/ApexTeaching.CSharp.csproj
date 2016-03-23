@@ -69,14 +69,14 @@
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
     </Reference>
+    <Reference Include="ApexAI">
+      <HintPath>Assets\Apex\Apex Binaries\ApexAI.dll</HintPath>
+    </Reference>
     <Reference Include="ApexSerialization">
       <HintPath>Assets\Apex\Apex Binaries\ApexSerialization.dll</HintPath>
     </Reference>
     <Reference Include="ApexShared">
       <HintPath>Assets\Apex\Apex Binaries\ApexShared.dll</HintPath>
-    </Reference>
-    <Reference Include="ApexAI">
-      <HintPath>Assets\Apex\Apex Binaries\ApexAI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +151,8 @@
     <None Include="Assets\Apex\Apex Binaries\ApexShared.XML" />
     <None Include="Assets\Apex\Apex Binaries\Editor\ApexAIEditor.XML" />
     <None Include="Assets\Apex\Apex Binaries\Editor\ApexSharedEditor.XML" />
+    <None Include="Assets\Editor Default Resources\ApexGLShader.shader" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

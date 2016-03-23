@@ -83,16 +83,16 @@
                 var unit = hit.GetComponent<UnitBase>();
                 if (unit != null)
                 {
+                    this.LookAt(unit.transform.position);
                     unit.ReceiveDamage(dmg);
-                    this.transform.LookAt(new Vector3(unit.transform.position.x, this.transform.position.y, unit.transform.position.z));
                     return;
                 }
 
                 var nest = hit.GetComponent<NestStructure>();
                 if (nest != null)
                 {
+                    this.LookAt(nest.transform.position);
                     nest.ReceiveDamage(dmg);
-                    this.transform.LookAt(new Vector3(unit.transform.position.x, this.transform.position.y, unit.transform.position.z));
                     return;
                 }
             }
@@ -117,7 +117,18 @@
             }
 
             _lastAttack = time;
+            this.LookAt(resource.transform.position);
             resource.Harvest(this);
+        }
+
+        /// <summary>
+        /// Returns the harvest collected to the nest.
+        /// </summary>
+        public void ReturnHarvest()
+        {
+            this.LookAt(this.nest.transform.position);
+            this.nest.currentResources += _currentCarriedResources;
+            _currentCarriedResources = 0;
         }
     }
 }

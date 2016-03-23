@@ -25,16 +25,16 @@
                 var unit = hit.GetComponent<UnitBase>();
                 if (unit != null)
                 {
+                    this.LookAt(unit.transform.position);
                     unit.ReceiveDamage(dmg);
-                    this.transform.LookAt(new Vector3(unit.transform.position.x, this.transform.position.y, unit.transform.position.z));
                     return;
                 }
 
                 var nest = hit.GetComponent<NestStructure>();
                 if (nest != null)
                 {
+                    this.LookAt(nest.transform.position);
                     nest.ReceiveDamage(dmg);
-                    this.transform.LookAt(new Vector3(unit.transform.position.x, this.transform.position.y, unit.transform.position.z));
                     return;
                 }
             }

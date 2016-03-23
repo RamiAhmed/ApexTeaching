@@ -1,5 +1,6 @@
 ﻿namespace Apex.AI.Teaching
 {
+    using System.Collections.Generic;
     using UnityEngine;
 
     public class Grid : MonoBehaviour
@@ -114,6 +115,32 @@
             IdentifyCellNeighbours();
         }
 
+        /// <summary>
+        /// Updates the cells' blocked status to unblocked for all cells intersecting with the bounds of the given collider.
+        /// </summary>
+        /// <param name="collider">The collider.</param>
+        public void UpdateCellsBlockedStatus(Collider collider)
+        {
+            var xSteps = _cells.GetLength(0);
+            var zSteps = _cells.GetLength(1);
+            for (int x = 0; x < xSteps; x++)
+            {
+                for (int z = 0; z < zSteps; z++)
+                {
+                    var cell = _cells[x, z];
+                    if (!cell.blocked)
+                    {
+                        continue;
+                    }
+
+                    if (cell.bounds.Intersects(collider.bounds))
+                    {
+                        cell.blocked = false;
+                    }
+                }
+            }
+        }
+
         private void IdentifyCellNeighbours()
         {
             var xLength = _cells.GetLength(0);
@@ -145,6 +172,31 @@
                     if (zi < zLength - 1)
                     {
                         cell.AddNeighbour(_cells[xi, zi + 1]);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets all the cells within radius from position. The passed list is populated with the cells.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <param name="radius">The radius.</param>
+        /// <param name="list">The list to populate.</param>
+        public virtual void GetCells(Vector3 position, float radius, IList<Cell> list)
+        {
+            list.Clear();
+
+            var xLength = _cells.GetLength(0);
+            var zLength = _cells.GetLength(1);
+            for (int x = 0; x < xLength; x++)
+            {
+                for (int z = 0; z < zLength; z++)
+                {
+                    var cell = _cells[x, z];
+                    if ((cell.position - position).sqrMagnitude < (radius * radius))
+                    {
+                        list.Add(cell);
                     }
                 }
             }

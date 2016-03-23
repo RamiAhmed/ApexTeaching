@@ -246,6 +246,11 @@ namespace Apex.AI.Teaching
             _observations.Add(gameObject);
         }
 
+        protected void LookAt(Vector3 pos)
+        {
+            this.transform.LookAt(new Vector3(pos.x, this.transform.position.y, pos.z));
+        }
+
         /// <summary>
         /// Determines whether the specified other unit is allied.
         /// </summary>

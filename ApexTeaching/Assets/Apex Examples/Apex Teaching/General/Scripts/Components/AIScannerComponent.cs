@@ -42,6 +42,8 @@
                         observations.RemoveAt(i);
                     }
                 }
+
+                observations.Sort(new GameObjectDistanceSortComparer(this.transform.position));
             }
         }
     }
