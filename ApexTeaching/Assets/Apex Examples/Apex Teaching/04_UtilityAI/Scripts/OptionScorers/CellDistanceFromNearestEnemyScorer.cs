@@ -3,12 +3,16 @@
     using Apex.Serialization;
     using UnityEngine;
 
+    /// <summary>
+    /// OptionScorer for scoring cells that are farther away from the nearest enemy unit
+    /// </summary>
+    /// <seealso cref="Apex.AI.OptionScorerBase{Apex.AI.Teaching.Cell}" />
     public sealed class CellDistanceFromNearestEnemyScorer : OptionScorerBase<Cell>
     {
-        [ApexSerialization]
+        [ApexSerialization, FriendlyName("Max Score", "The highest score that this scorer can output to an option")]
         public float maxScore = 10f;
 
-        [ApexSerialization]
+        [ApexSerialization, FriendlyName("Distance Factor", "A factor used to multiply the calculated distance by")]
         public float distanceFactor = 0.1f;
 
         public override float Score(IAIContext context, Cell option)
@@ -18,6 +22,7 @@
             var count = observations.Count;
             if (count == 0)
             {
+                // unit has no observations
                 return 0f;
             }
 
@@ -43,9 +48,11 @@
 
             if (nearest == null)
             {
+                // there is no nearest enemy unit
                 return 0f;
             }
 
+            // return the distance multiplied by the factor, but never let it surpass the max score
             var distance = (nearest.transform.position - option.position).magnitude * this.distanceFactor;
             return Mathf.Min(distance, this.maxScore);
         }

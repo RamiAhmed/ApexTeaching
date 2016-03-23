@@ -3,6 +3,10 @@
     using UnityEngine;
     using Utilities;
 
+    /// <summary>
+    /// Action class for setting the highest scoring ICanDie candidate to the current attack target.
+    /// </summary>
+    /// <seealso cref="Apex.AI.ActionWithOptions{Apex.AI.Teaching.ICanDie}" />
     public sealed class SetBestAttackTarget : ActionWithOptions<ICanDie>
     {
         public override void Execute(IAIContext context)
@@ -14,30 +18,33 @@
             var count = observations.Count;
             if (count == 0)
             {
+                // unit has no observations of other things
                 return;
             }
 
-            var list = ListBufferPool.GetBuffer<ICanDie>(Mathf.RoundToInt(count * 0.5f));
+            // get a list to populate from the buffer pool
+            var list = ListBufferPool.GetBuffer<ICanDie>(Mathf.RoundToInt(count * 0.5f)); // Preallocation could probably be better, currently it is just a rough estimate that half of the unit's observations could be units
             for (int i = 0; i < count; i++)
             {
                 var obs = observations[i];
-                var resource = obs.GetComponent<ICanDie>();
-                if (resource == null)
+                var canDie = obs.GetComponent<ICanDie>();
+                if (canDie == null)
                 {
+                    // observation is not a "ICanDie", so ignore it
                     continue;
                 }
 
-                list.Add(resource);
+                list.Add(canDie);
             }
 
             var best = this.GetBest(c, list);
-            if (best == null)
+            if (best != null)
             {
-                ListBufferPool.ReturnBuffer(list);
-                return;
+                // the highest-scoring candidate is valid, so set it to be the new attack target
+                c.attackTarget = best;
             }
 
-            c.attackTarget = best;
+            // return the list "borrowed" from the buffer pool
             ListBufferPool.ReturnBuffer(list);
         }
     }

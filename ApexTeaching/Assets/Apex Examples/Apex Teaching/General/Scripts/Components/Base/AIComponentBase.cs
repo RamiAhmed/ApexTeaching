@@ -2,6 +2,11 @@
 {
     using UnityEngine;
 
+    /// <summary>
+    /// Base class for all non-Utility AI components, featuring a method which is executed on an set interval.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="UnityEngine.MonoBehaviour" />
     public abstract class AIComponentBase<T> : MonoBehaviour where T : MonoBehaviour
     {
         public float interval = 0.5f;

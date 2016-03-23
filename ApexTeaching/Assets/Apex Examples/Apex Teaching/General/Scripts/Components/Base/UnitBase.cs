@@ -6,6 +6,11 @@ namespace Apex.AI.Teaching
     using System.Collections.Generic;
     using UnityEngine;
 
+    /// <summary>
+    /// Base class for all units providing common base implementations
+    /// </summary>
+    /// <seealso cref="UnityEngine.MonoBehaviour" />
+    /// <seealso cref="Apex.AI.Teaching.ICanDie" />
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Collider))]
     public abstract class UnitBase : MonoBehaviour, ICanDie

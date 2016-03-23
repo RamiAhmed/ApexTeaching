@@ -6,8 +6,6 @@
     [RequireComponent(typeof(SteerableUnit))]
     public sealed class SteerForPath : MonoBehaviour, ISteeringComponent
     {
-        public float angularSpeed = 5f;
-        public float speed = 6f;
         public float arrivalDistance = 1f;
 
         [SerializeField]
@@ -38,7 +36,7 @@
             get { return _priority; }
         }
 
-        // Just for being eable to disable component in Unity inspector
+        // Just for being able to disable component in Unity inspector
         private void OnEnable()
         {
         }
@@ -97,7 +95,7 @@
             }
 
             // Velocity is a vector in the direction from the current location to the next destination, with a length of speed capped to the current distance if we are at the last path node - for slowdown
-            var speed = this.path.Count == 1 ? Mathf.Clamp(this.speed, 1f, Mathf.Max(1f, currentDistance)) : this.speed;
+            var speed = this.path.Count == 1 ? Mathf.Clamp(input.speed, 1f, Mathf.Max(1f, currentDistance)) : input.speed;
             var velocity = (currentDirection / currentDistance) * speed;
             return velocity;
         }

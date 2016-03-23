@@ -16,7 +16,7 @@
                 for (int i = count - 1; i >= 0; i--)
                 {
                     var obs = observations[i];
-                    if (obs == null)
+                    if (obs == null || !obs.gameObject.activeSelf)
                     {
                         observations.RemoveAt(i);
                         continue;

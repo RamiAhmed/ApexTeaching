@@ -183,9 +183,10 @@
         /// <param name="position">The position.</param>
         /// <param name="radius">The radius.</param>
         /// <param name="list">The list to populate.</param>
-        public virtual void GetCells(Vector3 position, float radius, IList<Cell> list)
+        public virtual void GetUnblockedCells(Vector3 position, float radius, IList<Cell> list)
         {
             list.Clear();
+            var radiusSqr = radius * radius;
 
             var xLength = _cells.GetLength(0);
             var zLength = _cells.GetLength(1);
@@ -194,7 +195,12 @@
                 for (int z = 0; z < zLength; z++)
                 {
                     var cell = _cells[x, z];
-                    if ((cell.position - position).sqrMagnitude < (radius * radius))
+                    if (cell.blocked)
+                    {
+                        continue;
+                    }
+
+                    if ((cell.position - position).sqrMagnitude < radiusSqr)
                     {
                         list.Add(cell);
                     }
