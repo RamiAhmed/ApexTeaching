@@ -153,6 +153,7 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\NestStructure.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\ResourceComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\SinusComponent.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\TimeControlComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\WarriorUnit.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Enum\UnitType.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\GameObjectDistanceSortComparer.cs" />

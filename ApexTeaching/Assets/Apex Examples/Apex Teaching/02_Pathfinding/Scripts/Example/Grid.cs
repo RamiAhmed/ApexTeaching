@@ -115,32 +115,6 @@
             IdentifyCellNeighbours();
         }
 
-        /// <summary>
-        /// Updates the cells' blocked status to unblocked for all cells intersecting with the bounds of the given collider.
-        /// </summary>
-        /// <param name="collider">The collider.</param>
-        public void UpdateCellsBlockedStatus(Collider collider)
-        {
-            var xSteps = _cells.GetLength(0);
-            var zSteps = _cells.GetLength(1);
-            for (int x = 0; x < xSteps; x++)
-            {
-                for (int z = 0; z < zSteps; z++)
-                {
-                    var cell = _cells[x, z];
-                    if (!cell.blocked)
-                    {
-                        continue;
-                    }
-
-                    if (cell.bounds.Intersects(collider.bounds))
-                    {
-                        cell.blocked = false;
-                    }
-                }
-            }
-        }
-
         private void IdentifyCellNeighbours()
         {
             var xLength = _cells.GetLength(0);
@@ -172,6 +146,32 @@
                     if (zi < zLength - 1)
                     {
                         cell.AddNeighbour(_cells[xi, zi + 1]);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates the cells' blocked status to unblocked for all cells intersecting with the bounds of the given collider.
+        /// </summary>
+        /// <param name="collider">The collider.</param>
+        public void UpdateCellsBlockedStatus(Collider collider)
+        {
+            var xSteps = _cells.GetLength(0);
+            var zSteps = _cells.GetLength(1);
+            for (int x = 0; x < xSteps; x++)
+            {
+                for (int z = 0; z < zSteps; z++)
+                {
+                    var cell = _cells[x, z];
+                    if (!cell.blocked)
+                    {
+                        continue;
+                    }
+
+                    if (cell.bounds.Intersects(collider.bounds))
+                    {
+                        cell.blocked = false;
                     }
                 }
             }

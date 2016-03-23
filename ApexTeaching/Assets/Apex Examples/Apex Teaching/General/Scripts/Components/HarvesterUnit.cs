@@ -45,7 +45,7 @@
         }
 
         /// <summary>
-        /// Gets the current amount of carried resources - DO NOT MODIFY.
+        /// Gets the current amount of carried resources - DO NOT MODIFY. Resources can be wasted if overflown.
         /// </summary>
         /// <value>
         /// The current carried resources.

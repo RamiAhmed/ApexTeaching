@@ -25,9 +25,7 @@
         {
             var resources = Random.Range(1, this.maxResourcesPerHarvest);
             this.currentResources -= resources;
-
-            // resources can be wasted if overflown, this is intended
-            unit.currentCarriedResources = Mathf.Min(unit.maxCarriableResources, unit.currentCarriedResources + resources);
+            unit.currentCarriedResources += resources;
 
             if (this.currentResources <= 0)
             {

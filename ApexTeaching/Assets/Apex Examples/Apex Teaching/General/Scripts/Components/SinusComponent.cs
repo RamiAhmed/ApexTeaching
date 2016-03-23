@@ -18,7 +18,7 @@
             _startPos = this.transform.localPosition;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             var time = Time.time;
             if (_unit != null && !_unit.isMoving)
