@@ -4,7 +4,7 @@
     {
         private const int harvesterUnitCost = 50;
         private const int fighterUnitCost = 75;
-        private const int exploderUnitcost = 80;
+        private const int exploderUnitcost = 120;
 
         public static int GetCost(UnitType type)
         {

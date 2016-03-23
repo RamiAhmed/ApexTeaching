@@ -131,6 +131,7 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\ContextualScorers\HasResourceTargetWithinRange.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Actions\MoveToOwnNest.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Actions\MoveToResourceTarget.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\OptionScorers\CellAvgProximityToEnemiesScorer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\OptionScorers\NearestResourceScorer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Actions\ReturnHarvest.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\OptionScorers\RichestResourceScorer.cs" />
