@@ -37,7 +37,7 @@
                 var obsUnit = obs.GetComponent<UnitBase>();
                 if (obsUnit != null)
                 {
-                    if (obsUnit.IsAllied(obsUnit))
+                    if (unit.IsAllied(obsUnit))
                     {
                         continue;
                     }
