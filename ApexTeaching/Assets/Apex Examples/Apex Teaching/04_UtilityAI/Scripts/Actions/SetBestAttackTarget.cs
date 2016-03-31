@@ -34,6 +34,24 @@
                     continue;
                 }
 
+                var obsUnit = obs.GetComponent<UnitBase>();
+                if (obsUnit != null)
+                {
+                    if (obsUnit.IsAllied(obsUnit))
+                    {
+                        continue;
+                    }
+                }
+
+                var nest = obs.GetComponent<NestStructure>();
+                if (nest != unit)
+                {
+                    if (unit.IsAllied(nest))
+                    {
+                        continue;
+                    }
+                }
+
                 list.Add(canDie);
             }
 
