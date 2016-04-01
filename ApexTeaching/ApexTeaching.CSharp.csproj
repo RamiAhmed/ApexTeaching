@@ -60,12 +60,6 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
@@ -155,6 +149,15 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\OptionScorers\CellProximityToAttackTargetScorer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\OptionScorers\NearestResourceScorer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\OptionScorers\RichestResourceScorer.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetworkLoadComponent.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\Layer.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\NeuralNetwork.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\NeuralNetworkHelper.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\Neuron.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\Pattern.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\Serialization\LayerStager.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\Weight.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetworkTrainingComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIController.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIScannerComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\Base\AIComponentBase.cs" />
