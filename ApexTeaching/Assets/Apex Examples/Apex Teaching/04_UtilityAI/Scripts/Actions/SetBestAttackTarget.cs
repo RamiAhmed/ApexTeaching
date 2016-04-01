@@ -39,6 +39,7 @@
                 {
                     if (unit.IsAllied(obsUnit))
                     {
+                        // ignored allied units
                         continue;
                     }
                 }
@@ -48,6 +49,7 @@
                 {
                     if (unit.IsAllied(nest))
                     {
+                        // ignore allied nests
                         continue;
                     }
                 }
