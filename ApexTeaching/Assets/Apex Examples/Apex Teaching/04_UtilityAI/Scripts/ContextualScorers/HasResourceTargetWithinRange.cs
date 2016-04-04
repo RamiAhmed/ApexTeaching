@@ -8,7 +8,7 @@
     /// <seealso cref="Apex.AI.ContextualScorerBase" />
     public sealed class HasResourceTargetWithinRange : ContextualScorerBase
     {
-        [ApexSerialization, MemberDependency("useAttackRadius", false), FriendlyName("A custom range to use to evaluate whether the resource target is within")]
+        [ApexSerialization, MemberDependency("useAttackRadius", false), FriendlyName("Range", "A custom range to use to evaluate whether the resource target is within")]
         public float range = 10f;
 
         [ApexSerialization, FriendlyName("Use Attack Radius", "Set to true to use the unit's attackRadius as the range")]

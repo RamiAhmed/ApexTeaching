@@ -8,7 +8,7 @@
     /// <seealso cref="Apex.AI.ContextualScorerBase" />
     public sealed class HasEnemyUnitInMemory : ContextualScorerBase
     {
-        [ApexSerialization, MemberDependency("useAttackRadius", false), MemberDependency("useScanRadius", false), FriendlyName("The range to evaluate whether an enemy unit is within. Set to 0 to disable range check")]
+        [ApexSerialization, MemberDependency("useAttackRadius", false), MemberDependency("useScanRadius", false), FriendlyName("Range", "The range to evaluate whether an enemy unit is within. Set to 0 to disable range check")]
         public float range = 10f;
 
         [ApexSerialization, MemberDependency("useAttackRadius", false), FriendlyName("Use Scan Radius", "Set to true to use the unit's scanRadius as the range")]

@@ -122,6 +122,7 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Actions\SetBestResourceTarget.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Actions\SetResourceTargetToNull.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Actions\StopMoving.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\ContextualScorers\IsCarryingResources.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Context\AIContext.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Context\ContextProvider.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Context\ControllerContext.cs" />
