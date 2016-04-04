@@ -14,7 +14,6 @@
         private void FixedUpdate()
         {
             MoveOnKeys();
-            MoveOnEdge();
             ZoomOnScroll();
         }
 
@@ -29,7 +28,7 @@
             var y = Mathf.Clamp(this.transform.position.y + (-Mathf.Sign(scroll) * scrollSpeed), this.constraintsY.x, this.constraintsY.y);
             this.transform.position = new Vector3(this.transform.position.x, y, this.transform.position.z);
         }
-        
+
         private void MoveOnKeys()
         {
             if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
@@ -50,34 +49,6 @@
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             {
                 MoveCamera(Vector3.left);
-            }
-        }
-
-        private void MoveOnEdge()
-        {
-            var mousePos = Input.mousePosition;
-            if ((mousePos.x < 0f || mousePos.x > Screen.width) ||
-                (mousePos.y < 0f || mousePos.y > Screen.height))
-            {
-                return;
-            }
-
-            if (mousePos.x < this.mouseMoveMargin)
-            {
-                MoveCamera(Vector3.left);
-            }
-            else if (mousePos.x > Screen.width - this.mouseMoveMargin)
-            {
-                MoveCamera(Vector3.right);
-            }
-
-            if (mousePos.y < this.mouseMoveMargin)
-            {
-                MoveCamera(Vector3.back);
-            }
-            else if (mousePos.y > Screen.height - this.mouseMoveMargin)
-            {
-                MoveCamera(Vector3.forward);
             }
         }
 
