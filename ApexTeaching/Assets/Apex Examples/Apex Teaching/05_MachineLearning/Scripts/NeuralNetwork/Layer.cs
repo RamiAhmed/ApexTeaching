@@ -13,6 +13,7 @@
         }
 
         public Layer(float lambda, float learnRate, int size)
+            : base(size)
         {
             for (int i = 0; i < size; i++)
             {
@@ -21,6 +22,7 @@
         }
 
         public Layer(float lambda, float learnRate, int size, Layer layer, Random rnd)
+            : base(size)
         {
             for (int i = 0; i < size; i++)
             {

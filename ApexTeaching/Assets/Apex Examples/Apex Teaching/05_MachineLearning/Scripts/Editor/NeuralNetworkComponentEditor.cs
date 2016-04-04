@@ -1,4 +1,4 @@
-﻿namespace Apex.AI.Teaching.Editor
+﻿namespace Apex.AI.NeuralNetwork.Editor
 {
     using UnityEditor;
     using UnityEngine;
@@ -17,9 +17,10 @@
                 return;
             }
 
+            EditorGUILayout.Separator();
             if (GUILayout.Button("Train Neural Network"))
             {
-                nnComponent.Run();
+                nnComponent.TrainAndTest();
             }
         }
     }

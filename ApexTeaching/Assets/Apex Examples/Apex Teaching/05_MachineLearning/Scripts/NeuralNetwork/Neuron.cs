@@ -3,16 +3,25 @@
     using System;
     using System.Collections.Generic;
     using Apex.Serialization;
-    
+    using UnityEngine;
+
     public class Neuron
     {
         [ApexSerialization]
         private List<Weight> _weights;              // Collection of weights to inputs.
 
+        [ApexSerialization]
         private double _lambda;                     // Steepness of sigmoid curve.
-        private double _learnRate;                  // Learning rate.
+
+        [ApexSerialization]
         private double _bias;                       // Bias value.
+
+        [ApexSerialization]
+        private double _learnRate;                  // Learning rate.
+
+        [ApexSerialization]
         private double _error;                      // Sum of error.
+        
         private double _input;                      // Sum of inputs.
         private double _output = double.MinValue;   // Preset value of neuron.
 
@@ -20,7 +29,7 @@
         {
         }
 
-        public Neuron(float lambda, float learnRate, Layer inputs, Random rnd)
+        public Neuron(float lambda, float learnRate, Layer inputs, System.Random rnd)
             : this(lambda, learnRate)
         {
             var count = inputs.Count;
@@ -28,8 +37,7 @@
 
             for (int i = 0; i < count; i++)
             {
-                var input = inputs[i];
-                _weights.Add(new Weight(input, (rnd.NextDouble() * 2d) - 1d));
+                _weights.Add(new Weight(inputs[i], (rnd.NextDouble() * 2d) - 1d));
             }
         }
 
@@ -39,7 +47,21 @@
             _learnRate = learnRate;
         }
 
-        [ApexSerialization]
+        public void RemapConnections(Layer inputs)
+        {
+            var count = inputs.Count;
+            if (count != _weights.Count)
+            {
+                Debug.LogWarning("Neuron cannot remap connections - the passed inputs count (" + count + ") does not match the previous count of " + _weights.Count);
+                return;
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                _weights[i].input = inputs[i];
+            }
+        }
+
         public double output
         {
             get
@@ -108,7 +130,7 @@
 
         public override string ToString()
         {
-            return string.Concat(this.GetType().ToString(), ": Derivative: ", this.derivative, ", output: ", _output, "; ");
+            return string.Concat(this.GetType().ToString(), ": Input: ", _input, ", output: ", this.output, "; ");
         }
     }
 }

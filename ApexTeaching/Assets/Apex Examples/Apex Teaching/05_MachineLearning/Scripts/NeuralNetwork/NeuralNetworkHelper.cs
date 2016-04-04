@@ -7,10 +7,11 @@
 
     public static class NeuralNetworkHelper
     {
-        public static void SaveNetwork(NeuralNetwork network, string filePath)
+        public static void SaveNetwork(NeuralNetwork network, string filePath, string fileName)
         {
             var now = DateTime.Now.ToString("dd-MM-yy_HH-mm-ss");
-            var path = Path.Combine(filePath, now);
+            var name = string.Concat(fileName, "_", now);
+            var path = Path.Combine(filePath, name);
             if (File.Exists(path))
             {
                 path = string.Concat(path, " (2)");
