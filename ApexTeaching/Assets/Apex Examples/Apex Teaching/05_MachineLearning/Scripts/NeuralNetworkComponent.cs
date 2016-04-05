@@ -9,6 +9,7 @@
 
         [Header("Data Set")]
         public TextAsset patternsFile = null;
+
         public bool datasetHasHeaders = true;
         public bool debugLogWhenTraining = false;
 
@@ -53,12 +54,23 @@
                 return;
             }
 
+            if (this.patternsFile == null)
+            {
+                Debug.LogWarning(this.ToString() + " cannot run neural networks without a patterns file");
+                return;
+            }
+
             var network = new NeuralNetworkManager();
             neuralNetwork = network.Run(this.patternsFile.text, this.iterationCount, this.networkCount, this.inputDimensions, this.hiddenDimensions, this.outputDimensions, this.trainingPercentage, this.datasetHasHeaders, this.debugLogWhenTraining, this.learnRate, this.momentum, this.targetError);
         }
 
         protected override void ExecuteAI()
         {
+            if (this.patternsFile == null)
+            {
+                return;
+            }
+
             var nest = _entity.nest;
             var inputs = new double[]
             {
