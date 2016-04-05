@@ -23,16 +23,14 @@ namespace Apex.AI.NeuralNetwork
             this.inputs = new double[inputSize];
             for (int i = 0; i < inputSize; i++)
             {
-                var str = line[i].Trim('\r');
-                this.inputs[i] = double.Parse(str);
+                this.inputs[i] = double.Parse(line[i]);
             }
 
             var outputSize = line.Length - inputSize;
             this.outputs = new double[outputSize];
             for (int j = 0; j < outputSize; j++)
             {
-                var str = line[inputSize + j].Trim('\r');
-                this.outputs[j] = double.Parse(str);
+                this.outputs[j] = double.Parse(line[inputSize + j]);
             }
         }
     }

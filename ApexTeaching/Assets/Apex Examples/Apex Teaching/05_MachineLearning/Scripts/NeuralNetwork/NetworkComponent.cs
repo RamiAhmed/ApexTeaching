@@ -20,21 +20,25 @@
         public double momentum = 0.04d;
         public double targetError = 0.05d;
 
-        private void Start()
+        private void OnEnable()
         {
-            var network = new Network();
-            neuralNetwork = network.Run(this.patternsFile.text, this.iterationCount, this.networkCount, this.inputs, this.hidden, this.output, this.trainingPercentage, this.datasetHasHeaders, this.debugLogWhenTraining, this.learnRate, this.momentum, this.targetError);
+            if (neuralNetwork == null)
+            {
+                var network = new Network();
+                neuralNetwork = network.Run(this.patternsFile.text, this.iterationCount, this.networkCount, this.inputs, this.hidden, this.output, this.trainingPercentage, this.datasetHasHeaders, this.debugLogWhenTraining, this.learnRate, this.momentum, this.targetError);
+            }
         }
 
         protected override void ExecuteAI()
         {
+            var nest = _entity.nest;
             var inputs = new double[]
             {
-                _entity.nest.currentResources,
+                nest.currentResources,
                 Time.timeSinceLevelLoad,
-                _entity.nest.harvesterCount,
-                _entity.nest.warriorCount,
-                _entity.nest.blasterCount
+                nest.harvesterCount,
+                nest.warriorCount,
+                nest.blasterCount
             };
 
             var outputs = neuralNetwork.Compute(inputs);
@@ -48,26 +52,26 @@
                     {
                         case 0:
                         {
-                            _entity.nest.SpawnUnit(UnitType.Harvester);
-                            break;
+                            nest.SpawnUnit(UnitType.Harvester);
+                            return;
                         }
 
                         case 1:
                         {
-                            _entity.nest.SpawnUnit(UnitType.Blaster);
-                            break;
+                            nest.SpawnUnit(UnitType.Blaster);
+                            return;
                         }
 
                         case 2:
                         {
-                            _entity.nest.SpawnUnit(UnitType.Warrior);
-                            break;
+                            nest.SpawnUnit(UnitType.Warrior);
+                            return;
                         }
 
                         case 3:
                         {
                             // Do nothing
-                            break;
+                            return;
                         }
                     }
                 }

@@ -85,7 +85,11 @@ namespace Apex.AI.NeuralNetwork
                     trainingError /= trainCount;
                     if (trainingError < targetError)
                     {
-                        Debug.Log("Training error (" + trainingError.ToString("F6") + ") is below target error (" + targetError.ToString("F6") + "), at iteration: " + i);
+                        if (debugLog)
+                        {
+                            Debug.Log("Training error (" + trainingError.ToString("F6") + ") is below target error (" + targetError.ToString("F6") + "), at iteration: " + i);
+                        }
+
                         break;
                     }
                 }
