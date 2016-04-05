@@ -121,11 +121,7 @@ namespace Apex.AI.NeuralNetwork
 
             totalError = 0d;
 
-            if (debugLog)
-            {
-                Debug.Log(Time.time + " best iteration == " + bestIteration + " best error == " + lowestError);
-            }
-
+            Debug.Log("Neural network trained. Best network iteration == " + bestIteration + ", lowest neural network error == " + lowestError);
             return best;
         }
 
