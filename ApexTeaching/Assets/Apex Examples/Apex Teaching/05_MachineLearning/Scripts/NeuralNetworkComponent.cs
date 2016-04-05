@@ -1,13 +1,13 @@
-﻿namespace Apex.AI.NeuralNetwork
+﻿namespace Apex.AI.Teaching
 {
-    using Apex.AI.Teaching;
+    using NeuralNetwork;
     using UnityEngine;
 
     public class NeuralNetworkComponent : AIComponentBase<AIController>
     {
         public static NeuralNetwork neuralNetwork { get; private set; }
 
-        [Header("Data Set"), Space]
+        [Header("Data Set")]
         public TextAsset patternsFile = null;
         public bool datasetHasHeaders = true;
         public bool debugLogWhenTraining = false;
@@ -15,24 +15,24 @@
         [Range(0.1f, 1f)]
         public float trainingPercentage = 0.8f;
 
-        [Header("Iterations"), Space]
+        [Header("Iterations")]
         [Range(1, 100000)]
         public int iterationCount = 1000;
 
         [Range(1, 100)]
         public int networkCount = 10;
 
-        [Header("Dimensions"), Space]
+        [Header("Dimensions")]
         [Range(1, 20)]
-        public int inputs = 5;
+        public int inputDimensions = 5;
 
         [Range(1, 20)]
-        public int hidden = 5;
+        public int hiddenDimensions = 5;
 
         [Range(1, 20)]
-        public int output = 4;
+        public int outputDimensions = 4;
 
-        [Header("Hyper Parameters"), Space]
+        [Header("Hyper Parameters")]
         [Range(0.01f, 0.99f)]
         public double learnRate = 0.65d;
 
@@ -42,7 +42,7 @@
         [Range(0.001f, 0.25f)]
         public double targetError = 0.075d;
 
-        [Header("Online"), Space]
+        [Header("Online")]
         [Range(0.01f, 0.99f)]
         public double outputThreshold = 0.6d;
 
@@ -54,7 +54,7 @@
             }
 
             var network = new NeuralNetworkManager();
-            neuralNetwork = network.Run(this.patternsFile.text, this.iterationCount, this.networkCount, this.inputs, this.hidden, this.output, this.trainingPercentage, this.datasetHasHeaders, this.debugLogWhenTraining, this.learnRate, this.momentum, this.targetError);
+            neuralNetwork = network.Run(this.patternsFile.text, this.iterationCount, this.networkCount, this.inputDimensions, this.hiddenDimensions, this.outputDimensions, this.trainingPercentage, this.datasetHasHeaders, this.debugLogWhenTraining, this.learnRate, this.momentum, this.targetError);
         }
 
         protected override void ExecuteAI()

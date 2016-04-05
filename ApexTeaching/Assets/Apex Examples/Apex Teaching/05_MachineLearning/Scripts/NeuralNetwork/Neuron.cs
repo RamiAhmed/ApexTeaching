@@ -5,69 +5,71 @@
 
     public class Neuron
     {
-        public List<Synapse> InputSynapses;
-        public List<Synapse> OutputSynapses;
-        public double Bias;
-        public double BiasDelta;
-        public double Gradient;
-        public double Value;
+        public List<Synapse> inputSynapses;
+        public List<Synapse> outputSynapses;
+        public double bias;
+        public double biasDelta;
+        public double gradient;
+        public double value;
 
         public Neuron()
         {
-            InputSynapses = new List<Synapse>();
-            OutputSynapses = new List<Synapse>();
-            Bias = NeuralNetwork.NextRandom();
+            this.inputSynapses = new List<Synapse>();
+            this.outputSynapses = new List<Synapse>();
+            this.bias = NeuralNetwork.NextRandom();
         }
 
         public Neuron(List<Neuron> inputNeurons)
             : this()
         {
-            foreach (var inputNeuron in inputNeurons)
+            var count = inputNeurons.Count;
+            for (int i = 0; i < count; i++)
             {
+                var inputNeuron = inputNeurons[i];
                 var synapse = new Synapse(inputNeuron, this);
-                inputNeuron.OutputSynapses.Add(synapse);
-                InputSynapses.Add(synapse);
+                inputNeuron.outputSynapses.Add(synapse);
+                this.inputSynapses.Add(synapse);
             }
         }
 
         public virtual double CalculateValue()
         {
-            return Value = NeuralNetwork.SigmoidFunction(InputSynapses.Sum(a => a.Weight * a.InputNeuron.Value) + Bias);
+            return (this.value = NeuralNetwork.SigmoidFunction(inputSynapses.Sum(a => a.weight * a.inputNeuron.value) + bias));
         }
 
         public virtual double CalculateDerivative()
         {
-            return NeuralNetwork.SigmoidDerivative(Value);
+            return NeuralNetwork.SigmoidDerivative(value);
         }
 
         public double CalculateError(double target)
         {
-            return target - Value;
+            return target - value;
         }
 
         public double CalculateGradient(double target)
         {
-            return Gradient = CalculateError(target) * CalculateDerivative();
+            return (this.gradient = CalculateError(target) * CalculateDerivative());
         }
 
         public double CalculateGradient()
         {
-            return Gradient = OutputSynapses.Sum(a => a.OutputNeuron.Gradient * a.Weight) * CalculateDerivative();
+            return (this.gradient = outputSynapses.Sum(a => a.outputNeuron.gradient * a.weight) * CalculateDerivative());
         }
 
         public void UpdateWeights(double learnRate, double momentum)
         {
-            var prevDelta = BiasDelta;
-            BiasDelta = learnRate * Gradient; // * 1
-            Bias += BiasDelta + momentum * prevDelta;
+            var prevDelta = biasDelta;
+            biasDelta = learnRate * gradient;
+            bias += biasDelta + momentum * prevDelta;
 
-            var count = InputSynapses.Count;
+            var count = inputSynapses.Count;
             for (int i = 0; i < count; i++)
             {
-                var synapse = InputSynapses[i];
-                prevDelta = synapse.WeightDelta;
-                synapse.WeightDelta = learnRate * Gradient * synapse.InputNeuron.Value;
-                synapse.Weight += synapse.WeightDelta + momentum * prevDelta;
+                var synapse = inputSynapses[i];
+                prevDelta = synapse.weightDelta;
+                synapse.weightDelta = learnRate * gradient * synapse.inputNeuron.value;
+                synapse.weight += synapse.weightDelta + momentum * prevDelta;
             }
         }
     }

@@ -47,11 +47,11 @@ namespace Apex.AI.NeuralNetwork
         public NeuralNetwork Run(string patternText, int countIterations, int countNetworks, int inputs, int hidden, int outputs, float trainingPercentage, bool datasetHasHeaders, bool debugLog, double learnRate, double momentum, double targetError)
         {
             NeuralNetwork best = null;
-            double lowestError = double.MaxValue;
-            double error = 0d;
-            double totalError = 0d;
-            double trainingError = 0d;
-            int bestIteration = -1;
+            var lowestError = double.MaxValue;
+            var error = 0d;
+            var totalError = 0d;
+            var trainingError = 0d;
+            var bestIteration = -1;
 
             if (debugLog)
             {
@@ -106,7 +106,6 @@ namespace Apex.AI.NeuralNetwork
                 }
 
                 totalError /= testCount;
-
                 if (totalError < lowestError)
                 {
                     lowestError = totalError;

@@ -148,8 +148,11 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\OptionScorers\NearestResourceScorer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\OptionScorers\RichestResourceScorer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\CSVPattern.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\Network.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\NetworkComponent.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\NeuralNetwork.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\NeuralNetworkManager.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\Neuron.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\Synapse.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetworkComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIController.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIScannerComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\Base\AIComponentBase.cs" />

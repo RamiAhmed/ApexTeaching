@@ -2,16 +2,16 @@
 {
     public class Synapse
     {
-        public Neuron InputNeuron;
-        public Neuron OutputNeuron;
-        public double Weight;
-        public double WeightDelta;
+        public Neuron inputNeuron;
+        public Neuron outputNeuron;
+        public double weight;
+        public double weightDelta;
 
         public Synapse(Neuron inputNeuron, Neuron outputNeuron)
         {
-            InputNeuron = inputNeuron;
-            OutputNeuron = outputNeuron;
-            Weight = NeuralNetwork.NextRandom();
+            this.inputNeuron = inputNeuron;
+            this.outputNeuron = outputNeuron;
+            this.weight = NeuralNetwork.NextRandom();
         }
     }
 }
