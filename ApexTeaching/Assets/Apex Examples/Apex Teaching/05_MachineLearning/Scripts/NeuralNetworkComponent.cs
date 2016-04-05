@@ -5,7 +5,7 @@
 
     public class NeuralNetworkComponent : AIComponentBase<AIController>
     {
-        public static NeuralNetwork neuralNetwork { get; private set; }
+        public NeuralNetwork neuralNetwork { get; private set; }
 
         [Header("Data Set")]
         public TextAsset patternsFile = null;
