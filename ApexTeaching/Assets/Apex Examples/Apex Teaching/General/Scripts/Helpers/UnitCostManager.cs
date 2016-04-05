@@ -3,8 +3,8 @@
     public static class UnitCostManager
     {
         private const int harvesterUnitCost = 50;
-        private const int fighterUnitCost = 75;
-        private const int exploderUnitcost = 120;
+        private const int warriorUnitCost = 75;
+        private const int blasterUnitcost = 120;
 
         public static int GetCost(UnitType type)
         {
@@ -17,12 +17,12 @@
 
                 case UnitType.Warrior:
                 {
-                    return fighterUnitCost;
+                    return warriorUnitCost;
                 }
 
                 case UnitType.Blaster:
                 {
-                    return exploderUnitcost;
+                    return blasterUnitcost;
                 }
             }
 

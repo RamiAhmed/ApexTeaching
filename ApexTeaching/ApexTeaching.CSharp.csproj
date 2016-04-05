@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.4f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -122,7 +120,6 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Actions\SetBestResourceTarget.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Actions\SetResourceTargetToNull.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Actions\StopMoving.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\ContextualScorers\IsCarryingResources.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Context\AIContext.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Context\ContextProvider.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\Context\ControllerContext.cs" />
@@ -150,17 +147,9 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\OptionScorers\CellProximityToAttackTargetScorer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\OptionScorers\NearestResourceScorer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\04_UtilityAI\Scripts\OptionScorers\RichestResourceScorer.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralAIControllerComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\CSVPattern.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\Layer.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\NeuralNetwork.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\NeuralNetworkHelper.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\NeuralNetworkLoadComponent.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\NeuralNetworkOptions.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\NeuralNetworkTrainingComponent.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\Neuron.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\Serialization\LayerStager.cs" />
-    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\Weight.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\Network.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\05_MachineLearning\Scripts\NeuralNetwork\NetworkComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIController.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\AIScannerComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\Base\AIComponentBase.cs" />

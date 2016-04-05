@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApexTeaching.CSharp", "ApexTeaching.CSharp.csproj", "{F7F9D93F-2F3B-2BC2-CE2A-D18E19852B68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApexTeaching.CSharp.Editor", "ApexTeaching.CSharp.Editor.csproj", "{514DE8BF-0497-6D44-398F-3F2807177E58}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,10 +13,6 @@ Global
 		{F7F9D93F-2F3B-2BC2-CE2A-D18E19852B68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7F9D93F-2F3B-2BC2-CE2A-D18E19852B68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7F9D93F-2F3B-2BC2-CE2A-D18E19852B68}.Release|Any CPU.Build.0 = Release|Any CPU
-		{514DE8BF-0497-6D44-398F-3F2807177E58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{514DE8BF-0497-6D44-398F-3F2807177E58}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{514DE8BF-0497-6D44-398F-3F2807177E58}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{514DE8BF-0497-6D44-398F-3F2807177E58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
