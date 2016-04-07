@@ -167,6 +167,7 @@
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\TimeControlComponent.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Components\WarriorUnit.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Enum\UnitType.cs" />
+    <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\CircleHelpers.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\GameObjectDistanceSortComparer.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\Layers.cs" />
     <Compile Include="Assets\Apex Examples\Apex Teaching\General\Scripts\Helpers\UnitBaseDistanceSortComparer.cs" />

@@ -21,8 +21,9 @@
                 return 0f;
             }
 
-            var distanceSqr = (unit.nest.transform.position - c.position).sqrMagnitude;
-            if (distanceSqr > (unit.returnHarvestRadius * unit.returnHarvestRadius))
+            var nest = unit.nest;
+            var distanceSqr = (nest.transform.position - c.position).sqrMagnitude;
+            if (distanceSqr > (nest.returnHarvestRadius * nest.returnHarvestRadius))
             {
                 // distance to the nest is more than the unit's return harvest radius
                 return this.not ? this.score : 0f;

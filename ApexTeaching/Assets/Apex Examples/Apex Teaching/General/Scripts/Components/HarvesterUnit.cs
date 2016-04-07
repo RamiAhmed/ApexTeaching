@@ -14,23 +14,9 @@
         [SerializeField]
         private float _fleeRadius = 10f;
 
-        [SerializeField]
-        private float _returnHarvestRadius = 4f;
-
         public override UnitType type
         {
             get { return UnitType.Harvester; }
-        }
-
-        /// <summary>
-        /// Gets the return harvest radius - the radius within which this unit may return harvested resources to the nest.
-        /// </summary>
-        /// <value>
-        /// The return harvest radius.
-        /// </value>
-        public float returnHarvestRadius
-        {
-            get { return _returnHarvestRadius; }
         }
 
         /// <summary>

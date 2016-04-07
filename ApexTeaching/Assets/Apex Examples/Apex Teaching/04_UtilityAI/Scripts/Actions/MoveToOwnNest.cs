@@ -9,7 +9,7 @@
         public override void Execute(IAIContext context)
         {
             var c = (AIContext)context;
-            c.unit.MoveTo(c.unit.nest.transform.position);
+            c.unit.MoveTo(c.unit.nest.GetReturningPosition(c.unit));
         }
     }
 }

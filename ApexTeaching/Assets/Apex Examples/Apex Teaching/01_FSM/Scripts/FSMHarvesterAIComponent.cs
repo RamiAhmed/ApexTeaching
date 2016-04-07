@@ -40,13 +40,14 @@
 
         private void HandleReturning()
         {
-            var distance = (_entity.transform.position - _entity.nest.transform.position).sqrMagnitude;
-            if (distance > (_entity.returnHarvestRadius * _entity.returnHarvestRadius))
+            var nest = _entity.nest;
+            var distance = (_entity.transform.position - nest.transform.position).sqrMagnitude;
+            if (distance > (nest.returnHarvestRadius * nest.returnHarvestRadius))
             {
                 // nest ouside of range
                 if (!_entity.isMoving)
                 {
-                    _entity.MoveTo(_entity.nest.transform.position);
+                    _entity.MoveTo(_entity.nest.GetReturningPosition(_entity));
                 }
 
                 return;
@@ -73,7 +74,7 @@
                 // resource out of range
                 if (!_entity.isMoving)
                 {
-                    _entity.MoveTo(_resourceTarget.transform.position);
+                    _entity.MoveTo(_resourceTarget.GetHarvestingPosition(_entity));
                 }
 
                 return;

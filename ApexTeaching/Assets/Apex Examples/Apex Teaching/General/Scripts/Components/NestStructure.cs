@@ -6,6 +6,10 @@
 
     public class NestStructure : MonoBehaviour, ICanDie
     {
+        private const int maxUnitsReturning = 9;
+
+        public float returnHarvestRadius = 9f;
+
         [SerializeField]
         private float _maxHealth = 1000f;
 
@@ -45,6 +49,9 @@
         private Dictionary<UnitType, UnitPool> _entityPools;
         private List<UnitBase> _units;
         private float _lastBuild;
+        private int _lastSpawnIndex;
+
+        private readonly Vector3[] _returnPositions = new Vector3[maxUnitsReturning];
 
         /// <summary>
         /// Gets a reference to the AI controller - DO NOT MODIFY.
@@ -148,8 +155,6 @@
             get { return _units; }
         }
 
-        private int _lastSpawnIndex;
-
         private void Awake()
         {
             _entityPools = new Dictionary<UnitType, UnitPool>(new UnitTypeComparer())
@@ -166,6 +171,13 @@
         {
             this.currentHealth = _maxHealth;
             StartCoroutine(BuildInitialUnits());
+
+            // Initialize all the harvester positions
+            var angle = 360f / maxUnitsReturning;
+            for (int i = 0; i < maxUnitsReturning; i++)
+            {
+                _returnPositions[i] = CircleHelpers.GetPointOnCircle(this.transform.position, returnHarvestRadius / 2f, angle, i);
+            }
         }
 
         private void OnDisable()
@@ -173,12 +185,6 @@
             var count = _units.Count;
             for (int i = 0; i < count; i++)
             {
-                // all the nest's units die when the nest dies
-                if (_units[i].currentHealth > 0f)
-                {
-                    _units[i].ReceiveDamage(_units[i].maxHealth + 1f);
-                }
-
                 ReturnUnit(_units[i]);
             }
         }
@@ -246,7 +252,8 @@
 
         private void InternalBuildUnit(UnitType type)
         {
-            var unit = _entityPools[type].Get(GetPointOnCircle(), Quaternion.identity);
+            var pos = CircleHelpers.GetPointOnCircle(this.transform.position, _spawnDistance, _anglePerSpawn, _lastSpawnIndex++);
+            var unit = _entityPools[type].Get(pos, Quaternion.identity);
             unit.nest = this;
 
             // color unit
@@ -264,16 +271,6 @@
             unit.gameObject.name += string.Concat(" ", this.units.Count);
 
             _units.Add(unit);
-        }
-
-        private Vector3 GetPointOnCircle()
-        {
-            var max = 360f / _anglePerSpawn;
-            var ang = (_lastSpawnIndex++ % max) * _anglePerSpawn;
-            return new Vector3(
-                    this.transform.position.x + _spawnDistance * Mathf.Sin(ang * Mathf.Deg2Rad),
-                    this.transform.position.y,
-                    this.transform.position.z + _spawnDistance * Mathf.Cos(ang * Mathf.Deg2Rad));
         }
 
         /// <summary>
@@ -303,6 +300,26 @@
             {
                 this.gameObject.SetActive(false);
             }
+        }
+
+        /// <summary>
+        /// Gets a position for harvesters to be in when returning their harvest.
+        /// </summary>
+        /// <returns>The nearest position in a circle around this nest</returns>
+        public Vector3 GetReturningPosition(UnitBase unit)
+        {
+            var unitPos = unit.transform.position;
+            var nearest = _returnPositions[0];
+            for (int i = 1; i < _returnPositions.Length; i++)
+            {
+                var pos = _returnPositions[i];
+                if ((unitPos - pos).sqrMagnitude < (unitPos - nearest).sqrMagnitude)
+                {
+                    nearest = pos;
+                }
+            }
+
+            return nearest;
         }
     }
 }

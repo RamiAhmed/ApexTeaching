@@ -15,7 +15,7 @@
                 return;
             }
 
-            c.unit.MoveTo(c.resourceTarget.transform.position);
+            c.unit.MoveTo(c.resourceTarget.GetHarvestingPosition(c.unit));
         }
     }
 }
