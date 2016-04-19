@@ -16,7 +16,15 @@
                 return;
             }
 
-            c.unit.MoveTo(attackTarget.transform.position);
+            var nest = attackTarget.gameObject.GetComponent<NestStructure>();
+            if (nest != null)
+            {
+                c.unit.MoveTo(nest.GetReturningPosition(c.unit));
+            }
+            else
+            {
+                c.unit.MoveTo(attackTarget.transform.position);
+            }
         }
     }
 }

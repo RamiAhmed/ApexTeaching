@@ -205,6 +205,8 @@
             {
                 ReturnUnit(_units[i]);
             }
+
+            Grid.instance.UpdateCellsBlockedStatus(this.GetComponent<Collider>());
         }
 
         private IEnumerator BuildInitialUnits()
