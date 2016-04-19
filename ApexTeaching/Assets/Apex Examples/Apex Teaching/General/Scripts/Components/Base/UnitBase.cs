@@ -281,13 +281,14 @@ namespace Apex.AI.Teaching
         /// </summary>
         public virtual void RandomWander()
         {
-            var randomPos = this.transform.position + Random.onUnitSphere.normalized * _randomWanderRadius;
+            var randomPos = this.transform.position + (Random.onUnitSphere.normalized * _randomWanderRadius);
             randomPos.y = this.transform.position.y;
 
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomPos, out hit, _randomWanderRadius * 0.5f, _navMeshAgent.areaMask))
             {
-                MoveTo(hit.position);
+                _navMeshAgent.Resume();
+                _navMeshAgent.SetDestination(hit.position);
             }
         }
 
