@@ -10,7 +10,7 @@
         [ApexSerialization]
         public bool onlyNest;
 
-        [ApexSerialization]
+        [ApexSerialization, MemberDependency("onlyNest", true)]
         public UnitType unitType;
 
         public override float Score(IAIContext context, ICanDie option)
