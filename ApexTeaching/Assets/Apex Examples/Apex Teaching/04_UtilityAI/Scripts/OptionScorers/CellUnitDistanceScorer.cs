@@ -29,40 +29,44 @@
             for (int i = 0; i < count; i++)
             {
                 var obs = observations[i];
-                var obsUnit = obs.gameObject.GetComponent<UnitBase>();
-                if (obsUnit != null)
-                {
-                    if (c.unit.IsAllied(obsUnit))
-                    {
-                        if (this.onlyEnemies)
-                        {
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        if (this.onlyAllies)
-                        {
-                            continue;
-                        }
-                    }
-                }
 
-                var obsNest = obs.gameObject.GetComponent<NestStructure>();
-                if (obsNest != null)
+                if (this.onlyAllies || this.onlyEnemies)
                 {
-                    if (c.unit.IsAllied(obsNest))
+                    var obsUnit = obs.gameObject.GetComponent<UnitBase>();
+                    if (obsUnit != null)
                     {
-                        if (this.onlyEnemies)
+                        if (c.unit.IsAllied(obsUnit))
                         {
-                            continue;
+                            if (this.onlyEnemies)
+                            {
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            if (this.onlyAllies)
+                            {
+                                continue;
+                            }
                         }
                     }
-                    else
+
+                    var obsNest = obs.gameObject.GetComponent<NestStructure>();
+                    if (obsNest != null)
                     {
-                        if (this.onlyAllies)
+                        if (c.unit.IsAllied(obsNest))
                         {
-                            continue;
+                            if (this.onlyEnemies)
+                            {
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            if (this.onlyAllies)
+                            {
+                                continue;
+                            }
                         }
                     }
                 }
@@ -72,7 +76,7 @@
             }
 
             distanceSummed /= actualCount;
-            return Mathf.Max(this.maxScore, distanceSummed);
+            return Mathf.Min(this.maxScore, distanceSummed);
         }
     }
 }

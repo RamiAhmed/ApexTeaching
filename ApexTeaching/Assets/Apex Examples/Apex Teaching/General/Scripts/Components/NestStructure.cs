@@ -155,6 +155,12 @@
             get { return _units; }
         }
 
+        public NestStructure enemyNest
+        {
+            get;
+            private set;
+        }
+
         private void Awake()
         {
             _entityPools = new Dictionary<UnitType, UnitPool>(new UnitTypeComparer())
@@ -165,6 +171,18 @@
             };
 
             _units = new List<UnitBase>(_initialInstanceCount);
+
+            var nests = FindObjectsOfType<NestStructure>();
+            for (int i = 0; i < nests.Length; i++)
+            {
+                if (ReferenceEquals(nests[i], this))
+                {
+                    continue;
+                }
+
+                this.enemyNest = nests[i];
+                break;
+            }
         }
 
         private void OnEnable()

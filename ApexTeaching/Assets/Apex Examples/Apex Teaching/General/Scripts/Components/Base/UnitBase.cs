@@ -298,6 +298,11 @@ namespace Apex.AI.Teaching
         /// <param name="destination">The destination.</param>
         public virtual void MoveTo(Vector3 destination)
         {
+            if ((destination - this.transform.position).sqrMagnitude < destinationBufferRadius)
+            {
+                return;
+            }
+
             NavMeshHit hit;
             if (NavMesh.SamplePosition(destination, out hit, destinationBufferRadius, _navMeshAgent.areaMask))
             {
